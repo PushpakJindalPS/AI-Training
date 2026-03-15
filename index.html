@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Training for Business Analysts</title>
+  <style>
+    /* ── Variables ── */
+    :root {
+      --bg-deep:    #0f0f1a;
+      --bg-surface: #1a1a2e;
+      --bg-card:    #16213e;
+      --accent-blue: #4f8ef7;
+      --accent-teal: #64ffda;
+      --accent-gold: #ffd166;
+      --text-primary: #e0e0e0;
+      --text-muted:   #8892a4;
+      --text-dim:     #5a6275;
+      --border:       rgba(79, 142, 247, 0.18);
+      --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+      --radius: 12px;
+      --radius-lg: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 48px 60px 32px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(79,142,247,0.05) 0%, transparent 100%);
+    }
+
+    .header-tag {
+      font-size: 0.7em;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 12px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    header p {
+      margin-top: 12px;
+      color: var(--text-muted);
+      font-size: 1em;
+      max-width: 520px;
+    }
+
+    .header-meta {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .meta-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82em;
+      color: var(--text-muted);
+    }
+
+    .meta-pill span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      flex-shrink: 0;
+    }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      padding: 52px 60px;
+    }
+
+    .section-label {
+      font-size: 0.72em;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+    }
+
+    /* ── Session grid ── */
+    .session-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 900px;
+    }
+
+    .session-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: all 0.22s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .session-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent-blue);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .session-card.available:hover {
+      border-color: rgba(79,142,247,0.45);
+      background: linear-gradient(135deg, var(--bg-card), rgba(79,142,247,0.07));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .session-card.available:hover::before {
+      opacity: 1;
+    }
+
+    .session-card.coming-soon {
+      opacity: 0.55;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .session-number {
+      font-size: 0.7em;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.66em;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .status-badge.available {
+      background: rgba(100,255,218,0.12);
+      color: var(--accent-teal);
+    }
+
+    .status-badge.coming-soon {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-dim);
+    }
+
+    .status-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .card-title {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 0.83em;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .card-topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .topic-tag {
+      background: rgba(79,142,247,0.1);
+      border: 1px solid rgba(79,142,247,0.2);
+      color: #a0b8f8;
+      font-size: 0.68em;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    .card-arrow {
+      margin-top: 20px;
+      font-size: 0.82em;
+      color: var(--accent-blue);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 24px 60px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 0.78em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-hint {
+      color: var(--text-dim);
+      font-size: 0.9em;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      header, main { padding-left: 24px; padding-right: 24px; }
+      .session-grid { grid-template-columns: 1fr; }
+      header h1 { font-size: 1.8em; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-tag">AI Training Program</div>
+    <h1>AI for Business Analysts</h1>
+    <p>A four-session training program taking you from AI fundamentals to practical, everyday workflows.</p>
+    <div class="header-meta">
+      <div class="meta-pill"><span class="dot"></span> 4 Sessions</div>
+      <div class="meta-pill"><span class="dot"></span> ~1 hour each</div>
+      <div class="meta-pill"><span class="dot"></span> Hands-on demos</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-label">Training Sessions</div>
+
+    <div class="session-grid">
+
+      <!-- Session 1 -->
+      <a href="session-1/index.html" class="session-card available">
+        <div class="card-header">
+          <div class="session-number">Session 01</div>
+          <div class="status-badge available"><div class="dot"></div> Available</div>
+        </div>
+        <div class="card-title">From AI to GenAI: Understanding the Technology</div>
+        <div class="card-desc">Foundational concepts — what AI is, how LLMs work, and how to write prompts that get great results.</div>
+        <div class="card-topics">
+          <span class="topic-tag">AI &amp; ML Basics</span>
+          <span class="topic-tag">How LLMs Work</span>
+          <span class="topic-tag">Prompt Engineering</span>
+          <span class="topic-tag">Live Demos</span>
+        </div>
+        <div class="card-arrow">Open Session →</div>
+      </a>
+
+      <!-- Session 2 -->
+      <div class="session-card coming-soon">
+        <div class="card-header">
+          <div class="session-number">Session 02</div>
+          <div class="status-badge coming-soon"><div class="dot"></div> Coming Soon</div>
+        </div>
+        <div class="card-title">Advanced Prompting &amp; Real-World Workflows</div>
+        <div class="card-desc">Deeper prompt techniques, multi-step workflows, and integrating AI into your daily BA practice.</div>
+        <div class="card-topics">
+          <span class="topic-tag">Advanced Prompting</span>
+          <span class="topic-tag">Workflows</span>
+          <span class="topic-tag">BA Use Cases</span>
+        </div>
+      </div>
+
+      <!-- Session 3 -->
+      <div class="session-card coming-soon">
+        <div class="card-header">
+          <div class="session-number">Session 03</div>
+          <div class="status-badge coming-soon"><div class="dot"></div> Coming Soon</div>
+        </div>
+        <div class="card-title">Agents &amp; Automation</div>
+        <div class="card-desc">What AI agents are, how they work, and how to leverage automation tools for complex BA tasks.</div>
+        <div class="card-topics">
+          <span class="topic-tag">AI Agents</span>
+          <span class="topic-tag">Automation</span>
+          <span class="topic-tag">n8n / Make</span>
+        </div>
+      </div>
+
+      <!-- Session 4 -->
+      <div class="session-card coming-soon">
+        <div class="card-header">
+          <div class="session-number">Session 04</div>
+          <div class="status-badge coming-soon"><div class="dot"></div> Coming Soon</div>
+        </div>
+        <div class="card-title">Putting It All Together</div>
+        <div class="card-desc">Integration, best practices, governance, and building your personal AI toolkit as a BA.</div>
+        <div class="card-topics">
+          <span class="topic-tag">Integration</span>
+          <span class="topic-tag">Governance</span>
+          <span class="topic-tag">AI Toolkit</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <span>AI Training for Business Analysts</span>
+    <span class="footer-hint">Click a session to begin · Use arrow keys to navigate slides</span>
+  </footer>
+
+</body>
+</html>

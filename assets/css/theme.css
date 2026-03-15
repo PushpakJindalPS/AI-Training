@@ -1,0 +1,284 @@
+/* ============================================================
+   AI Training Website — Custom Dark Theme
+   ============================================================ */
+
+:root {
+  --bg-deep:    #0f0f1a;
+  --bg-surface: #1a1a2e;
+  --bg-card:    #16213e;
+  --accent-blue: #4f8ef7;
+  --accent-teal: #64ffda;
+  --accent-gold: #ffd166;
+  --text-primary: #e0e0e0;
+  --text-muted:   #8892a4;
+  --text-dim:     #5a6275;
+  --border:       rgba(79, 142, 247, 0.2);
+  --border-bright: rgba(79, 142, 247, 0.5);
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
+}
+
+/* ── Reveal.js overrides ── */
+.reveal-viewport {
+  background: var(--bg-deep);
+}
+
+.reveal {
+  font-family: var(--font-main);
+  color: var(--text-primary);
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: var(--font-main);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: #fff;
+  text-shadow: none;
+}
+
+.reveal h1 { font-size: 2.4em; line-height: 1.1; }
+.reveal h2 { font-size: 1.8em; color: var(--accent-blue); }
+.reveal h3 { font-size: 1.3em; color: var(--accent-teal); }
+.reveal h4 { font-size: 1.1em; color: var(--accent-gold); }
+
+.reveal p, .reveal li { font-size: 0.95em; line-height: 1.7; }
+
+.reveal ul, .reveal ol {
+  text-align: left;
+  margin-left: 1.2em;
+}
+
+.reveal li { margin-bottom: 0.5em; }
+
+.reveal strong { color: var(--accent-teal); font-weight: 600; }
+
+.reveal a { color: var(--accent-blue); }
+
+.reveal .slide-number { color: var(--text-dim); }
+
+/* Progress bar */
+.reveal .progress { background: var(--bg-surface); }
+.reveal .progress span { background: var(--accent-blue); }
+
+/* Controls */
+.reveal .controls { color: var(--accent-blue); }
+
+/* ── Card component ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4em 1.6em;
+  box-shadow: var(--shadow);
+}
+
+.card.accent {
+  border-color: var(--border-bright);
+  background: linear-gradient(135deg, var(--bg-card), rgba(79,142,247,0.08));
+}
+
+/* ── Badge ── */
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  font-size: 0.7em;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.badge-blue  { background: rgba(79,142,247,0.2);  color: var(--accent-blue); }
+.badge-teal  { background: rgba(100,255,218,0.15); color: var(--accent-teal); }
+.badge-gold  { background: rgba(255,209,102,0.15); color: var(--accent-gold); }
+.badge-gray  { background: rgba(255,255,255,0.08); color: var(--text-muted); }
+
+/* ── Grid layouts ── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  text-align: left;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  text-align: left;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 8px;
+  text-align: left;
+}
+
+/* Prevent grid children from overflowing their cells */
+.grid-2 > *, .grid-3 > *, .grid-4 > * { min-width: 0; }
+
+/* ── Highlight box ── */
+.highlight-box {
+  background: rgba(79,142,247,0.1);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 0.8em 1.2em;
+  margin: 0.6em 0;
+}
+
+.highlight-box.teal {
+  background: rgba(100,255,218,0.08);
+  border-left-color: var(--accent-teal);
+}
+
+.highlight-box.gold {
+  background: rgba(255,209,102,0.08);
+  border-left-color: var(--accent-gold);
+}
+
+/* ── Prompt / Response boxes ── */
+.prompt-box, .response-box {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  line-height: 1.6;
+  border-radius: var(--radius);
+  padding: 1em 1.2em;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.prompt-box {
+  background: rgba(79,142,247,0.1);
+  border: 1px solid rgba(79,142,247,0.3);
+  color: #c9d8ff;
+}
+
+.prompt-box::before {
+  content: "PROMPT";
+  display: block;
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-blue);
+  margin-bottom: 0.6em;
+  font-family: var(--font-main);
+}
+
+.response-box {
+  background: rgba(100,255,218,0.06);
+  border: 1px solid rgba(100,255,218,0.2);
+  color: #c8fff4;
+}
+
+.response-box::before {
+  content: "AI RESPONSE";
+  display: block;
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-teal);
+  margin-bottom: 0.6em;
+  font-family: var(--font-main);
+}
+
+/* ── Divider ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1em 0;
+}
+
+/* ── Centered utility ── */
+.center { text-align: center; }
+
+/* ── Icon-label list ── */
+.icon-list { list-style: none; margin: 0; padding: 0; }
+.icon-list li { padding: 0.4em 0; }
+.icon-list li::before { content: "→ "; color: var(--accent-blue); font-weight: 700; }
+
+/* ── Session title slide styles ── */
+.session-label {
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  margin-bottom: 0.5em;
+}
+
+.session-subtitle {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  margin-top: 1em;
+}
+
+/* ── Takeaway card ── */
+.takeaway-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8em;
+  text-align: left;
+}
+
+.takeaway-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.8em 1em;
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+
+.takeaway-item .number {
+  font-size: 1.6em;
+  font-weight: 800;
+  color: var(--accent-blue);
+  opacity: 0.4;
+  line-height: 1;
+  margin-bottom: 0.3em;
+}
+
+/* ── Activity box ── */
+.activity-box {
+  background: linear-gradient(135deg, rgba(100,255,218,0.08), rgba(79,142,247,0.08));
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-lg);
+  padding: 1.4em 1.8em;
+  text-align: left;
+}
+
+/* ── Reveal.js section padding ──
+   Only apply to actual content slides, not to parent column containers.
+   .slides > section:has(section) are column wrappers — no padding.
+   .slides > section:not(:has(section)) and .slides > section > section
+   are the real slides — give them horizontal padding. */
+.reveal .slides > section:has(> section) { padding: 0; }
+.reveal .slides > section:not(:has(> section)),
+.reveal .slides > section > section { padding: 0 40px; }
+
+/* ── Scrollable slide utility ──
+   Add class="scrollable" to a <section> that has too much content.
+   The slide itself becomes vertically scrollable. */
+.reveal .slides section.scrollable {
+  overflow-y: auto !important;
+  height: 100%;
+}
+.reveal .slides section.scrollable::-webkit-scrollbar { width: 5px; }
+.reveal .slides section.scrollable::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); }
+.reveal .slides section.scrollable::-webkit-scrollbar-thumb { background: rgba(79,142,247,0.35); border-radius: 3px; }
+
+/* Slide number */
+.reveal .slide-number {
+  font-family: var(--font-main);
+  font-size: 14px;
+  bottom: 16px;
+  right: 20px;
+  background: transparent;
+}
