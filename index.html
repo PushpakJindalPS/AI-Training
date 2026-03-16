@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Training for Business Analysts</title>
+  <title>AI Training Program</title>
   <style>
     /* ── Variables ── */
     :root {
@@ -101,19 +101,70 @@
       margin-bottom: 24px;
     }
 
-    /* ── Session grid ── */
-    .session-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-      max-width: 900px;
+    /* ── Carousel ── */
+    .carousel-wrapper {
+      position: relative;
     }
 
+    .carousel-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .carousel-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      flex-shrink: 0;
+    }
+
+    .carousel-btn:hover:not(:disabled) {
+      border-color: rgba(79,142,247,0.5);
+      color: var(--accent-blue);
+      background: rgba(79,142,247,0.08);
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .carousel-btn svg { display: block; }
+
+    .carousel-progress {
+      font-size: 0.72em;
+      color: var(--text-dim);
+      margin-left: 4px;
+    }
+
+    .session-row {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-bottom: 4px;
+    }
+
+    .session-row::-webkit-scrollbar { display: none; }
+
     .session-card {
+      flex: 0 0 300px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 32px;
+      padding: 28px;
       text-decoration: none;
       color: inherit;
       display: block;
@@ -253,7 +304,7 @@
     /* ── Responsive ── */
     @media (max-width: 720px) {
       header, main { padding-left: 24px; padding-right: 24px; }
-      .session-grid { grid-template-columns: 1fr; }
+      .session-card { flex: 0 0 260px; padding: 22px; }
       header h1 { font-size: 1.8em; }
     }
   </style>
@@ -262,7 +313,7 @@
 
   <header>
     <div class="header-tag">AI Training Program</div>
-    <h1>AI for Business Analysts</h1>
+    <h1>AI Training</h1>
     <p>A four-session training program taking you from AI fundamentals to practical, everyday workflows.</p>
     <div class="header-meta">
       <div class="meta-pill"><span class="dot"></span> 4 Sessions</div>
@@ -274,7 +325,18 @@
   <main>
     <div class="section-label">Training Sessions</div>
 
-    <div class="session-grid">
+    <div class="carousel-wrapper">
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prev" aria-label="Previous" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="carousel-btn" id="next" aria-label="Next">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <span class="carousel-progress" id="progress"></span>
+      </div>
+
+    <div class="session-row" id="sessionRow">
 
       <!-- Session 1 -->
       <a href="session-1/index.html" class="session-card available">
@@ -311,42 +373,72 @@
       </a>
 
       <!-- Session 3 -->
-      <div class="session-card coming-soon">
+      <a href="session-3/index.html" class="session-card available">
         <div class="card-header">
           <div class="session-number">Session 03</div>
-          <div class="status-badge coming-soon"><div class="dot"></div> Coming Soon</div>
+          <div class="status-badge available"><div class="dot"></div> Available</div>
         </div>
-        <div class="card-title">Agents &amp; Automation</div>
-        <div class="card-desc">What AI agents are, how they work, and how to leverage automation tools for complex BA tasks.</div>
+        <div class="card-title">AI Agents &amp; Agentic AI</div>
+        <div class="card-desc">What agents are, how they're built, and how to design and configure your own — no coding required.</div>
         <div class="card-topics">
           <span class="topic-tag">AI Agents</span>
-          <span class="topic-tag">Automation</span>
-          <span class="topic-tag">n8n / Make</span>
+          <span class="topic-tag">Agent Design</span>
+          <span class="topic-tag">Copilot Agents</span>
+          <span class="topic-tag">Live Demos</span>
         </div>
-      </div>
+        <div class="card-arrow">Open Session →</div>
+      </a>
 
       <!-- Session 4 -->
-      <div class="session-card coming-soon">
+      <a href="session-4/index.html" class="session-card available">
         <div class="card-header">
           <div class="session-number">Session 04</div>
-          <div class="status-badge coming-soon"><div class="dot"></div> Coming Soon</div>
+          <div class="status-badge available"><div class="dot"></div> Available</div>
         </div>
-        <div class="card-title">Putting It All Together</div>
-        <div class="card-desc">Integration, best practices, governance, and building your personal AI toolkit as a BA.</div>
+        <div class="card-title">Building AI Workflows &amp; Agents with n8n</div>
+        <div class="card-desc">Visual, no-code automation — build your first AI workflow and a full agent with tools and memory.</div>
         <div class="card-topics">
-          <span class="topic-tag">Integration</span>
-          <span class="topic-tag">Governance</span>
-          <span class="topic-tag">AI Toolkit</span>
+          <span class="topic-tag">n8n</span>
+          <span class="topic-tag">AI Workflows</span>
+          <span class="topic-tag">Agent Build</span>
+          <span class="topic-tag">Live Build</span>
         </div>
-      </div>
+        <div class="card-arrow">Open Session →</div>
+      </a>
 
-    </div>
+    </div><!-- /.session-row -->
+    </div><!-- /.carousel-wrapper -->
   </main>
 
   <footer>
-    <span>AI Training for Business Analysts</span>
+    <span>AI Training Program</span>
     <span class="footer-hint">Click a session to begin · Use arrow keys to navigate slides</span>
   </footer>
 
+  <script>
+    const row = document.getElementById('sessionRow');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const progress = document.getElementById('progress');
+    const STEP = 320;
+
+    function updateControls() {
+      prev.disabled = row.scrollLeft <= 0;
+      next.disabled = row.scrollLeft + row.clientWidth >= row.scrollWidth - 1;
+      const total = row.children.length;
+      // Estimate which card is first visible
+      const cardWidth = row.children[0] ? row.children[0].offsetWidth + 20 : STEP;
+      const first = Math.round(row.scrollLeft / cardWidth) + 1;
+      const visible = Math.floor(row.clientWidth / cardWidth);
+      const last = Math.min(first + visible - 1, total);
+      progress.textContent = total > 0 ? `${first}–${last} of ${total}` : '';
+    }
+
+    prev.addEventListener('click', () => { row.scrollBy({ left: -STEP, behavior: 'smooth' }); });
+    next.addEventListener('click', () => { row.scrollBy({ left: STEP, behavior: 'smooth' }); });
+    row.addEventListener('scroll', updateControls);
+    window.addEventListener('resize', updateControls);
+    updateControls();
+  </script>
 </body>
 </html>

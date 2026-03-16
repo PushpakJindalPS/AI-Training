@@ -3,55 +3,1056 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Session 4 — Putting It All Together | AI Training</title>
+  <title>Session 4 — Building AI Workflows &amp; Agents with n8n | AI Training</title>
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="../assets/reveal/dist/reset.css" />
   <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
+
+  <!-- Custom theme & demo styles -->
   <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="../assets/css/demos.css" />
+
   <style>
-    .coming-soon-slide { text-align: center; }
-    .cs-label {
-      font-size: 0.65em; font-weight: 700; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--accent-gold); margin-bottom: 1em;
+    /* ── Session 4 specific styles ── */
+
+    /* Title slide */
+    .title-slide { text-align: center; }
+    .session-label {
+      font-size: 0.7em; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent-blue); margin-bottom: 0.8em;
     }
-    .cs-title { font-size: 1.8em; font-weight: 800; color: #fff; margin-bottom: 0.6em; }
-    .cs-sub { color: var(--text-muted); font-size: 0.85em; margin-bottom: 2em; }
-    .cs-topics {
-      display: flex; gap: 0.8em; justify-content: center; flex-wrap: wrap; margin-bottom: 2em;
+    .title-slide h1 {
+      font-size: 2em; font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; color: #fff; margin-bottom: 0.4em;
     }
-    .cs-tag {
-      background: rgba(255,209,102,0.08); border: 1px solid rgba(255,209,102,0.2);
-      color: var(--accent-gold); font-size: 0.75em; padding: 5px 14px; border-radius: 999px;
+    .subtitle { font-size: 0.85em; color: var(--text-muted); margin-bottom: 1.2em; }
+    .title-opener { display: inline-block; font-size: 0.85em; color: var(--text-primary); }
+    .title-opener strong { color: var(--accent-teal); }
+
+    /* Agenda */
+    .agenda-item {
+      display: flex; align-items: flex-start; gap: 1em;
+      padding: 0.7em 0; border-bottom: 1px solid var(--border);
+    }
+    .agenda-item:last-child { border-bottom: none; }
+    .agenda-num {
+      font-size: 1.4em; font-weight: 800; color: var(--accent-blue);
+      opacity: 0.5; min-width: 1.5em; line-height: 1;
+    }
+    .agenda-text { font-size: 0.88em; color: var(--text-primary); line-height: 1.5; }
+    .agenda-text strong { color: var(--accent-teal); font-weight: 600; }
+
+    /* Data table (reusable comparison / tool tables) */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.78em; text-align: left;
+    }
+    .data-table th {
+      background: rgba(79,142,247,0.12); color: var(--accent-blue);
+      font-size: 0.72em; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.55em 0.8em;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 0.5em 0.8em; color: var(--text-primary);
+      border-bottom: 1px solid rgba(79,142,247,0.07); vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .data-table td:first-child { color: var(--accent-teal); font-weight: 700; }
+    .data-table .dim { font-size: 0.9em; color: var(--text-muted); }
+
+    /* n8n interface — 3 panels */
+    .interface-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 1em;
+    }
+    .interface-grid > * { min-width: 0; }
+    .iface-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1em 1.1em;
+    }
+    .iface-num {
+      font-size: 2em; font-weight: 800; color: var(--accent-blue);
+      opacity: 0.25; line-height: 1; margin-bottom: 0.2em;
+    }
+    .iface-title { font-size: 0.88em; font-weight: 700; color: #fff; margin-bottom: 0.4em; }
+    .iface-card p { font-size: 0.76em; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.3em; }
+    .iface-card p:last-child { margin-bottom: 0; }
+
+    /* Workflow anatomy */
+    .workflow-example-block {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1em 1.2em; margin-top: 0.8em;
+    }
+    .node-chain {
+      display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+      margin: 0.8em 0;
+    }
+    .node-box {
+      background: rgba(79,142,247,0.12); border: 1px solid rgba(79,142,247,0.3);
+      border-radius: 6px; padding: 0.4em 0.9em; font-size: 0.75em;
+      color: var(--accent-blue); font-weight: 600; white-space: nowrap;
+    }
+    .node-arrow {
+      font-size: 0.8em; color: var(--text-dim); margin: 0 6px;
+    }
+    .node-label {
+      font-size: 0.65em; color: var(--text-dim); text-align: center;
+      margin-top: 0.2em; display: block;
+    }
+    .node-col { display: flex; flex-direction: column; align-items: center; }
+    .workflow-note { font-size: 0.78em; color: var(--text-muted); line-height: 1.6; }
+    .workflow-principle {
+      margin-top: 0.6em; padding: 0.6em 0.9em;
+      background: rgba(100,255,218,0.06); border-left: 3px solid var(--accent-teal);
+      border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.78em; color: var(--text-primary);
+    }
+
+    /* LLM connect steps */
+    .steps-list { list-style: none; padding: 0; margin: 0; }
+    .steps-list li {
+      display: flex; gap: 0.8em; align-items: flex-start;
+      padding: 0.45em 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.8em; color: var(--text-muted);
+    }
+    .steps-list li:last-child { border-bottom: none; }
+    .step-num {
+      min-width: 1.6em; height: 1.6em; border-radius: 50%;
+      background: rgba(79,142,247,0.18); color: var(--accent-blue);
+      font-size: 0.82em; font-weight: 700; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .steps-list li strong { color: var(--text-primary); }
+
+    /* LLM vs Agent comparison */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 0.8em;
+    }
+    .compare-grid > * { min-width: 0; }
+    .compare-card {
+      background: var(--bg-card); border-radius: var(--radius); padding: 1em 1.1em;
+    }
+    .compare-card.llm-card { border-top: 3px solid rgba(248,113,113,0.6); }
+    .compare-card.agent-card { border-top: 3px solid var(--accent-teal); }
+    .compare-label {
+      font-size: 0.68em; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.5em;
+    }
+    .compare-card.llm-card .compare-label { color: #f87171; }
+    .compare-card.agent-card .compare-label { color: var(--accent-teal); }
+    .compare-card ul { list-style: none; padding: 0; margin: 0; }
+    .compare-card li {
+      font-size: 0.78em; color: var(--text-muted);
+      padding: 0.25em 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .compare-card li:last-child { border-bottom: none; }
+    .compare-card li strong { color: var(--text-primary); }
+
+    /* Agent loop */
+    .agent-loop-box {
+      font-family: var(--font-mono); font-size: 0.72em; color: var(--accent-teal);
+      background: rgba(100,255,218,0.05); border: 1px solid rgba(100,255,218,0.15);
+      border-radius: var(--radius); padding: 0.8em 1.1em;
+      white-space: pre; line-height: 1.7;
+    }
+
+    /* Tools table — alternate accent */
+    .tools-table {
+      width: 100%; border-collapse: collapse; font-size: 0.78em; text-align: left;
+    }
+    .tools-table th {
+      background: rgba(100,255,218,0.1); color: var(--accent-teal);
+      font-size: 0.7em; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.5em 0.8em;
+      border-bottom: 1px solid rgba(100,255,218,0.2);
+    }
+    .tools-table td {
+      padding: 0.5em 0.8em; color: var(--text-primary);
+      border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top;
+    }
+    .tools-table tr:last-child td { border-bottom: none; }
+    .tools-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .tools-table td:first-child { color: var(--accent-blue); font-weight: 700; }
+    .tools-table .dim { font-size: 0.9em; color: var(--text-muted); }
+
+    /* Memory split */
+    .memory-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .memory-split > * { min-width: 0; }
+    .memory-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1em 1.2em;
+    }
+    .memory-card.short { border-top: 3px solid var(--accent-gold); }
+    .memory-card.long  { border-top: 3px solid var(--accent-teal); }
+    .memory-card h4 { font-size: 0.82em; margin-bottom: 0.5em; }
+    .memory-card.short h4 { color: var(--accent-gold); }
+    .memory-card.long  h4 { color: var(--accent-teal); }
+    .memory-card ul { list-style: none; padding: 0; margin: 0; }
+    .memory-card li { font-size: 0.78em; color: var(--text-muted); padding: 0.25em 0; }
+    .memory-card li::before { content: "• "; color: var(--text-dim); }
+
+    /* Governance grid */
+    .governance-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0.8em;
+    }
+    .governance-grid > * { min-width: 0; }
+    .gov-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.9em 1.1em;
+    }
+    .gov-card h4 {
+      font-size: 0.75em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--accent-gold); margin-bottom: 0.5em;
+      display: flex; align-items: center; gap: 0.5em;
+    }
+    .gov-card ul { list-style: none; padding: 0; margin: 0; }
+    .gov-card li { font-size: 0.75em; color: var(--text-muted); padding: 0.18em 0; line-height: 1.5; }
+    .gov-card li::before { content: "→ "; color: var(--text-dim); }
+
+    /* Takeaways */
+    .takeaway-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; }
+    .takeaway-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.9em 1em; text-align: left;
+    }
+    .takeaway-num {
+      font-size: 1.5em; font-weight: 800; color: var(--accent-blue);
+      opacity: 0.3; line-height: 1; margin-bottom: 0.3em;
+    }
+    .takeaway-text { font-size: 0.78em; color: var(--text-primary); line-height: 1.5; }
+    .takeaway-text strong { color: var(--accent-teal); }
+
+    /* Course complete */
+    .complete-table {
+      width: 100%; border-collapse: collapse; font-size: 0.8em; margin-top: 0.8em;
+    }
+    .complete-table th {
+      background: rgba(79,142,247,0.1); color: var(--accent-blue);
+      font-size: 0.7em; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.5em 0.9em;
+      border-bottom: 1px solid var(--border); text-align: left;
+    }
+    .complete-table td {
+      padding: 0.55em 0.9em; color: var(--text-primary);
+      border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top;
+    }
+    .complete-table tr:last-child td { border-bottom: none; }
+    .complete-table td:first-child { color: var(--accent-blue); font-weight: 700; white-space: nowrap; }
+    .complete-closing {
+      margin-top: 1em; padding: 0.8em 1.1em;
+      background: linear-gradient(135deg, rgba(100,255,218,0.07), rgba(79,142,247,0.07));
+      border: 1px solid var(--border-bright); border-radius: var(--radius);
+      font-size: 0.82em; color: var(--text-primary); line-height: 1.6;
+    }
+
+    /* Next steps */
+    .next-steps { list-style: none; padding: 0; margin: 1em 0 0; }
+    .next-steps li {
+      display: flex; gap: 0.9em; align-items: flex-start;
+      padding: 0.55em 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.8em; color: var(--text-muted); line-height: 1.5;
+    }
+    .next-steps li:last-child { border-bottom: none; }
+    .next-step-num {
+      font-size: 0.78em; font-weight: 700; color: var(--accent-teal);
+      min-width: 1.8em; flex-shrink: 0;
+    }
+    .next-steps li strong { color: var(--text-primary); }
+
+    /* Activity section */
+    .activity-section {
+      background: linear-gradient(135deg, rgba(100,255,218,0.05), rgba(79,142,247,0.05));
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-lg); padding: 1.2em 1.6em; text-align: left;
+    }
+
+    /* Fixed UI */
+    .nav-hint {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      font-size: 0.65em; color: var(--text-dim); pointer-events: none; z-index: 100;
     }
     .home-link {
-      position: fixed; top: 16px; left: 20px; font-size: 0.72em;
-      color: var(--text-dim); text-decoration: none; z-index: 100; transition: color 0.2s;
+      position: fixed; top: 16px; left: 20px; font-size: 0.72em; color: var(--text-dim);
+      text-decoration: none; display: flex; align-items: center; gap: 5px;
+      z-index: 100; transition: color 0.2s;
     }
     .home-link:hover { color: var(--accent-blue); }
+    .notes-hint {
+      position: fixed; top: 16px; right: 100px;
+      font-size: 0.65em; color: var(--text-dim); z-index: 100;
+    }
+    .reveal .navigate-down { color: var(--accent-teal); }
   </style>
 </head>
 <body>
+
   <a href="../index.html" class="home-link">← All Sessions</a>
+  <div class="notes-hint">Press S for speaker notes</div>
+
   <div class="reveal">
     <div class="slides">
+
+      <!-- ══════════════════════════════════════════════
+           H1: TITLE SLIDE
+      ══════════════════════════════════════════════ -->
       <section>
-        <div class="coming-soon-slide">
-          <div class="cs-label">Session 4 of 4 · AI Training for Business Analysts</div>
-          <div class="cs-title">Putting It All Together</div>
-          <div class="cs-sub">Content coming soon</div>
-          <div class="cs-topics">
-            <span class="cs-tag">Integration</span>
-            <span class="cs-tag">Governance</span>
-            <span class="cs-tag">Best Practices</span>
-            <span class="cs-tag">AI Toolkit</span>
+        <div class="title-slide">
+          <div class="session-label">Session 4 of 4 · AI Training</div>
+          <h1>Building AI Workflows &amp; Agents<br/>with n8n</h1>
+          <p class="subtitle">~1 hour · Live build — no coding required</p>
+          <div class="title-opener">
+            Connecting to Session 3: <strong>Today you build the agent you designed on paper.</strong>
           </div>
-          <a href="../index.html" style="color: var(--accent-blue); font-size: 0.82em; text-decoration: none;">← Back to All Sessions</a>
         </div>
+        <aside class="notes">
+          Open by connecting to Session 3: "Last session you designed an agent on paper — wrote the job description. Today you're going to build it. No coding required." Set the expectation: by the end of this session, they will have seen a working AI agent built live from scratch, and they'll understand how to do it themselves.
+        </aside>
       </section>
-    </div>
-  </div>
+
+      <!-- ══════════════════════════════════════════════
+           H2: AGENDA
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What We'll Cover Today</h2>
+        <div style="margin-top: 1.2em;">
+          <div class="agenda-item">
+            <div class="agenda-num">01</div>
+            <div class="agenda-text"><strong>What n8n is</strong> and how it works</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">02</div>
+            <div class="agenda-text"><strong>Building your first workflow</strong> — trigger → action → output</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">03</div>
+            <div class="agenda-text"><strong>Connecting an LLM</strong> to a workflow</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">04</div>
+            <div class="agenda-text"><strong>Live build</strong> — a real AI workflow for everyday work</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">05</div>
+            <div class="agenda-text"><strong>Live build</strong> — a full AI agent with tools and memory</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">06</div>
+            <div class="agenda-text"><strong>Responsible use</strong> of AI tools</div>
+          </div>
+        </div>
+        <aside class="notes">
+          This is the most hands-on session of the four. Keep energy high, keep explanations tight, and spend as much time as possible in the live build. The concepts are simple — the power is in seeing them work.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H3: WHAT IS n8n?
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What is n8n?</h2>
+        <p style="font-size:0.82em; color:var(--text-muted); margin: 0.5em 0 1em;">Visual, no-code workflow automation — with AI built in</p>
+
+        <table class="data-table">
+          <thead>
+            <tr><th>Tool</th><th>What it does</th><th>AI capability</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:#fff;">n8n</strong></td>
+              <td>Full workflow automation</td>
+              <td>Native LLM + Agent nodes</td>
+            </tr>
+            <tr>
+              <td class="dim">Zapier</td>
+              <td class="dim">Simple app-to-app automation</td>
+              <td class="dim">Basic AI steps</td>
+            </tr>
+            <tr>
+              <td class="dim">Power Automate</td>
+              <td class="dim">Microsoft ecosystem automation</td>
+              <td class="dim">Copilot integration</td>
+            </tr>
+            <tr>
+              <td class="dim">Make</td>
+              <td class="dim">Visual automation</td>
+              <td class="dim">Some AI modules</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:1em; display:flex; gap:8px; flex-wrap:wrap;">
+          <div style="background:rgba(79,142,247,0.1); border:1px solid rgba(79,142,247,0.2); border-radius:var(--radius); padding:0.5em 0.9em; font-size:0.75em; color:var(--text-muted); flex:1; min-width:0;">
+            <span style="color:var(--accent-blue); font-weight:700; display:block; margin-bottom:0.2em;">Open source</span>
+            Self-hosted or cloud — you control your data
+          </div>
+          <div style="background:rgba(79,142,247,0.1); border:1px solid rgba(79,142,247,0.2); border-radius:var(--radius); padding:0.5em 0.9em; font-size:0.75em; color:var(--text-muted); flex:1; min-width:0;">
+            <span style="color:var(--accent-blue); font-weight:700; display:block; margin-bottom:0.2em;">Any LLM</span>
+            OpenAI, Claude, Azure, local models
+          </div>
+          <div style="background:rgba(79,142,247,0.1); border:1px solid rgba(79,142,247,0.2); border-radius:var(--radius); padding:0.5em 0.9em; font-size:0.75em; color:var(--text-muted); flex:1; min-width:0;">
+            <span style="color:var(--accent-blue); font-weight:700; display:block; margin-bottom:0.2em;">400+ integrations</span>
+            Gmail, Slack, Sheets, databases, APIs
+          </div>
+        </div>
+        <aside class="notes">
+          Don't get bogged down in comparisons. The key message is: n8n is purpose-built for the kind of AI automation we've been discussing — it has the agent concepts from Session 3 built directly into its interface. If participants already use Power Automate, position n8n as the more AI-capable complement, not a replacement.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H4: THE n8n INTERFACE
+           V1: Data flow expression detail
+      ══════════════════════════════════════════════ -->
+      <section>
+        <section>
+          <h2>The n8n Interface</h2>
+          <p style="font-size:0.8em; color:var(--text-muted); margin: 0.4em 0 0.9em;">Three things to know before you build</p>
+
+          <div class="interface-grid">
+            <div class="iface-card">
+              <div class="iface-num">1</div>
+              <div class="iface-title">The Canvas</div>
+              <p>Infinite whiteboard — place and connect nodes</p>
+              <p>Left-to-right flow: data moves from node to node</p>
+              <p>Each connection passes data to the next step</p>
+            </div>
+            <div class="iface-card">
+              <div class="iface-num">2</div>
+              <div class="iface-title">Nodes</div>
+              <p>Every action is a node: Trigger, Action, or Logic</p>
+              <p>400+ built-in integrations: Gmail, Slack, Sheets, HTTP, databases</p>
+              <p>LLM nodes + Agent nodes built in</p>
+            </div>
+            <div class="iface-card">
+              <div class="iface-num">3</div>
+              <div class="iface-title">Data Flow</div>
+              <p>Each node receives data from the previous node</p>
+              <p>Reference any field with expressions</p>
+              <p style="font-family:var(--font-mono); font-size:0.85em; color:var(--accent-teal); background:rgba(100,255,218,0.07); border-radius:4px; padding:0.3em 0.5em; margin-top:0.4em;">
+                &#123;&#123; $json["field"] &#125;&#125;
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-top:0.7em; text-align:center; font-size:0.72em; color:var(--text-dim);">
+            ↓ See data flow expressions in detail
+          </div>
+          <aside class="notes">
+            Keep this brief — 3-4 minutes max. The canvas makes sense once you see it live. The goal of this slide is just to prime them with vocabulary (node, canvas, trigger, data flow) so the live demo is easier to follow.
+          </aside>
+        </section>
+
+        <!-- V1: Data flow detail -->
+        <section>
+          <h2>Data Flow: Passing Data Between Nodes</h2>
+          <p style="font-size:0.8em; color:var(--text-muted); margin: 0.4em 0 0.9em;">How nodes talk to each other</p>
+
+          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:1em 1.2em; margin-bottom:0.8em;">
+            <div style="font-size:0.78em; color:var(--text-muted); margin-bottom:0.6em;">Each node outputs JSON data that the next node can read:</div>
+            <div style="font-family:var(--font-mono); font-size:0.75em; color:var(--accent-teal); line-height:1.8;">
+              <div style="color:var(--text-dim);">// Previous node output</div>
+              <div>&#123; "email_body": "Hi, we need a new dashboard...", "sender": "alice@co.com" &#125;</div>
+              <br/>
+              <div style="color:var(--text-dim);">// In the LLM node system prompt, reference it:</div>
+              <div>Process this email: <span style="color:#ffd166;">&#123;&#123; $json["email_body"] &#125;&#125;</span></div>
+              <br/>
+              <div style="color:var(--text-dim);">// To reference any previous node by name:</div>
+              <div><span style="color:#ffd166;">&#123;&#123; $node["Gmail"].json["subject"] &#125;&#125;</span></div>
+            </div>
+          </div>
+
+          <div style="background:rgba(79,142,247,0.07); border-left:3px solid var(--accent-blue); border-radius:0 var(--radius) var(--radius) 0; padding:0.6em 0.9em; font-size:0.78em; color:var(--text-primary);">
+            <strong>You don't need to memorise this.</strong> n8n has a point-and-click expression editor — hover over any field and it shows you the available data from previous nodes.
+          </div>
+          <aside class="notes">
+            The expression syntax looks technical but you never have to type it manually — the expression editor surfaces all available fields and you just click to insert. Show this in the live demo to demystify it.
+          </aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H5: ANATOMY OF A WORKFLOW
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Anatomy of a Workflow</h2>
+        <p style="font-size:0.8em; color:var(--text-muted); margin: 0.3em 0 0.7em;">Every workflow follows the same pattern</p>
+
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:0.8em 1em; margin-bottom:0.8em;">
+          <div style="font-size:0.72em; color:var(--text-dim); margin-bottom:0.5em; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;">Basic structure</div>
+          <div class="node-chain">
+            <div class="node-col"><div class="node-box">Trigger</div><span class="node-label">starts it</span></div>
+            <div class="node-arrow">→</div>
+            <div class="node-col"><div class="node-box">Step 1</div><span class="node-label">get data</span></div>
+            <div class="node-arrow">→</div>
+            <div class="node-col"><div class="node-box">Step 2</div><span class="node-label">process</span></div>
+            <div class="node-arrow">→</div>
+            <div class="node-col"><div class="node-box">Output</div><span class="node-label">deliver</span></div>
+          </div>
+        </div>
+
+        <div class="workflow-example-block">
+          <div style="font-size:0.72em; color:var(--text-dim); margin-bottom:0.6em; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;">Real example — daily email digest</div>
+          <div class="node-chain">
+            <div class="node-col">
+              <div class="node-box" style="border-color:rgba(255,209,102,0.4); color:var(--accent-gold); background:rgba(255,209,102,0.08);">Schedule 8am</div>
+              <span class="node-label">daily trigger</span>
+            </div>
+            <div class="node-arrow">→</div>
+            <div class="node-col">
+              <div class="node-box">Read Gmail</div>
+              <span class="node-label">unread, last 24h</span>
+            </div>
+            <div class="node-arrow">→</div>
+            <div class="node-col">
+              <div class="node-box" style="border-color:rgba(100,255,218,0.4); color:var(--accent-teal); background:rgba(100,255,218,0.07);">LLM Node</div>
+              <span class="node-label">summarise + actions</span>
+            </div>
+            <div class="node-arrow">→</div>
+            <div class="node-col">
+              <div class="node-box">Slack</div>
+              <span class="node-label">#daily-digest</span>
+            </div>
+          </div>
+          <p class="workflow-note" style="margin-top:0.6em;">This workflow would take a developer hours to code. In n8n: 4 nodes, ~15 minutes.</p>
+        </div>
+
+        <div class="workflow-principle">
+          <strong>Key principle:</strong> Keep each node focused on one task. Short chains of focused nodes are easier to debug and maintain.
+        </div>
+        <aside class="notes">
+          Walk through this example slowly. Point out that this workflow would take a developer hours to code from scratch — in n8n it's 4 nodes and about 15 minutes. That's the power of the platform.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H6: CONNECTING AN LLM TO A WORKFLOW
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Connecting an LLM to a Workflow</h2>
+        <p style="font-size:0.8em; color:var(--text-muted); margin: 0.3em 0 0.7em;">The LLM node is where intelligence enters your workflow</p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div>
+            <div style="font-size:0.7em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.5em;">How it works</div>
+            <ol class="steps-list">
+              <li><div class="step-num">1</div><div>Previous node produces data <strong>(email, document, form)</strong></div></li>
+              <li><div class="step-num">2</div><div>LLM node receives that data + <strong>your system prompt</strong></div></li>
+              <li><div class="step-num">3</div><div>LLM processes it and <strong>returns a result</strong></div></li>
+              <li><div class="step-num">4</div><div>Next node uses that result</div></li>
+            </ol>
+            <div style="margin-top:0.8em;">
+              <div style="font-size:0.7em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.4em;">Setup steps</div>
+              <ul class="steps-list">
+                <li><div class="step-num">→</div><div>Choose model: <strong>OpenAI, Claude, Azure</strong></div></li>
+                <li><div class="step-num">→</div><div>Add API key (done once in credentials)</div></li>
+                <li><div class="step-num">→</div><div>Write system prompt</div></li>
+                <li><div class="step-num">→</div><div>Map input from previous node</div></li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:0.7em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.5em;">Example system prompt inside n8n</div>
+            <div style="font-family:var(--font-mono); font-size:0.68em; background:rgba(79,142,247,0.07); border:1px solid rgba(79,142,247,0.2); border-radius:var(--radius); padding:0.8em; line-height:1.7; color:var(--text-primary); white-space:pre-wrap;">You are a professional assistant processing incoming project requests.
+
+Read the following input and extract:
+- Project name
+- Requestor
+- Objective
+- Deadline
+- Any missing info (open questions)
+
+Return as structured JSON.
+
+Input: <span style="color:var(--accent-gold);">&#123;&#123; $json["email_body"] &#125;&#125;</span></div>
+          </div>
+        </div>
+        <aside class="notes">
+          This is the direct connection to Session 2 — every prompt engineering skill they learned applies here. The only difference is the input comes from another node instead of being typed manually. Point out the expression — it's how n8n passes data between nodes.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H7: THE AI AGENT NODE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>The AI Agent Node</h2>
+        <p style="font-size:0.8em; color:var(--text-muted); margin: 0.3em 0 0.7em;">From LLM call to autonomous agent — one node</p>
+
+        <div class="compare-grid" style="margin-bottom:0.9em;">
+          <div class="compare-card llm-card">
+            <div class="compare-label">LLM Node</div>
+            <ul>
+              <li>Single call — <strong>one input, one output</strong></li>
+              <li>No tools</li>
+              <li>No memory</li>
+              <li><strong>You</strong> decide the steps</li>
+            </ul>
+          </div>
+          <div class="compare-card agent-card">
+            <div class="compare-label">Agent Node</div>
+            <ul>
+              <li>Multi-step — <strong>reasons, acts, checks, repeats</strong></li>
+              <li>Can use tools (search, files, email)</li>
+              <li>Can connect to memory store</li>
+              <li><strong>Agent</strong> decides its own steps</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div>
+            <div style="font-size:0.7em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.4em;">Configure the Agent node</div>
+            <ol class="steps-list">
+              <li><div class="step-num">1</div><div><strong>System prompt</strong> — Role + Goal + Constraints + Output</div></li>
+              <li><div class="step-num">2</div><div><strong>Tools</strong> — which nodes the agent can trigger</div></li>
+              <li><div class="step-num">3</div><div><strong>Memory</strong> — optional memory store</div></li>
+              <li><div class="step-num">4</div><div><strong>Model</strong> — which LLM it uses</div></li>
+            </ol>
+          </div>
+          <div>
+            <div style="font-size:0.7em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.4em;">The agent loop</div>
+            <div class="agent-loop-box">Receive goal
+→ Reason: "What do I need first?"
+→ Act: use a tool
+→ Observe: what did it return?
+→ Reason again: "What next?"
+→ Repeat until goal is complete
+→ Return final output</div>
+          </div>
+        </div>
+        <aside class="notes">
+          This is the Session 3 content made real — the 5 components (Signal, Input, Reasoning, Actions, Memory) are literally the configuration options in this single node. Point that out explicitly. It's a satisfying moment of "it all connects."
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H8: TOOLS IN n8n
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Tools You Can Give an Agent in n8n</h2>
+        <p style="font-size:0.8em; color:var(--text-muted); margin: 0.3em 0 0.8em;">Tools are what give the agent real-world reach</p>
+
+        <table class="tools-table">
+          <thead>
+            <tr><th>Tool</th><th>What the agent can do</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Web search <span class="dim">(SerpAPI, Tavily)</span></td><td>Search the internet for live information</td></tr>
+            <tr><td>Calculator</td><td>Perform accurate arithmetic</td></tr>
+            <tr><td>HTTP Request</td><td>Call any external API</td></tr>
+            <tr><td>Read / Write File</td><td>Access documents and spreadsheets</td></tr>
+            <tr><td>Gmail / Outlook</td><td>Read and send emails</td></tr>
+            <tr><td>Google Sheets</td><td>Read and update spreadsheet data</td></tr>
+            <tr><td>Notion / Airtable</td><td>Read and write to databases</td></tr>
+            <tr><td>Custom workflow as tool</td><td>Any n8n workflow can become a tool</td></tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:0.8em; background:rgba(100,255,218,0.06); border-left:3px solid var(--accent-teal); border-radius:0 var(--radius) var(--radius) 0; padding:0.55em 0.9em; font-size:0.78em; color:var(--text-primary);">
+          <strong>Key insight:</strong> Any existing workflow can become an agent tool. As you build more workflows, each one becomes a building block the agent can use — your automation library compounds.
+        </div>
+        <aside class="notes">
+          The "custom workflow as tool" capability is particularly powerful and worth emphasising. It means as they build more workflows over time, each one becomes a building block the agent can use. Their automation library compounds.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H9: MEMORY IN n8n AGENTS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Memory in n8n Agents</h2>
+        <p style="font-size:0.8em; color:var(--text-muted); margin: 0.3em 0 0.8em;">Making your agent remember</p>
+
+        <div class="memory-split" style="margin-bottom:0.9em;">
+          <div class="memory-card short">
+            <h4>Window Buffer Memory <span style="font-size:0.8em; opacity:0.7;">(short-term)</span></h4>
+            <ul>
+              <li>Keeps the last N messages in context</li>
+              <li>Good for conversational agents</li>
+              <li>Built into the Agent node — just enable it</li>
+              <li>Lost when the session ends</li>
+            </ul>
+          </div>
+          <div class="memory-card long">
+            <h4>External Memory Store <span style="font-size:0.8em; opacity:0.7;">(long-term)</span></h4>
+            <ul>
+              <li>Stored in a database (Postgres, Redis, Pinecone)</li>
+              <li>Agent retrieves relevant memories by topic</li>
+              <li>Survives across sessions</li>
+              <li>Remembers preferences, facts, history</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:0.8em 1em;">
+          <div style="font-size:0.7em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.4em;">Practical example</div>
+          <div style="font-family:var(--font-mono); font-size:0.72em; color:var(--text-muted); line-height:1.7;">
+            <span style="color:var(--accent-gold);">Monday:</span> "Whenever I ask for a project summary, always include the RAG status."<br/>
+            <span style="color:var(--text-dim);">→ Agent stores this preference</span><br/>
+            <span style="color:var(--accent-gold);">Thursday:</span> User asks for a project summary<br/>
+            <span style="color:var(--text-dim);">→ Agent retrieves preference → automatically includes RAG status</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Memory is what turns a one-off tool into a genuine assistant. For the live build today, we'll use window buffer memory (simpler). Long-term memory is the next step once participants are comfortable with basic agent building.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H10: GOVERNANCE & RESPONSIBLE USE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Governance &amp; Responsible Use</h2>
+        <p style="font-size:0.8em; color:var(--text-muted); margin: 0.3em 0 0.7em;">Using AI tools responsibly in a professional setting</p>
+
+        <div class="governance-grid">
+          <div class="gov-card">
+            <h4>🔒 Data Privacy</h4>
+            <ul>
+              <li>Know where your data goes when you call an LLM API</li>
+              <li>Enterprise agreements include data privacy protections — consumer versions may not</li>
+              <li>Never send PII or confidential data to a consumer tool without checking your org's policy</li>
+            </ul>
+          </div>
+          <div class="gov-card">
+            <h4>👁 Human Oversight</h4>
+            <ul>
+              <li>Keep humans in the loop for outputs sent externally</li>
+              <li>Use "draft and approve" patterns — agent drafts, human approves</li>
+              <li>Automate low-risk steps; keep judgment on high-stakes ones</li>
+            </ul>
+          </div>
+          <div class="gov-card">
+            <h4>📋 Auditability</h4>
+            <ul>
+              <li>n8n logs every execution — who triggered it, what was processed</li>
+              <li>For regulated workflows, ensure logs are retained</li>
+              <li>Name workflows and nodes clearly so others can understand them</li>
+            </ul>
+          </div>
+          <div class="gov-card">
+            <h4>🚀 Start Small</h4>
+            <ul>
+              <li>Build simple, single-purpose workflows first</li>
+              <li>Test thoroughly before connecting to live systems</li>
+              <li>Add complexity gradually — don't build a 20-step agent on day one</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Don't make this slide feel like a legal disclaimer. Frame it as good engineering practice — the same way you'd test a formula in Excel before using it in a board report. The goal is confident, responsible use — not fear.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H11: DEMO 1 — SIMPLE AI WORKFLOW
+      ══════════════════════════════════════════════ -->
+      <section class="scrollable">
+        <div class="demo-slide">
+          <div class="demo-header">
+            <div class="demo-tag">Live Build 1 of 2</div>
+            <h2>A Simple AI Workflow</h2>
+            <p class="demo-scenario">
+              <strong>Scenario:</strong> Take a project brief (manually entered), send it to an LLM, and return a structured summary with action items.
+            </p>
+          </div>
+
+          <div class="demo-columns">
+            <div>
+              <div class="demo-step-label">Workflow Structure</div>
+              <div style="font-family:var(--font-mono); font-size:0.72em; background:rgba(79,142,247,0.07); border:1px solid rgba(79,142,247,0.18); border-radius:var(--radius); padding:0.8em 1em; line-height:1.8; color:var(--text-muted);">
+                <span style="color:var(--accent-gold);">[1] Manual Trigger</span>  →  field: "brief" (text)
+                <br/><span style="color:var(--text-dim);">↓</span>
+                <br/><span style="color:var(--accent-teal);">[2] LLM Node</span>  →  model: Claude / GPT-4o
+                <br/><span style="color:var(--text-dim);">↓</span>
+                <br/><span style="color:var(--accent-blue);">[3] Set Node</span>  →  extract → structured_summary
+              </div>
+
+              <div style="margin-top:0.8em;">
+                <div class="demo-step-label">Test Input</div>
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); padding:0.7em 0.9em; font-size:0.72em; color:var(--text-muted); line-height:1.6; font-style:italic;">
+                  "We need to launch a new client portal by end of Q2. The portal should allow clients to view their invoices, download reports, and submit support tickets. The design team is involved but we haven't confirmed the tech stack yet. Budget is approximately £80K. Main stakeholder is the COO."
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="demo-step-label">System Prompt in n8n</div>
+              <div class="demo-prompt">You are a professional assistant. Read the following project brief and return:
+
+1. A one-paragraph executive summary (max 60 words)
+2. A numbered list of key action items
+3. A list of open questions or missing information
+
+Brief:
+{{ $json["brief"] }}</div>
+
+              <div class="demo-response-wrapper" style="margin-top:0.8em;">
+                <button class="demo-reveal-btn">See Workflow Output →</button>
+                <div class="demo-response" data-response="EXECUTIVE SUMMARY
+Client portal project targeting Q2 launch (~£80K budget). Objective: enable clients to self-serve invoices, reports, and support tickets. Design team engaged; tech stack and full stakeholder map still to be confirmed. COO is primary sponsor.
+
+KEY ACTION ITEMS
+1. Confirm and document the tech stack decision
+2. Map full stakeholder list beyond the COO
+3. Define client portal feature scope and MVP vs. phase 2
+4. Establish design team workstream and handoff points
+5. Set Q2 milestone dates and sign-off process
+
+OPEN QUESTIONS
+• Tech stack: which platform / framework will be used?
+• Who else is involved beyond the design team?
+• Are there security/compliance requirements for client data access?
+• What does 'end of Q2' mean — hard deadline or target?"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-discussion">
+            <strong>What to highlight:</strong> The LLM received messy prose and returned structured, usable output. The expression <code>&#123;&#123; $json["brief"] &#125;&#125;</code> is how n8n passes data between nodes. This took 3 nodes and under 10 minutes to build.
+          </div>
+        </div>
+        <aside class="notes">
+          Walk through each node before running. Emphasise that the system prompt is exactly what they learned in Sessions 1 and 2 — nothing new. Then paste the brief and run. Let the output appear and pause for reaction.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H12: DEMO 2 — FULL AI AGENT
+      ══════════════════════════════════════════════ -->
+      <section class="scrollable">
+        <div class="demo-slide">
+          <div class="demo-header">
+            <div class="demo-tag">Live Build 2 of 2</div>
+            <h2>A Full AI Agent</h2>
+            <p class="demo-scenario">
+              <strong>Scenario:</strong> An agent that answers questions by searching the web <em>or</em> reading a document — deciding which tool to use based on the question.
+            </p>
+          </div>
+
+          <div class="demo-columns">
+            <div>
+              <div class="demo-step-label">Workflow Structure</div>
+              <div style="font-family:var(--font-mono); font-size:0.7em; background:rgba(100,255,218,0.05); border:1px solid rgba(100,255,218,0.15); border-radius:var(--radius); padding:0.8em 1em; line-height:1.8; color:var(--text-muted);">
+                <span style="color:var(--accent-gold);">[1] Chat Trigger</span>  →  built-in chat UI
+                <br/><span style="color:var(--text-dim);">↓</span>
+                <br/><span style="color:var(--accent-teal);">[2] AI Agent Node</span>
+                <br/><span style="color:var(--text-dim);">     ├── Tool: Web Search (SerpAPI)</span>
+                <br/><span style="color:var(--text-dim);">     ├── Tool: Document Reader</span>
+                <br/><span style="color:var(--text-dim);">     └── Memory: Window Buffer (10 msgs)</span>
+              </div>
+
+              <div style="margin-top:0.8em;">
+                <div class="demo-step-label">Test Conversation</div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius); padding:0.7em 0.9em; font-size:0.72em; color:var(--text-muted); line-height:1.7;">
+                  <div><span style="color:var(--accent-blue);">Q1:</span> "What is the current interest rate in the UK?"</div>
+                  <div style="color:var(--text-dim); padding-left:1.2em;">→ agent uses <strong style="color:var(--accent-teal);">web search</strong></div>
+                  <div style="margin-top:0.4em;"><span style="color:var(--accent-blue);">Q2:</span> "What are the key deliverables in the project document?"</div>
+                  <div style="color:var(--text-dim); padding-left:1.2em;">→ agent uses <strong style="color:var(--accent-teal);">document reader</strong></div>
+                  <div style="margin-top:0.4em;"><span style="color:var(--accent-blue);">Q3:</span> "Based on what you just told me, what should be the first priority?"</div>
+                  <div style="color:var(--text-dim); padding-left:1.2em;">→ agent uses <strong style="color:var(--accent-teal);">memory</strong> of the conversation</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="demo-step-label">Agent System Prompt</div>
+              <div class="demo-prompt">You are a helpful professional assistant.
+
+When answering:
+- If the question requires live or recent information, use the web search tool
+- If the question is about the provided document, use the document reader tool
+- Always cite which tool you used
+- Be concise — answer in 3-5 sentences unless asked for more</div>
+
+              <div class="demo-response-wrapper" style="margin-top:0.8em;">
+                <button class="demo-reveal-btn">See Agent Behaviour →</button>
+                <div class="demo-response" data-response="Q1 → Web Search used:
+The Bank of England base rate is currently 4.75% (as of late 2024). [Source: web search]
+
+Q2 → Document Reader used:
+The key deliverables in the project document are: (1) client invoice portal, (2) self-service report downloads, (3) support ticket submission system. [Source: project document]
+
+Q3 → Memory used:
+Based on our conversation, the first priority should be confirming the tech stack — it's the blocker that affects all other deliverables. Once that's resolved, the design team can proceed with confidence.
+
+Key insight: The agent chose which tool to use — you didn't instruct it per question. It used conversation memory to answer the follow-up without needing context repeated."></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-discussion">
+            <strong>What to highlight:</strong> Same LLM, same interface. The Agent node decides which tool to use — you only defined the goal and the available tools. This is a working AI agent built in under 15 minutes, with no code.
+          </div>
+        </div>
+        <aside class="notes">
+          Pause after each test question and let the audience observe which tool the agent chose and why. The "memory follow-up" question is usually the most impressive — highlight that the agent understood the conversation context without being told.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H13: HANDS-ON ACTIVITY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Hands-On Activity</h2>
+        <p style="font-size:0.8em; color:var(--text-muted); margin: 0.4em 0 0.8em;">Design your first workflow</p>
+
+        <div class="activity-section">
+          <div style="font-size:0.78em; color:var(--text-muted); margin-bottom:0.8em;">Sketch the first workflow you would build for your own work. Use this structure:</div>
+
+          <div style="font-family:var(--font-mono); font-size:0.74em; background:rgba(0,0,0,0.25); border-radius:var(--radius); padding:0.8em 1em; line-height:2; color:var(--text-muted);">
+            <span style="color:var(--accent-gold);">Trigger:</span>   [What starts it?]<br/>
+            <span style="color:var(--text-dim);">   ↓</span><br/>
+            <span style="color:var(--accent-blue);">Step 1:</span>    [What data does it need?]<br/>
+            <span style="color:var(--text-dim);">   ↓</span><br/>
+            <span style="color:var(--accent-teal);">Step 2:</span>    [What should the LLM do with it?]<br/>
+            <span style="color:var(--text-dim);">   ↓</span><br/>
+            <span style="color:var(--accent-blue);">Output:</span>    [Where does the result go?]
+          </div>
+
+          <div style="margin-top:0.9em; font-size:0.76em; color:var(--text-muted);">
+            <strong style="color:var(--text-primary);">Examples to prompt thinking:</strong>
+            <ul style="list-style:none; padding:0; margin:0.4em 0 0;">
+              <li style="padding:0.18em 0;">→ "Every morning, summarise my unread emails and send to my Slack"</li>
+              <li style="padding:0.18em 0;">→ "When a form is submitted, extract key info and add a row to my project tracker"</li>
+              <li style="padding:0.18em 0;">→ "When I paste a meeting transcript, extract actions and send each owner their tasks"</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top:0.8em; padding:0.6em 0.9em; background:rgba(79,142,247,0.08); border-left:3px solid var(--accent-blue); border-radius:0 var(--radius) var(--radius) 0; font-size:0.78em; color:var(--text-primary);">
+          <strong>Debrief question:</strong> "What would this workflow save you each week, and what's the first step to building it?"
+        </div>
+        <aside class="notes">
+          Give 5 minutes for this. Participants can sketch on paper or open n8n cloud if they have access. The goal is to connect the abstract to their own work — even a rough sketch is a success. Debrief by asking 2-3 people to share their workflow idea.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H14: KEY TAKEAWAYS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Key Takeaways</h2>
+        <div class="takeaway-grid" style="margin-top:0.8em;">
+          <div class="takeaway-item">
+            <div class="takeaway-num">01</div>
+            <div class="takeaway-text"><strong>n8n is visual, no-code</strong> — connect nodes on a canvas instead of writing code</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">02</div>
+            <div class="takeaway-text">Every workflow: <strong>Trigger → Steps → Output</strong></div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">03</div>
+            <div class="takeaway-text"><strong>LLM node</strong> = intelligence; <strong>Agent node</strong> = autonomy</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">04</div>
+            <div class="takeaway-text"><strong>Tools</strong> give the agent real-world capabilities — search, read, write, send</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">05</div>
+            <div class="takeaway-text"><strong>Memory</strong> makes the agent persistent — it learns your preferences over time</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">06</div>
+            <div class="takeaway-text">Keep <strong>humans in the loop</strong> for high-stakes or externally-facing outputs</div>
+          </div>
+          <div class="takeaway-item" style="grid-column: 1 / -1;">
+            <div class="takeaway-num">07</div>
+            <div class="takeaway-text"><strong>Start simple</strong> — one workflow, one purpose, test before scaling</div>
+          </div>
+        </div>
+        <aside class="notes">
+          Wrap up by pointing out that every concept from Sessions 1–3 has led to this — the prompting skills from Session 2 power the LLM nodes, and the agent design from Session 3 is exactly what the Agent node implements. They now have the full picture.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H15: COURSE COMPLETE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Course Complete</h2>
+        <p style="font-size:0.8em; color:var(--text-muted); margin: 0.3em 0 0.8em;">What you now know</p>
+
+        <table class="complete-table">
+          <thead>
+            <tr><th>Session</th><th>What you learned</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Session 1</td>
+              <td>AI vs GenAI, how LLMs work, prompt engineering fundamentals</td>
+            </tr>
+            <tr>
+              <td>Session 2</td>
+              <td>LLM reliability, hallucinations, advanced prompting, AI in Excel &amp; PowerPoint</td>
+            </tr>
+            <tr>
+              <td>Session 3</td>
+              <td>AI agents, 5 components, architectures, designing agent prompts</td>
+            </tr>
+            <tr>
+              <td>Session 4</td>
+              <td>Building workflows in n8n, LLM + Agent nodes, tools, memory, responsible use</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="complete-closing">
+          <strong>The skill you've built:</strong> You can now understand, evaluate, design, and build AI-powered tools — using the platforms available to you today. The technology will keep evolving; the fundamentals you've learned will not.
+        </div>
+
+        <div style="margin-top:0.8em;">
+          <div style="font-size:0.7em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.3em;">3 concrete next steps</div>
+          <ul class="next-steps">
+            <li><div class="next-step-num">→ 1</div><div><strong>Log in to n8n</strong> — create a free cloud account at n8n.io and explore the canvas</div></li>
+            <li><div class="next-step-num">→ 2</div><div><strong>Build the simple workflow</strong> — Manual Trigger → LLM node → try your own prompt</div></li>
+            <li><div class="next-step-num">→ 3</div><div><strong>Identify one repetitive task</strong> — map it to Trigger → Steps → Output and bring it to the group</div></li>
+          </ul>
+        </div>
+        <aside class="notes">
+          End on an energising note. They've completed a four-session journey from "what is AI" to "building a working agent." Encourage them to share what they build with each other — the best way to learn is to teach someone else what you've made.
+        </aside>
+      </section>
+
+    </div><!-- /.slides -->
+  </div><!-- /.reveal -->
+
+  <!-- Reveal.js scripts -->
   <script src="../assets/reveal/dist/reveal.js"></script>
+  <script src="../assets/reveal/plugin/notes/notes.js"></script>
+  <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
+
+  <!-- Demo reveal logic -->
+  <script src="../assets/js/demo-reveal.js"></script>
+
   <script>
-    Reveal.initialize({ hash: true, transition: 'fade', controls: true, progress: true,
-      width: 1200, height: 700, margin: 0.04 });
+    Reveal.initialize({
+      hash: true,
+      transition: 'fade',
+      transitionSpeed: 'fast',
+      slideNumber: 'c/t',
+      showSlideNumber: 'all',
+      progress: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      center: true,
+      width: 1200,
+      height: 700,
+      margin: 0.04,
+      plugins: [ RevealNotes, RevealHighlight ]
+    });
+
+    Reveal.on('ready', function () {
+      window.DemoReveal.init();
+    });
+
+    Reveal.on('slidechanged', function (event) {
+      window.DemoReveal.onSlideChange(event);
+      window.DemoReveal.init();
+    });
   </script>
+
 </body>
 </html>
