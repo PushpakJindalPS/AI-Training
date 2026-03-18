@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Session 1 — From AI to GenAI | AI Training</title>
+  <title>Session 1 — From AI to GenAI | AI Workshop</title>
 
   <!-- Reveal.js -->
   <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
@@ -332,12 +332,45 @@
 
     /* Vertical nav indicator */
     .reveal .navigate-down { color: var(--accent-teal); }
+
+    /* Demo build slides — fixed header layout */
+    .demo-build-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .demo-header {
+      flex-shrink: 0;
+      text-align: center;
+      padding-bottom: 0.5em;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.9em;
+    }
+    .demo-objective {
+      display: inline-block;
+      background: rgba(79,142,247,0.08);
+      border: 1px solid rgba(79,142,247,0.2);
+      border-radius: 8px;
+      padding: 0.45em 1.1em;
+      font-size: 0.75em;
+      color: var(--text-muted);
+      max-width: 700px;
+      text-align: left;
+    }
+    .demo-objective strong { color: var(--accent-blue); margin-right: 0.4em; }
+    .demo-build-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
 
   <!-- Home link -->
-  <a href="../index.html" class="home-link">← All Sessions</a>
+  <img src="../assets/images/02.%20PS%20Logo_Vertical.png" alt="Preferred Square" style="position:fixed; top:12px; right:16px; height:40px; z-index:100; opacity:0.85;" />
+  <a href="../index.html" class="home-link" target="_blank">← All Sessions</a>
   <div class="notes-hint">Press S for speaker notes</div>
 
   <div class="reveal">
@@ -348,12 +381,8 @@
       ══════════════════════════════════════════════ -->
       <section>
         <div class="title-slide">
-          <div class="session-label">Session 1 of 4 · AI Training</div>
+          <div class="session-label">Module 1 of 4 · AI WORKSHOP</div>
           <h1>From AI to GenAI:<br/>Understanding the Technology</h1>
-          <p class="subtitle">~1 hour · Hands-on demos included</p>
-          <div class="title-opener">
-            Quick question: <strong>Who has used an AI tool — Copilot, ChatGPT, or anything else — in the last week?</strong>
-          </div>
         </div>
         <aside class="notes">
           Start with a quick show of hands — "Who has used an AI tool — Copilot, ChatGPT, or anything else — in the last week?" This sets the tone: they're already using these tools, now they'll understand what's actually happening under the hood.
@@ -389,10 +418,23 @@
       </section>
 
       <!-- ══════════════════════════════════════════════
-           H3: WHAT IS AI? (with vertical slides)
+           H3 (NEW): QUESTION SLIDE — What is AI?
       ══════════════════════════════════════════════ -->
       <section>
-        <!-- H3 main -->
+        <div style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+          <div style="font-size:0.7em; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent-blue); margin-bottom:0.8em;">Before we begin</div>
+          <h1 style="font-size:3em; font-weight:800; color:#fff; letter-spacing:-0.03em; margin:0 0 0.6em;">What is AI?</h1>
+        </div>
+        <aside class="notes">
+          Pause here and invite 2–3 responses from the audience. Don't correct or guide — just listen. You'll refer back to these answers as you move through the session.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H4: WHAT IS AI? (with vertical slides)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <!-- H4 main -->
         <section>
           <h2>What is AI?</h2>
           <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 1.2em;">AI is not one thing — it's a family of technologies</p>
@@ -416,7 +458,7 @@
           </aside>
         </section>
 
-        <!-- H3 vertical: Everyday examples -->
+        <!-- H4 vertical: Everyday examples -->
         <section>
           <h2>AI in Everyday Life</h2>
           <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Each layer in action</p>
@@ -447,10 +489,23 @@
       </section>
 
       <!-- ══════════════════════════════════════════════
-           H4: WHAT IS GENERATIVE AI? (with vertical)
+           H5: THE AI FAMILY TREE
       ══════════════════════════════════════════════ -->
       <section>
-        <!-- H4 main -->
+        <h2 style="margin-bottom:0.6em;">The AI Family Tree</h2>
+        <img src="../assets/images/ai_branches_no_genai.svg"
+             alt="AI branches diagram showing Machine Learning, NLP, Computer Vision, Deep Learning and other subfields"
+             style="width:100%; max-width:780px; display:block; margin:0 auto;" />
+        <aside class="notes">
+          Walk through the diagram — AI is the top-level field. Machine Learning, NLP, and Computer Vision are subfields. Deep Learning is a subfield of ML. Point out Robotics, Expert Systems, Planning, and Speech Processing on the right. The key message: AI is not one thing, it's a family of different technologies.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H6: WHAT IS GENERATIVE AI? (with vertical)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <!-- H6 main -->
         <section>
           <h2>What is Generative AI?</h2>
           <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">GenAI is the layer that <em>creates</em> — not just classifies</p>
@@ -476,7 +531,7 @@
           </aside>
         </section>
 
-        <!-- H4 vertical: What GenAI can generate -->
+        <!-- H6 vertical: What GenAI can generate -->
         <section>
           <h2>What Can GenAI Generate?</h2>
           <div class="grid-4" style="margin-top: 1em;">
@@ -511,7 +566,20 @@
       </section>
 
       <!-- ══════════════════════════════════════════════
-           H5: THE GENAI LANDSCAPE
+           H7: GENAI FAMILY TREE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2 style="margin-bottom:0.6em;">Where Does Generative AI Fit?</h2>
+        <img src="../assets/images/ai_branches_genai_topology.svg"
+             alt="AI branches diagram with Generative AI highlighted, showing it draws on Deep Learning, NLP, Computer Vision and Speech"
+             style="width:100%; max-width:780px; display:block; margin:0 auto;" />
+        <aside class="notes">
+          The amber dashed lines show that Generative AI isn't a standalone branch — it draws on Deep Learning, NLP, Computer Vision, and Speech Processing all at once. That's what makes it powerful and different from earlier AI tools.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H8: THE GENAI LANDSCAPE
       ══════════════════════════════════════════════ -->
       <section>
         <h2>The GenAI Landscape</h2>
@@ -581,7 +649,7 @@
 
         <!-- H6 vertical: The autocomplete analogy -->
         <section>
-          <h2>The Autocomplete Analogy</h2>
+          <h2>Autocomplete</h2>
           <div class="card accent" style="margin: 1em 0; padding: 1.4em 1.8em; text-align: center;">
             <p style="font-size: 1em; color: var(--text-primary); font-style: italic; line-height: 1.7;">
               Like a very <strong>well-read colleague</strong> who can complete your sentence —<br/>
@@ -639,12 +707,41 @@
       </section>
 
       <!-- ══════════════════════════════════════════════
+           H: CONTEXT CARRYOVER
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Context Carryover</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">The LLM remembers everything in your current conversation</p>
+        <div class="grid-2">
+          <div>
+            <h3 style="margin-bottom: 0.7em;">How it works</h3>
+            <ul class="icon-list" style="font-size: 0.82em;">
+              <li>Every message + every reply is appended to the context</li>
+              <li>The model sees the full history each time it responds</li>
+              <li>This is why "make it shorter" or "change the tone" works</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin-bottom: 0.7em;">Best practices</h3>
+            <ul class="icon-list" style="font-size: 0.82em;">
+              <li>Start a <strong>new chat</strong> for a completely different task</li>
+              <li>Re-state important context in very long conversations</li>
+              <li>The model does <em>not</em> remember previous sessions (unless memory is explicitly enabled)</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          This explains a common frustration — "why did it forget what I told it?" — and sets up better habits. Consistent across all tools.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
            H8: PROMPT ENGINEERING (with vertical per element)
       ══════════════════════════════════════════════ -->
       <section>
         <!-- H8 main: All 4 parts overview -->
         <section>
-          <h2>Prompt Engineering</h2>
+          <h2>Prompt</h2>
           <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Garbage in, garbage out — but it's easy to fix</p>
           <div class="prompt-parts">
             <div class="prompt-part role">
@@ -788,61 +885,6 @@
       </section>
 
       <!-- ══════════════════════════════════════════════
-           H10: SYSTEM ROLE vs USER MESSAGE
-      ══════════════════════════════════════════════ -->
-      <section>
-        <h2>System Role vs User Message</h2>
-        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Two channels to talk to an LLM</p>
-        <div class="two-panel">
-          <div class="panel system">
-            <div class="panel-label">System Message</div>
-            <p>Sets <strong>persistent behavior</strong> for the entire conversation — the "configure" panel</p>
-            <blockquote>"You are a BA assistant. Always respond concisely. Never make assumptions — ask for clarification instead."</blockquote>
-          </div>
-          <div class="panel user">
-            <div class="panel-label">User Message</div>
-            <p>Your <strong>specific task or question</strong> per turn</p>
-            <blockquote>"Summarize the attached requirements document for a non-technical audience."</blockquote>
-          </div>
-        </div>
-        <div class="highlight-box" style="margin-top: 1em; font-size: 0.8em;">
-          When you use a pre-built AI assistant, someone has already written a system message — that's what shapes its behavior. In <strong>Session 3</strong>, we'll use this directly when designing agents.
-        </div>
-        <aside class="notes">
-          This is a bridge to Session 3 on Agents. Don't go deep — just plant the concept that there are two layers: permanent instructions and per-message instructions. This concept is identical across all LLM tools.
-        </aside>
-      </section>
-
-      <!-- ══════════════════════════════════════════════
-           H11: CONTEXT CARRYOVER
-      ══════════════════════════════════════════════ -->
-      <section>
-        <h2>Context Carryover</h2>
-        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">The LLM remembers everything in your current conversation</p>
-        <div class="grid-2">
-          <div>
-            <h3 style="margin-bottom: 0.7em;">How it works</h3>
-            <ul class="icon-list" style="font-size: 0.82em;">
-              <li>Every message + every reply is appended to the context</li>
-              <li>The model sees the full history each time it responds</li>
-              <li>This is why "make it shorter" or "change the tone" works</li>
-            </ul>
-          </div>
-          <div>
-            <h3 style="margin-bottom: 0.7em;">Best practices</h3>
-            <ul class="icon-list" style="font-size: 0.82em;">
-              <li>Start a <strong>new chat</strong> for a completely different task</li>
-              <li>Re-state important context in very long conversations</li>
-              <li>The model does <em>not</em> remember previous sessions (unless memory is explicitly enabled)</li>
-            </ul>
-          </div>
-        </div>
-        <aside class="notes">
-          This explains a common frustration — "why did it forget what I told it?" — and sets up better habits. Consistent across all tools.
-        </aside>
-      </section>
-
-      <!-- ══════════════════════════════════════════════
            H12: FEW-SHOT EXAMPLES
       ══════════════════════════════════════════════ -->
       <section>
@@ -901,171 +943,186 @@ Now write one for: [paste your project details]"</div>
       </section>
 
       <!-- ══════════════════════════════════════════════
-           H14: DEMO 1 — Drafting Requirements
+           H14: DEMO — Calendar PA Prompt (vertical build)
       ══════════════════════════════════════════════ -->
-      <section class="scrollable">
-        <div class="demo-slide">
-          <h2>Demo 1: Drafting a Requirements Document</h2>
-          <div class="demo-scenario">
-            <strong>Scenario</strong>
-            You've just had a kickoff meeting for a new reporting project. You have rough bullet notes. Let's turn them into a structured requirements document.
-          </div>
-          <div class="demo-columns">
-            <div>
-              <div class="demo-prompt-label">Prompt</div>
-              <div class="demo-prompt">You are an experienced professional. Based on the following meeting notes from a project kickoff, draft a structured requirements document with these sections: Business Objective, Scope, Key Stakeholders, Functional Requirements (numbered list), Assumptions, Open Questions.
+      <section>
 
-Meeting notes:
-- Client wants a monthly sales dashboard
-- Should show revenue by region, product category, and sales rep
-- Data comes from Salesforce and the ERP system
-- Finance team and Sales Directors are the main users
-- Must be ready before end of quarter
-- Mobile access was mentioned but not confirmed
-- Historical data: last 2 years minimum</div>
+        <!-- H14 main: Objective only -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
             </div>
-            <div class="demo-response-wrapper">
-              <button class="demo-reveal-btn">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                See AI Response
-              </button>
-              <div class="demo-response-label" style="display:none;">AI Response</div>
-              <div class="demo-response" data-response="Business Objective
-Deliver a monthly sales performance dashboard enabling Finance and Sales leadership to monitor revenue trends by region, product category, and sales representative.
-
-Scope
-In scope: Dashboard development, Salesforce and ERP data integration, historical data (24 months minimum), user access setup.
-Out of scope: Real-time data feeds; mobile application development (pending confirmation).
-
-Key Stakeholders
-• Finance Team — primary consumers of regional and category revenue data
-• Sales Directors — primary consumers of rep-level performance data
-• IT/Data Team — responsible for data pipeline from Salesforce and ERP
-
-Functional Requirements
-1. Display monthly revenue by region
-2. Display monthly revenue by product category
-3. Display monthly revenue by sales representative
-4. Support filtering by date range (minimum: last 24 months)
-5. Integrate data from Salesforce and the ERP system
-6. Refresh data on a monthly cycle
-
-Assumptions
-• Salesforce and ERP data can be extracted and joined on a common key
-• End-of-quarter deadline refers to the current fiscal quarter
-• Finance Team and Sales Directors have access to the dashboard tool
-
-Open Questions
-• Is mobile access a confirmed requirement? (Mentioned but not agreed)
-• What is the accepted data latency for the monthly refresh?
-• Who owns dashboard access provisioning?"></div>
+            <div class="demo-build-content">
+              <p style="font-size: 0.78em; color: var(--text-dim);">↓ Let's build it section by section</p>
             </div>
           </div>
-          <div class="demo-discussion">
-            <strong>Notice:</strong> It surfaced "mobile access" as an Open Question without being told to — because the prompt said mobile access was "mentioned but not confirmed." That's the model applying BA thinking.
-          </div>
-        </div>
-        <aside class="notes">
-          What to highlight: Structure, professional tone, how it surfaced "mobile access" as an open question — without being told to. The model picked up on the uncertainty in the notes and flagged it correctly.
-        </aside>
-      </section>
+          <aside class="notes">
+            Introduce the objective. Tell the audience: "We're going to build this prompt live, one section at a time, using the 4-part framework we just covered."
+          </aside>
+        </section>
 
-      <!-- ══════════════════════════════════════════════
-           H15: DEMO 2 — Summarizing for Non-Technical
-      ══════════════════════════════════════════════ -->
-      <section class="scrollable">
-        <div class="demo-slide">
-          <h2>Demo 2: Summarizing for a Non-Technical Audience</h2>
-          <div class="demo-scenario">
-            <strong>Scenario</strong>
-            You need to brief a CFO on a technical migration project. They don't want technical detail — just business impact, cost, and timeline.
-          </div>
-          <div class="demo-columns">
-            <div>
-              <div class="demo-prompt-label">Prompt</div>
-              <div class="demo-prompt">You are an experienced professional. Rewrite the following technical summary for a CFO who is not technical. Focus only on business impact, cost implications, and timeline. Remove all technical jargon. Use plain English. Maximum 150 words.
-
-Technical summary:
-The proposed solution involves migrating the existing on-premise SQL Server database to Azure SQL Managed Instance. The migration will require a lift-and-shift approach with schema validation, ETL pipeline reconfiguration, and a parallel-run period of 4 weeks to validate data integrity. Estimated infrastructure cost reduction is 35% annually post-migration. Total project effort is approximately 800 person-hours over 12 weeks.</div>
+        <!-- H14 V1: Role -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
             </div>
-            <div class="demo-response-wrapper">
-              <button class="demo-reveal-btn">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                See AI Response
-              </button>
-              <div class="demo-response-label" style="display:none;">AI Response</div>
-              <div class="demo-response" data-response="We are proposing to move our current data storage system to a cloud-based platform managed by Microsoft Azure.
-
-What this means for the business:
-• Cost savings: We expect to reduce our annual infrastructure costs by 35% once the migration is complete.
-• Timeline: The project will take approximately 12 weeks from start to finish, including a 4-week validation period to ensure data accuracy.
-• Risk management: A parallel-run approach means our existing system stays live until we confirm the new one is working correctly.
-
-No data will be at risk during the transition. The project is estimated at 800 hours of team effort across the 12-week period.
-
-Recommended next step: Approve project initiation to proceed with detailed planning."></div>
+            <div class="demo-build-content">
+              <div class="prompt-part role" style="max-width: 680px; width: 100%;">
+                <h4><span class="label">Role</span> Who should it act as?</h4>
+                <blockquote>"You are my personal assistant and manage my calendar."</blockquote>
+              </div>
             </div>
           </div>
-          <div class="demo-discussion">
-            <strong>Notice:</strong> It preserved the key numbers (35%, 12 weeks, 800 hours) and reframed entirely for a business audience — no SQL, no ETL, no schema. Same facts, different language.
-          </div>
-        </div>
-        <aside class="notes">
-          What to highlight: How it strips jargon, preserves the key numbers (35%, 12 weeks), and reframes entirely for the audience. The "Recommended next step" at the end was inferred from context — not explicitly asked for.
-        </aside>
-      </section>
+          <aside class="notes">
+            Start with the Role. This tells the model the persona it should adopt — a PA with calendar access. Everything else builds on this.
+          </aside>
+        </section>
 
-      <!-- ══════════════════════════════════════════════
-           H16: DEMO 3 — Rewriting Stakeholder Update
-      ══════════════════════════════════════════════ -->
-      <section class="scrollable">
-        <div class="demo-slide">
-          <h2>Demo 3: Rewriting a Stakeholder Update</h2>
-          <div class="demo-scenario">
-            <strong>Scenario</strong>
-            A team member sent you a status update that's too negative in tone. Same facts — better framing.
-          </div>
-          <div class="demo-columns">
-            <div>
-              <div class="demo-prompt-label">Prompt</div>
-              <div class="demo-prompt">Rewrite the following project status update. Keep all the facts but make the tone constructive and solution-focused. Do not hide problems — frame them as challenges being actively managed. Keep it under 100 words.
-
-Original:
-"The project is behind schedule because the dev team didn't deliver the API on time. We've been waiting 3 weeks and still don't have a confirmed date. Testing hasn't started and we're at risk of missing the go-live date. The client is frustrated."</div>
+        <!-- H14 V2: Instruction -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
             </div>
-            <div class="demo-response-wrapper">
-              <button class="demo-reveal-btn">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                See AI Response
-              </button>
-              <div class="demo-response-label" style="display:none;">AI Response</div>
-              <div class="demo-response" data-response="The project is currently impacted by a delay in API delivery, which has pushed testing beyond its planned start date. We are actively working with the development team to secure a confirmed delivery date and will reassess the go-live timeline once this is confirmed.
-
-We have proactively communicated the situation to the client and are managing their expectations closely. A revised project schedule will be shared as soon as the API date is confirmed.
-
-Next action: API delivery confirmation by [date]."></div>
+            <div class="demo-build-content">
+              <div class="prompt-part inst" style="max-width: 680px; width: 100%;">
+                <h4><span class="label">Instruction</span> What do you want?</h4>
+                <blockquote>Read my whole calendar for the day. Categorise each meeting into Interview, Internal, or External — in that priority order. For interview meetings, identify the candidate, locate their CV from emails or OneDrive, and generate a technical interview questionnaire.</blockquote>
+              </div>
             </div>
           </div>
-          <div class="demo-discussion">
-            <strong>Notice:</strong> Every fact is preserved — the delay, the missing date, the testing gap, the client concern. But the language shifts from blame to accountability and next steps.
+          <aside class="notes">
+            The instruction is the core of the prompt. Note the priority order — Interview first, then Internal, then External. This matters because every meeting must fall into exactly one category.
+          </aside>
+        </section>
+
+        <!-- H14 V3: Context -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content">
+              <div class="prompt-part ctx" style="max-width: 680px; width: 100%;">
+                <h4><span class="label">Context</span> What background does it need?</h4>
+                <blockquote>Internal = all attendees from Preferred Square only. External = any attendee outside Preferred Square. Interview = identified from invitees list or meeting title. Do not fabricate any information. Include meeting links for all meetings.</blockquote>
+              </div>
+            </div>
           </div>
-        </div>
-        <aside class="notes">
-          What to highlight: Same facts, completely different tone. This is a real BA skill — translating raw updates into stakeholder-appropriate communication. The model even added a "Next action" line as a professional touch.
-        </aside>
+          <aside class="notes">
+            Context is where we define the rules the model needs to categorise correctly. Without this, "Internal" and "External" are meaningless labels. The "do not fabricate" constraint prevents hallucination.
+          </aside>
+        </section>
+
+        <!-- H14 V4: Output Format -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content">
+              <div class="prompt-part output" style="max-width: 680px; width: 100%;">
+                <h4><span class="label">Output Format</span> How should it respond?</h4>
+                <blockquote>Structured lists under Interview / Internal / External headings — each with meeting time, location, attendees, agenda, and (for interviews) candidate name, CV status, and questionnaire.</blockquote>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Output Format is what makes the response usable at a glance. Without it, the model might give us a paragraph of text. With it, we get a structured, scannable daily briefing.
+          </aside>
+        </section>
+
+        <!-- H14 V5: Full Prompt -->
+        <section data-transition="none" class="scrollable">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content" style="align-items: flex-start; padding-top: 0.5em;">
+              <div style="width: 100%;">
+                <div class="demo-prompt-label" style="margin-bottom: 0.5em;">Full Prompt</div>
+                <div style="position: relative;">
+                  <button id="copy-prompt-btn" onclick="copyPrompt()" style="position:absolute; top:8px; right:8px; z-index:10; display:flex; align-items:center; gap:5px; background:rgba(79,142,247,0.15); border:1px solid rgba(79,142,247,0.35); color:var(--accent-blue); border-radius:6px; padding:4px 10px; font-size:0.65em; font-weight:600; cursor:pointer; transition:all 0.2s;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span id="copy-btn-label">Copy</span>
+                  </button>
+                <div id="full-prompt-text" class="demo-prompt" style="font-size: 0.7em; white-space: pre-wrap; text-align: left;">You are my personal assistant and manage my calendar.
+
+Your responsibility involves reading my whole calendar for the day and categorise each meeting into one of the following categories in the given order:
+1. Interview meetings
+2. Internal Meetings. Any meeting with no attendee outside Preferred Square should be considered internal meeting.
+3. External Meetings. Any meeting with any attendee outside Preferred Square should be considered external meeting.
+
+Do not fabricate any information and include meeting links for all the meetings.
+All the meetings for the day should be considered without any exception.
+If any meeting is categorized as interview meeting:
+  - Try to identify the candidate from the invitees list or meeting title
+  - If any candidate is identified, try to find the CV by reading my emails or look in the files/folders on OneDrive
+  - If the CV is located, design a technical interview questionnaire along with the responses
+Make sure to include all my meetings for today, each meeting should be categorised in only one of Interview / Internal / External list.
+
+Output Format:
+
+Interview Meetings:
+1. DA Interview | 10:00 AM - 11:00 AM | Burj Khalifa
+   Internal Attendees: Vineet.sharma@preferredsquare.com
+   Candidate Name: Aman Gupta
+   CV/Resume: Check related emails or files in OneDrive to locate the CV
+   Interview questionnaire: Design a technical questionnaire based on the CV, skip if the CV not found
+
+Internal Meetings:
+1. Timesheet Process Mapping | 11:00 - 12:00 PM | Empire Estate
+   Internal Attendees: sagar.s@preferredsquare.com, Vineet.s@preferredsquare.com
+   Agenda: Streamline the timesheet filling process
+
+External Meetings:
+1. Dashboard update | 3:00 - 4:00 PM | Shard
+   Internal Attendees: abhishek.j@preferredsquare.com, bhor.c@preferredsquare.com
+   External Attendees: mark@abc.com, scott@abc.com
+   Agenda: Discuss the progress on the dashboard development</div>
+                </div><!-- /.relative wrapper -->
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Show the full assembled prompt. You can paste this directly into Copilot or ChatGPT with calendar access enabled. Ask the audience: "Which of the 4 sections do you think has the most impact here?"
+          </aside>
+        </section>
+
       </section>
 
       <!-- ══════════════════════════════════════════════
            H17: HANDS-ON ACTIVITY
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>Your Turn — Hands-On Activity</h2>
-        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">5 minutes · Open any LLM tool you have access to</p>
+        <h2>Your Turn</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Open Copilot</p>
         <div class="activity-section">
-          <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-teal); margin-bottom: 0.8em;">Starting Prompt</div>
-          <div class="prompt-box" style="font-size: 0.78em; margin-bottom: 1.2em;">"Summarize this email for me."
-[paste any recent long email you have]</div>
-          <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 0.6em;">The Challenge</div>
+          <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-teal); margin-bottom: 0.8em;">Objective</div>
+          <div class="prompt-box" style="font-size: 0.78em; margin-bottom: 1.2em;">Define a prompt to read your emails and prepare 2 lists:<br>
+1. List of emails awaiting response<br>
+2. Action items for the day</div>
+          <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 0.6em;">Task</div>
           <p style="font-size: 0.82em; color: var(--text-primary); margin-bottom: 0.8em;">Rewrite the prompt using all 4 elements:</p>
           <div class="grid-4" style="margin-bottom: 1em;">
             <div style="text-align: center; font-size: 0.75em; color: var(--accent-blue); font-weight: 600;">Role</div>
@@ -1073,12 +1130,90 @@ Next action: API delivery confirmation by [date]."></div>
             <div style="text-align: center; font-size: 0.75em; color: var(--accent-gold); font-weight: 600;">Context</div>
             <div style="text-align: center; font-size: 0.75em; color: #c084fc; font-weight: 600;">Output Format</div>
           </div>
-          <div class="highlight-box teal" style="font-size: 0.82em;">
-            <strong>Debrief question:</strong> What changed in the output when you added context and format?
-          </div>
         </div>
         <aside class="notes">
           Give them 5 minutes to actually do this. Walk around and help. Common stumbling block: people aren't sure what "role" to use. Suggest "You are an experienced professional" or "You are an executive assistant" depending on the context.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H18: SUPER POWERS OF AN LLM
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Super Powers of an LLM</h2>
+        <div style="text-align: center; margin: 1.2em 0 1.4em;">
+          <p style="font-size: 0.92em; color: var(--text-primary); margin-bottom: 0.6em;">Are LLMs natively capable of reading your emails or accessing your inbox or calendar?</p>
+          <div class="fragment" style="display: inline-block; background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.3); border-radius: 10px; padding: 0.4em 1.4em; font-size: 1.2em; font-weight: 800; color: #f87171; letter-spacing: 0.06em;">No</div>
+        </div>
+        <div class="fragment">
+          <p style="font-size: 0.78em; color: var(--text-muted); text-align: center; margin-bottom: 1.2em;">LLMs only know what's in their training data — they have no live access to your systems. Two techniques bridge this gap:</p>
+          <div class="grid-2" style="max-width: 700px; margin: 0 auto;">
+            <div class="card" style="text-align: center; border-color: rgba(100,255,218,0.3);">
+              <div style="font-size: 1.3em; font-weight: 800; color: var(--accent-teal); margin-bottom: 0.3em;">RAG</div>
+              <div style="font-size: 0.75em; color: var(--text-muted);">Retrieval-Augmented Generation</div>
+            </div>
+            <div class="card" style="text-align: center; border-color: rgba(255,209,102,0.3);">
+              <div style="font-size: 1.3em; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.3em;">Tools</div>
+              <div style="font-size: 0.75em; color: var(--text-muted);">Function Calling &amp; Actions</div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Key point: out of the box, an LLM has no access to your emails, calendar, files, or any live data. It only knows what it was trained on. RAG and Tools are the two mechanisms that give it "superpowers" — the ability to read and act on your actual data.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H19: RAG
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>RAG</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Retrieval-Augmented Generation — giving the LLM access to your data</p>
+        <div class="highlight-box teal" style="margin-bottom: 1.2em; font-size: 0.85em;">
+          <strong>What it is:</strong> Before the LLM generates a response, RAG <em>retrieves</em> relevant content from an external source — your inbox, calendar, files, or a database — and injects it into the prompt as context.
+        </div>
+        <div class="grid-2" style="margin-bottom: 1.2em;">
+          <div class="card">
+            <div style="font-size: 0.68em; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5em;">Without RAG</div>
+            <p style="font-size: 0.8em; color: var(--text-muted);">LLM has no idea what's in your inbox or calendar — it can't answer questions about your actual meetings or emails.</p>
+          </div>
+          <div class="card accent">
+            <div style="font-size: 0.68em; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5em;">With RAG</div>
+            <p style="font-size: 0.8em; color: var(--text-primary);">Your emails and calendar events are fetched and passed to the LLM — it now has the context it needs to categorise, summarise, and respond.</p>
+          </div>
+        </div>
+        <div class="highlight-box" style="font-size: 0.8em;">
+          <strong>In our demo:</strong> When the PA prompt runs in Copilot, RAG retrieves your actual calendar events and emails from Microsoft 365 — feeding them into the LLM so it can categorise meetings and find CVs.
+        </div>
+        <aside class="notes">
+          RAG = fetch first, then generate. The LLM doesn't "browse" your inbox — the data is retrieved by the system and handed to the model as part of the prompt. This is how Copilot reads your emails and calendar: it retrieves them from Microsoft 365 before generating a response.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H20: TOOLS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Tools</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Function Calling — letting the LLM take actions beyond generating text</p>
+        <div class="highlight-box gold" style="margin-bottom: 1.2em; font-size: 0.85em;">
+          <strong>What it is:</strong> Tools allow an LLM to call external functions or services — reading files, searching emails, writing to a calendar, or triggering a workflow — rather than just producing text.
+        </div>
+        <div class="grid-2" style="margin-bottom: 1.2em;">
+          <div class="card">
+            <div style="font-size: 0.68em; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5em;">Without Tools</div>
+            <p style="font-size: 0.8em; color: var(--text-muted);">The LLM can only generate text. It cannot look up a file on OneDrive, check your inbox, or update your calendar.</p>
+          </div>
+          <div class="card" style="border-color: rgba(255,209,102,0.3);">
+            <div style="font-size: 0.68em; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5em;">With Tools</div>
+            <p style="font-size: 0.8em; color: var(--text-primary);">The LLM can call a "search OneDrive" tool, a "read email" tool, or a "get calendar events" tool — and use the results to build its response.</p>
+          </div>
+        </div>
+        <div class="highlight-box" style="font-size: 0.8em;">
+          <strong>In our demo:</strong> When the PA prompt asks Copilot to find a candidate's CV, it uses a tool to search OneDrive and emails — the LLM doesn't guess, it actually looks.
+        </div>
+        <aside class="notes">
+          Tools = the LLM as an orchestrator. Instead of just answering, it decides which tool to call, calls it, gets the result, and uses that to generate a better response. This is the foundation of AI agents — which we cover in Module 3.
         </aside>
       </section>
 
@@ -1107,15 +1242,12 @@ Next action: API delivery confirmation by [date]."></div>
           </div>
           <div class="takeaway-item">
             <div class="takeaway-num">5</div>
-            <div class="takeaway-text"><strong>Few-shot + Chain of Thought</strong> are your two most powerful prompting tools</div>
+            <div class="takeaway-text"><strong>Few-shot + Chain of Thought</strong> are your two most powerful prompting techniques</div>
           </div>
           <div class="takeaway-item">
             <div class="takeaway-num">6</div>
             <div class="takeaway-text">These skills are <strong>transferable</strong> — works in Copilot, Claude, ChatGPT, or whatever comes next</div>
           </div>
-        </div>
-        <div style="margin-top: 1em; text-align: center; font-size: 0.75em; color: var(--text-dim);">
-          Session 2 →  Advanced Prompting &amp; Real-World Workflows
         </div>
         <aside class="notes">
           Wrap up by reminding them that Session 2 builds directly on everything covered today. Encourage them to try at least one prompt improvement before next session.
@@ -1134,6 +1266,24 @@ Next action: API delivery confirmation by [date]."></div>
   <script src="../assets/js/demo-reveal.js"></script>
 
   <script>
+    function copyPrompt() {
+      const text = document.getElementById('full-prompt-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const label = document.getElementById('copy-btn-label');
+        const btn = document.getElementById('copy-prompt-btn');
+        label.textContent = 'Copied!';
+        btn.style.background = 'rgba(100,255,218,0.15)';
+        btn.style.borderColor = 'rgba(100,255,218,0.45)';
+        btn.style.color = 'var(--accent-teal)';
+        setTimeout(() => {
+          label.textContent = 'Copy';
+          btn.style.background = 'rgba(79,142,247,0.15)';
+          btn.style.borderColor = 'rgba(79,142,247,0.35)';
+          btn.style.color = 'var(--accent-blue)';
+        }, 2000);
+      });
+    }
+
     Reveal.initialize({
       hash: true,
       transition: 'fade',

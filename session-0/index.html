@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 0 — Welcome &amp; Orientation | AI Workshop</title>
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="../assets/reveal/dist/reset.css" />
+  <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
+
+  <!-- Custom theme & demo styles -->
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="../assets/css/demos.css" />
+
+  <style>
+    /* ── Session 0 specific styles ── */
+
+    /* Title slide */
+    .title-slide { text-align: center; }
+    .session-label {
+      font-size: 0.7em; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent-blue); margin-bottom: 0.8em;
+    }
+    .title-slide h1 {
+      font-size: 2.4em; font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; color: #fff; margin-bottom: 0.4em;
+    }
+    .subtitle { font-size: 0.85em; color: var(--text-muted); margin-bottom: 1.2em; }
+    .title-opener { display: inline-block; font-size: 0.85em; color: var(--text-primary); }
+    .title-opener strong { color: var(--accent-teal); }
+
+    /* Gap split — where we are / where we want to be */
+    .gap-split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 0.8em;
+    }
+    .gap-split > * { min-width: 0; }
+    .gap-box {
+      background: var(--bg-card); border-radius: var(--radius); padding: 1.1em 1.3em;
+    }
+    .gap-box.current { border-top: 3px solid rgba(248,113,113,0.6); }
+    .gap-box.target  { border-top: 3px solid var(--accent-teal); }
+    .gap-label {
+      font-size: 0.68em; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.6em;
+    }
+    .gap-box.current .gap-label { color: #f87171; }
+    .gap-box.target  .gap-label { color: var(--accent-teal); }
+    .gap-box ul { list-style: none; padding: 0; margin: 0; }
+    .gap-box li {
+      font-size: 0.78em; color: var(--text-muted);
+      padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      line-height: 1.5;
+    }
+    .gap-box li:last-child { border-bottom: none; }
+    .gap-box li strong { color: var(--text-primary); }
+
+    /* Is / is not split */
+    .isnot-split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 0.8em;
+    }
+    .isnot-split > * { min-width: 0; }
+    .isnot-box {
+      background: var(--bg-card); border-radius: var(--radius); padding: 1em 1.2em;
+    }
+    .isnot-box.is    { border-top: 3px solid var(--accent-teal); }
+    .isnot-box.isnot { border-top: 3px solid rgba(248,113,113,0.6); }
+    .isnot-label {
+      font-size: 0.68em; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.6em;
+    }
+    .isnot-box.is    .isnot-label { color: var(--accent-teal); }
+    .isnot-box.isnot .isnot-label { color: #f87171; }
+    .isnot-box ul { list-style: none; padding: 0; margin: 0; }
+    .isnot-box li {
+      font-size: 0.78em; color: var(--text-muted);
+      padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.5;
+    }
+    .isnot-box li:last-child { border-bottom: none; }
+    .isnot-box li strong { color: var(--text-primary); }
+
+    /* Session coverage table */
+    .coverage-table {
+      width: 100%; border-collapse: collapse; font-size: 0.8em; margin-top: 0.8em;
+    }
+    .coverage-table th {
+      background: rgba(79,142,247,0.12); color: var(--accent-blue);
+      font-size: 0.7em; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.5em 0.9em;
+      border-bottom: 1px solid var(--border); text-align: left;
+    }
+    .coverage-table td {
+      padding: 0.55em 0.9em; color: var(--text-primary);
+      border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; text-align: left;
+    }
+    .coverage-table tr:last-child td { border-bottom: none; }
+    .coverage-table td:first-child { color: var(--accent-blue); font-weight: 700; }
+    .coverage-table td:last-child { color: var(--text-muted); }
+
+    /* Outcomes — Understand / Do / Judge */
+    .outcomes-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 0.8em; }
+    .outcome-block {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.8em 1.1em;
+      display: grid; grid-template-columns: 80px 1fr; gap: 12px; align-items: start;
+    }
+    .outcome-block > * { min-width: 0; }
+    .outcome-label {
+      font-size: 0.72em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; padding-top: 0.15em;
+    }
+    .outcome-block.understand .outcome-label { color: var(--accent-blue); }
+    .outcome-block.do         .outcome-label { color: var(--accent-teal); }
+    .outcome-block.judge      .outcome-label { color: var(--accent-gold); }
+    .outcome-items { display: flex; flex-wrap: wrap; gap: 5px; }
+    .outcome-item {
+      font-size: 0.72em; color: var(--text-muted);
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 4px; padding: 0.2em 0.6em; line-height: 1.5;
+    }
+
+    /* Session pattern flow */
+    .pattern-flow { display: flex; flex-direction: column; gap: 0; margin-top: 0.8em; }
+    .pattern-step {
+      display: flex; align-items: center; gap: 1em;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.8em 1.1em; margin-bottom: 4px;
+    }
+    .pattern-num {
+      font-size: 1.4em; font-weight: 800; color: var(--accent-blue);
+      opacity: 0.35; min-width: 1.2em; line-height: 1;
+    }
+    .pattern-title {
+      font-size: 0.85em; font-weight: 700; color: #fff; min-width: 110px;
+    }
+    .pattern-desc { font-size: 0.78em; color: var(--text-muted); }
+    .pattern-arrow {
+      font-size: 0.8em; color: var(--text-dim); margin: 1px 0 1px 1.4em;
+    }
+
+    /* Questions list */
+    .questions-list { list-style: none; padding: 0; margin: 0.8em 0 0; }
+    .questions-list li {
+      display: flex; gap: 0.8em; align-items: flex-start;
+      padding: 0.6em 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.82em; color: var(--text-primary); line-height: 1.5;
+    }
+    .questions-list li:last-child { border-bottom: none; }
+    .q-num {
+      min-width: 1.6em; height: 1.6em; border-radius: 50%;
+      background: rgba(79,142,247,0.18); color: var(--accent-blue);
+      font-size: 0.82em; font-weight: 700; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.05em;
+    }
+
+    /* Principle quote box */
+    .principle-box {
+      background: rgba(100,255,218,0.06); border: 1px solid rgba(100,255,218,0.2);
+      border-radius: var(--radius); padding: 0.9em 1.2em;
+      font-size: 0.82em; color: var(--text-primary); line-height: 1.7;
+      font-style: italic; text-align: center; margin: 0.8em 0;
+    }
+
+    /* Closing slide */
+    .closing-slide { text-align: center; }
+    .closing-slide h1 {
+      font-size: 2.2em; font-weight: 800; color: #fff;
+      letter-spacing: -0.03em; margin-bottom: 0.4em;
+    }
+    .closing-question {
+      font-size: 0.9em; color: var(--text-muted);
+      background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.2);
+      border-radius: var(--radius); padding: 0.9em 1.4em;
+      display: inline-block; margin-top: 0.8em; font-style: italic;
+    }
+
+    /* Fixed UI */
+    .home-link {
+      position: fixed; top: 16px; left: 20px; font-size: 0.72em; color: var(--text-dim);
+      text-decoration: none; display: flex; align-items: center; gap: 5px;
+      z-index: 100; transition: color 0.2s;
+    }
+    .home-link:hover { color: var(--accent-blue); }
+    .notes-hint {
+      position: fixed; top: 16px; right: 100px;
+      font-size: 0.65em; color: var(--text-dim); z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="../assets/images/02.%20PS%20Logo_Vertical.png" alt="Preferred Square" style="position:fixed; top:12px; right:16px; height:40px; z-index:100; opacity:0.85;" />
+  <a href="../index.html" class="home-link" target="_blank">← All Sessions</a>
+  <div class="notes-hint">Press S for speaker notes</div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ══════════════════════════════════════════════
+           H1: TITLE SLIDE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="title-slide">
+          <div class="session-label">Module 0 of 4 · AI Workshop</div>
+          <h1>AI Workshop</h1>
+          <p class="subtitle">Objectives &amp; Goals · ~10 minutes</p>
+          <div class="title-opener">
+            <strong>Welcome.</strong> We'll start with <strong>why we're here, what we'll cover, and what you'll walk away with.</strong>
+          </div>
+        </div>
+        <aside class="notes">
+          Welcome everyone. Before we start, we'll cover why we're here, what we'll cover across these workshops, and what you'll walk away with.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H2: WHY ARE WE HERE?
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Why Are We Here?</h2>
+        <p style="font-size:0.82em; color:var(--text-muted); margin:0.3em 0 0.8em;">Everyone knows AI exists. Fewer know how to integrate it best in their workflows.</p>
+
+        <div class="gap-split">
+          <div class="gap-box current">
+            <div class="gap-label">Where We Are</div>
+            <ul>
+              <li>AI tools are everywhere — in your inbox, browser, and productivity suite</li>
+              <li>Very few have a <strong>complete, joined-up picture</strong> of what it is and how to use it deliberately</li>
+              <li>Trying to figure out how to use it effectively</li>
+              <li>The result: inconsistent results, missed opportunities, and uncertainty about when to trust it</li>
+            </ul>
+          </div>
+          <div class="gap-box target">
+            <div class="gap-label">Where we want to be</div>
+            <ul>
+              <li>Understand <strong>what</strong> the technology actually is — not just the surface</li>
+              <li>Know <strong>why</strong> prompts work or don't work</li>
+              <li>Understand <strong>what agents are</strong> and how they can work for you</li>
+              <li>Be able to <strong>build</strong> simple AI workflows — without writing a single line of code</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Don't spend long here — 2 minutes max. The goal is to validate that the gap is real and that this workshop is the right response to it. Avoid being preachy. Most people in the room will nod along — this framing is just permission to say "yes, this is actually useful."
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H3: WHAT THIS WORKSHOP IS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What This Workshop Is</h2>
+        <p style="font-size:0.82em; color:var(--text-muted); margin:0.3em 0 0.8em;">Concepts first, practical throughout.</p>
+
+        <div class="isnot-split">
+          <div class="isnot-box is">
+            <div class="isnot-label">What it is</div>
+            <ul>
+              <li><strong>Concepts-first</strong> — every session builds understanding before asking you to do anything</li>
+              <li><strong>Platform-agnostic</strong> — principles that apply to any AI tool, not one product</li>
+              <li><strong>Progressive</strong> — each workshop builds on the last; by the end you'll have a holistic understanding of using AI effectively</li>
+            </ul>
+          </div>
+          <div class="isnot-box isnot">
+            <div class="isnot-label">What it is not</div>
+            <ul>
+              <li><strong style="color:#fff;">Not a coding exercise</strong> — everything is no-code or minimal-code</li>
+              <li><strong style="color:#fff;">Not about completely automating your tasks</strong> — it's about making your job easier and delivery times shorter</li>
+              <li><strong style="color:#fff;">Not a deep technical course</strong> — we'll touch on underlying concepts only enough to understand AI behaviour</li>
+              <li><strong style="color:#fff;">Not a one-tool tutorial</strong> — concepts work across ChatGPT, Claude, Copilot, and beyond</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          The "not a coding course" point relieves a lot of anxiety in the room. Say it clearly and mean it. Session 4 involves building in n8n — completely visual, no code. Reassure anyone who looks nervous.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H4: WORKSHOP COVERAGE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Workshop Coverage</h2>
+
+        <table class="coverage-table">
+          <thead>
+            <tr><th>Title</th><th>Core question answered</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>From AI to GenAI: Understanding the Technology</td>
+              <td>What is this thing, and how does it actually work?</td>
+            </tr>
+            <tr>
+              <td>Getting the Best Out of LLMs</td>
+              <td>How do I get reliable, high-quality output every time?</td>
+            </tr>
+            <tr>
+              <td>AI Agents &amp; Agentic AI</td>
+              <td>What's an agent, and how is it different from a chatbot?</td>
+            </tr>
+            <tr>
+              <td>Building AI Workflows with Available Tools</td>
+              <td>How do I build my own AI-powered tools — without coding?</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="notes">
+          Walk through this table slowly. People often arrive wondering "why aren't we just jumping in and using it?" — this explains why the sequence matters. The skills compound.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H5: WHAT YOU'LL WALK AWAY WITH
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What You'll Walk Away With</h2>
+        <p style="font-size:0.82em; color:var(--text-muted); margin:0.3em 0 0.6em;">By the end of these workshops, you will be able to:</p>
+
+        <div class="outcomes-grid">
+          <div class="outcome-block understand">
+            <div class="outcome-label">Understand</div>
+            <div class="outcome-items">
+              <span class="outcome-item">AI vs ML vs Generative AI</span>
+              <span class="outcome-item">How LLMs process and generate text</span>
+              <span class="outcome-item">Why vague prompts produce vague results</span>
+              <span class="outcome-item">What an AI agent is and how it reasons</span>
+            </div>
+          </div>
+          <div class="outcome-block do">
+            <div class="outcome-label">Do</div>
+            <div class="outcome-items">
+              <span class="outcome-item">Write structured, effective prompts</span>
+              <span class="outcome-item">Use AI for analysis, writing, summarisation, research</span>
+              <span class="outcome-item">Design an AI agent (role, tools, memory, constraints)</span>
+              <span class="outcome-item">Build a working AI workflow — triggered and automated</span>
+            </div>
+          </div>
+          <div class="outcome-block judge">
+            <div class="outcome-label">Judge</div>
+            <div class="outcome-items">
+              <span class="outcome-item">When to trust AI output vs verify it</span>
+              <span class="outcome-item">Which tasks are good fits for AI — and which aren't</span>
+              <span class="outcome-item">How to use AI tools responsibly</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          This slide matters because it sets expectations and gives participants something to measure themselves against. Read through it, pause, and ask: "If you leave here able to do all of this, would that be useful?" The answer is always yes.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H6: HOW EACH SESSION WORKS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>How Each Session Works</h2>
+        <p style="font-size:0.82em; color:var(--text-muted); margin:0.3em 0 0.7em;">Every session follows the same structure</p>
+
+        <div class="pattern-flow">
+          <div class="pattern-step">
+            <div class="pattern-num">1</div>
+            <div class="pattern-title">Concepts</div>
+            <div class="pattern-desc">Understand the ideas before applying them</div>
+          </div>
+          <div class="pattern-arrow">↓</div>
+          <div class="pattern-step">
+            <div class="pattern-num">2</div>
+            <div class="pattern-title">Live Demo</div>
+            <div class="pattern-desc">See the concept working in a real tool, on a real task — not slides about AI, but AI actually doing it</div>
+          </div>
+          <div class="pattern-arrow">↓</div>
+          <div class="pattern-step">
+            <div class="pattern-num">3</div>
+            <div class="pattern-title">Hands-On</div>
+            <div class="pattern-desc">A short activity to try it yourself or sketch your approach</div>
+          </div>
+          <div class="pattern-arrow">↓</div>
+          <div class="pattern-step">
+            <div class="pattern-num">4</div>
+            <div class="pattern-title">Key Takeaways</div>
+            <div class="pattern-desc">Consolidate what we covered</div>
+          </div>
+        </div>
+
+        <div style="margin-top:0.7em; display:flex; gap:8px; flex-wrap:wrap;">
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); padding:0.4em 0.8em; font-size:0.75em; color:var(--text-muted);">Questions welcome throughout</div>
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); padding:0.4em 0.8em; font-size:0.75em; color:var(--text-muted);">Bring curiosity, nothing else</div>
+        </div>
+        <aside class="notes">
+          The live demo point is important to call out. A lot of workshops talk about AI — we're going to show it. Set the expectation that the demos are unscripted — sometimes they go slightly differently than planned, and that's fine. Real AI behaviour, warts and all, is more educational than a polished recording.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H7: YOUR AI EXPERIENCE TODAY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Your AI Experience Today</h2>
+        <p style="font-size:0.82em; color:var(--text-muted); margin:0.3em 0 0.7em;">A quick show of hands — where are you starting from?</p>
+
+        <ul class="questions-list">
+          <li class="fragment">
+            <div class="q-num">1</div>
+            <div>"How many of us believe that AI can accelerate your delivery speed by 10x?"</div>
+          </li>
+          <li class="fragment">
+            <div class="q-num">2</div>
+            <div>"Anybody who has tried to use it and been disappointed with the results?"</div>
+          </li>
+          <li class="fragment">
+            <div class="q-num">3</div>
+            <div>"Who has never really tried it?"</div>
+          </li>
+        </ul>
+
+        <aside class="notes">
+          What to do with the answers:
+          Q1 — most hands up → "That's exactly the gap we're here to close."
+          Q2 — lots of hands → "By Session 2 you'll understand exactly why that happened."
+          Q3 — any hands → "Perfect — you'll leave with a clearer picture than people who've been guessing."
+
+          This icebreaker warms the room up and gives you signal on where to pitch the next four sessions. If the room is more experienced than expected, move faster through the conceptual slides in Session 1. If they're newer, slow down on the fundamentals. Calibrate based on what you see here.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H9: LET'S BEGIN
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="closing-slide">
+          <div style="font-size:0.7em; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent-blue); margin-bottom:0.6em;">Up next</div>
+          <h1 style="font-size:1.8em;">From AI to GenAI —<br><span style="color:var(--accent-teal);">Understanding the Technology and deciphering LLM behaviour</span></h1>
+          <p style="font-size:0.8em; color:var(--text-dim); margin-top:0.8em;">Concepts + Live Demos + Hands-on activity</p>
+        </div>
+        <aside class="notes">
+          Keep this brief. Transition energy is everything — end Session 0 with momentum, not a pause. Say something like: "Right — let's get into it. Session 1." Then move directly into the first slide of Session 1.
+        </aside>
+      </section>
+
+    </div><!-- /.slides -->
+  </div><!-- /.reveal -->
+
+  <!-- Reveal.js scripts -->
+  <script src="../assets/reveal/dist/reveal.js"></script>
+  <script src="../assets/reveal/plugin/notes/notes.js"></script>
+  <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'fade',
+      transitionSpeed: 'fast',
+      slideNumber: 'c/t',
+      showSlideNumber: 'all',
+      progress: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      center: true,
+      width: 1200,
+      height: 700,
+      margin: 0.04,
+      plugins: [ RevealNotes, RevealHighlight ]
+    });
+  </script>
+
+</body>
+</html>
