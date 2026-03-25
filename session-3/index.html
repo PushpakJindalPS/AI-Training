@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 3 — AI Agents &amp; Agentic AI | AI Workshop</title>
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="../assets/reveal/dist/reset.css" />
+  <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
+
+  <!-- Custom theme & demo styles -->
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="../assets/css/demos.css" />
+
+  <style>
+    /* ── Session 3 specific styles ── */
+
+    /* Title slide */
+    .title-slide { text-align: center; }
+    .session-label {
+      font-size: 0.7em; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent-blue); margin-bottom: 0.8em;
+    }
+    .title-slide h1 {
+      font-size: 2em; font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; color: #fff; margin-bottom: 0.4em;
+    }
+    .subtitle { font-size: 0.85em; color: var(--text-muted); margin-bottom: 1.2em; }
+    .title-opener { display: inline-block; font-size: 0.85em; color: var(--text-primary); }
+    .title-opener strong { color: var(--accent-teal); }
+
+    /* Agenda */
+    .agenda-item {
+      display: flex; align-items: flex-start; gap: 1em;
+      padding: 0.8em 0; border-bottom: 1px solid var(--border);
+    }
+    .agenda-item:last-child { border-bottom: none; }
+    .agenda-num {
+      font-size: 1.4em; font-weight: 800; color: var(--accent-blue);
+      opacity: 0.5; min-width: 1.5em; line-height: 1;
+    }
+    .agenda-text { font-size: 0.9em; color: var(--text-primary); line-height: 1.5; }
+    .agenda-text strong { color: var(--accent-teal); font-weight: 600; }
+
+    /* Chatbot vs Agent comparison */
+    .vs-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: left; }
+    .vs-split > * { min-width: 0; }
+    .vs-box { background: var(--bg-card); border-radius: var(--radius); padding: 1.2em 1.4em; }
+    .vs-box.reactive { border-top: 3px solid rgba(248,113,113,0.7); }
+    .vs-box.proactive { border-top: 3px solid var(--accent-teal); }
+    .vs-label {
+      font-size: 0.68em; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.7em;
+    }
+    .vs-box.reactive .vs-label { color: #f87171; }
+    .vs-box.proactive .vs-label { color: var(--accent-teal); }
+    .vs-box ul { list-style: none; padding: 0; margin: 0; }
+    .vs-box li {
+      font-size: 0.8em; color: var(--text-muted);
+      padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .vs-box li:last-child { border-bottom: none; }
+    .vs-box li strong { color: var(--text-primary); }
+    .vs-example {
+      font-size: 0.76em; color: var(--text-dim); font-style: italic;
+      margin-top: 0.6em; padding-top: 0.6em; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Component / signal / tools table */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.78em; text-align: left;
+    }
+    .data-table th {
+      background: rgba(79,142,247,0.12); color: var(--accent-blue);
+      font-size: 0.72em; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.55em 0.8em;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 0.5em 0.8em; color: var(--text-primary);
+      border-bottom: 1px solid rgba(79,142,247,0.07); vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .data-table td:first-child { color: var(--accent-teal); font-weight: 700; }
+    .data-table .dim { font-size: 0.9em; color: var(--text-muted); }
+
+    /* 5-component walkthrough cards */
+    .component-cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;
+    }
+    .component-cards > * { min-width: 0; }
+    .comp-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 0.9em 1.1em; border-left: 3px solid;
+    }
+    .comp-card .comp-label {
+      font-size: 0.62em; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.3em;
+    }
+    .comp-card p { font-size: 0.78em; color: var(--text-muted); margin: 0; }
+
+    /* Memory split */
+    .memory-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .memory-split > * { min-width: 0; }
+    .memory-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.1em 1.3em;
+    }
+    .memory-card.short { border-top: 3px solid var(--accent-gold); }
+    .memory-card.long  { border-top: 3px solid var(--accent-teal); }
+    .memory-card h4 { font-size: 0.82em; margin-bottom: 0.5em; }
+    .memory-card.short h4 { color: var(--accent-gold); }
+    .memory-card.long  h4 { color: var(--accent-teal); }
+    .memory-card ul { list-style: none; padding: 0; margin: 0; }
+    .memory-card li { font-size: 0.78em; color: var(--text-muted); padding: 0.25em 0; }
+    .memory-card li::before { content: "• "; color: var(--text-dim); }
+
+    /* Architecture cards */
+    .arch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .arch-grid > * { min-width: 0; }
+    .arch-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1em 1.1em; text-align: left;
+    }
+    .arch-card-num {
+      font-size: 0.62em; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent-blue); margin-bottom: 0.4em;
+    }
+    .arch-card h4 { font-size: 0.88em; color: #fff; margin-bottom: 0.3em; }
+    .arch-card p { font-size: 0.75em; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.5em; }
+    .arch-flow {
+      font-family: var(--font-mono); font-size: 0.68em; color: var(--accent-teal);
+      background: rgba(100,255,218,0.06); border-radius: 4px;
+      padding: 0.4em 0.6em; margin-bottom: 0.4em; white-space: pre;
+    }
+    .arch-best { font-size: 0.7em; color: var(--text-dim); font-style: italic; }
+
+    /* Agent design table */
+    .agent-design-table {
+      width: 100%; border-collapse: collapse; font-size: 0.76em;
+    }
+    .agent-design-table th {
+      background: rgba(100,255,218,0.1); color: var(--accent-teal);
+      font-size: 0.7em; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.5em 0.8em;
+      border-bottom: 1px solid rgba(100,255,218,0.2); text-align: left;
+    }
+    .agent-design-table td {
+      padding: 0.5em 0.8em; color: var(--text-primary);
+      border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top;
+    }
+    .agent-design-table tr:last-child td { border-bottom: none; }
+    .agent-design-table td:first-child { color: var(--accent-blue); font-weight: 700; min-width: 90px; }
+    .agent-design-table td:nth-child(2) { color: var(--text-muted); min-width: 160px; }
+
+    /* Workflow patterns */
+    .workflow-grid { display: flex; flex-direction: column; gap: 10px; }
+    .workflow-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.9em 1.1em;
+      display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: start;
+    }
+    .workflow-card > * { min-width: 0; }
+    .workflow-name { font-size: 0.75em; font-weight: 700; color: var(--accent-blue); }
+    .workflow-flow {
+      font-family: var(--font-mono); font-size: 0.64em; color: var(--accent-teal);
+      background: rgba(100,255,218,0.06); border-radius: 4px;
+      padding: 0.3em 0.5em; margin: 0.3em 0; white-space: pre;
+    }
+    .workflow-example { font-size: 0.74em; color: var(--text-muted); }
+
+    /* Use case grid */
+    .usecase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .usecase-grid > * { min-width: 0; }
+    .usecase-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.9em 1.1em;
+    }
+    .usecase-card h4 {
+      font-size: 0.72em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--accent-teal); margin-bottom: 0.5em;
+    }
+    .usecase-card ul { list-style: none; padding: 0; margin: 0; }
+    .usecase-card li { font-size: 0.75em; color: var(--text-muted); padding: 0.2em 0; line-height: 1.5; }
+    .usecase-card li::before { content: "→ "; color: var(--accent-blue); font-weight: 700; }
+
+    /* Copilot feature list */
+    .feature-list { list-style: none; padding: 0; margin: 0; }
+    .feature-list li {
+      font-size: 0.82em; color: var(--text-muted); padding: 0.35em 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex; gap: 0.6em; align-items: baseline;
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list li strong { color: var(--text-primary); flex-shrink: 0; }
+
+    /* Takeaways */
+    .takeaway-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; }
+    .takeaway-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.9em 1em; text-align: left;
+    }
+    .takeaway-num {
+      font-size: 1.5em; font-weight: 800; color: var(--accent-blue);
+      opacity: 0.3; line-height: 1; margin-bottom: 0.3em;
+    }
+    .takeaway-text { font-size: 0.78em; color: var(--text-primary); line-height: 1.5; }
+    .takeaway-text strong { color: var(--accent-teal); }
+
+    /* Activity */
+    .activity-section {
+      background: linear-gradient(135deg, rgba(100,255,218,0.05), rgba(79,142,247,0.05));
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-lg);
+      padding: 1.4em 1.8em; text-align: left;
+    }
+
+    /* Fixed UI */
+    .nav-hint {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      font-size: 0.65em; color: var(--text-dim); pointer-events: none; z-index: 100;
+    }
+    .home-link {
+      position: fixed; top: 16px; left: 20px; font-size: 0.72em; color: var(--text-dim);
+      text-decoration: none; display: flex; align-items: center; gap: 5px;
+      z-index: 100; transition: color 0.2s;
+    }
+    .home-link:hover { color: var(--accent-blue); }
+    .notes-hint {
+      position: fixed; top: 16px; right: 100px;
+      font-size: 0.65em; color: var(--text-dim); z-index: 100;
+    }
+    .reveal .navigate-down { color: var(--accent-teal); }
+  </style>
+</head>
+<body>
+
+  <img src="../assets/images/02.%20PS%20Logo_Vertical.png" alt="Preferred Square" style="position:fixed; top:12px; right:16px; height:40px; z-index:100; opacity:0.85;" />
+  <a href="../index.html" class="home-link" target="_blank">← All Sessions</a>
+  <div class="notes-hint">Press S for speaker notes</div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ══════════════════════════════════════════════
+           H1: TITLE SLIDE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="title-slide">
+          <div class="session-label">Session 3 of 4 · AI Workshop</div>
+          <h1>AI Agents &amp; Agentic AI:<br/>From Chat to Autonomous Work</h1>
+          <p class="subtitle">~1 hour · Live demos with Copilot Agents</p>
+          <div class="title-opener">
+            Opening question: <strong>What's the most repetitive, multi-step task you do every week?</strong>
+          </div>
+        </div>
+        <aside class="notes">
+          Open with a question: "What's the most repetitive, multi-step task you do every week — one that requires looking things up, writing something, and sending it somewhere?" Take 2-3 answers. By the end of the session, they'll understand how an agent could handle exactly that.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H2: AGENDA
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What We'll Cover Today</h2>
+        <div style="margin-top: 1.2em;">
+          <div class="agenda-item">
+            <div class="agenda-num">01</div>
+            <div class="agenda-text"><strong>What makes an AI agent different</strong> from a chatbot</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">02</div>
+            <div class="agenda-text"><strong>The 5 components</strong> every agent is built from</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">03</div>
+            <div class="agenda-text"><strong>How agents are structured</strong> and coordinated</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">04</div>
+            <div class="agenda-text"><strong>How to design an agent</strong> using a prompting system</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">05</div>
+            <div class="agenda-text"><strong>Live demo</strong> — Copilot Agents in action</div>
+          </div>
+        </div>
+        <aside class="notes">
+          Sessions 1 and 2 were about using LLMs as a tool you talk to. Session 3 is about setting up AI to work for you — completing goals autonomously, step by step, without you typing every instruction.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H3: CHATBOT VS AGENT
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Chatbot vs AI Agent</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">A chatbot answers. An agent <em>acts</em>.</p>
+        <div class="vs-split">
+          <div class="vs-box reactive">
+            <div class="vs-label">Chatbot (what most people use today)</div>
+            <ul>
+              <li>You send a message → it replies → <strong>done</strong></li>
+              <li>Each interaction is <strong>independent</strong></li>
+              <li>You drive <strong>every step</strong></li>
+            </ul>
+            <div class="vs-example">"Summarize this email" → you get a summary → you copy it somewhere manually</div>
+          </div>
+          <div class="vs-box proactive">
+            <div class="vs-label">AI Agent</div>
+            <ul>
+              <li>You give it a <strong>goal</strong> → it figures out the steps → it executes</li>
+              <li>Can take <strong>multiple actions</strong> in sequence</li>
+              <li>Handles <strong>decisions</strong> along the way</li>
+            </ul>
+            <div class="vs-example">"Monitor my inbox, summarize project updates, add to my tracker — every morning"</div>
+          </div>
+        </div>
+        <div class="highlight-box teal" style="margin-top: 1em; font-size: 0.82em;">
+          <strong>The key difference:</strong> A chatbot is reactive. An agent is proactive and autonomous.
+        </div>
+        <aside class="notes">
+          This is the mental model shift of the whole session. Most people's mental model of AI is "I ask, it answers." An agent flips that — you define the goal once, it does the work repeatedly. Use the inbox example and ask: "How long does that task take you manually each morning?"
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H4: 5 COMPONENTS (with vertical)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <!-- H4 main -->
+        <section>
+          <h2>The 5 Components of an Agent</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Every agent is built from the same 5 parts</p>
+          <table class="data-table">
+            <thead>
+              <tr><th>Component</th><th>What it is</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Signal</td>
+                <td>What <em>triggers</em> the agent to start</td>
+                <td class="dim">A new email arrives, a form is submitted, a scheduled time</td>
+              </tr>
+              <tr>
+                <td>Input</td>
+                <td>The <em>data</em> the agent works with</td>
+                <td class="dim">The email content, a document, a spreadsheet row</td>
+              </tr>
+              <tr>
+                <td>Reasoning (LLM)</td>
+                <td>The <em>"brain"</em> — plans and decides</td>
+                <td class="dim">Claude, GPT-4o — reads input, decides next action</td>
+              </tr>
+              <tr>
+                <td>Actions / Tools</td>
+                <td>What the agent can <em>do</em></td>
+                <td class="dim">Search the web, read a file, send an email, update a spreadsheet</td>
+              </tr>
+              <tr>
+                <td>Memory</td>
+                <td>What the agent <em>remembers</em></td>
+                <td class="dim">Previous interactions, user preferences, accumulated context</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size: 0.7em; color: var(--text-dim); margin-top: 0.8em; text-align: right;">↓ See these in action</p>
+          <aside class="notes">
+            Walk through each component slowly using one concrete scenario — the support ticket example on the next slide. This makes the abstract very concrete.
+          </aside>
+        </section>
+
+        <!-- H4 vertical: walkthrough -->
+        <section>
+          <h2>The 5 Components — In Action</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Scenario: a support ticket routing agent</p>
+          <div class="component-cards">
+            <div class="comp-card" style="border-color: var(--accent-blue);">
+              <div class="comp-label" style="color: var(--accent-blue);">Signal</div>
+              <p>A new support ticket arrives</p>
+            </div>
+            <div class="comp-card" style="border-color: var(--accent-teal);">
+              <div class="comp-label" style="color: var(--accent-teal);">Input</div>
+              <p>The agent reads the ticket content and metadata</p>
+            </div>
+            <div class="comp-card" style="border-color: var(--accent-gold);">
+              <div class="comp-label" style="color: var(--accent-gold);">Reasoning</div>
+              <p>LLM decides: is this urgent? Which team handles it?</p>
+            </div>
+            <div class="comp-card" style="border-color: #c084fc;">
+              <div class="comp-label" style="color: #c084fc;">Actions</div>
+              <p>Sends routing email, logs the ticket in the tracker</p>
+            </div>
+          </div>
+          <div class="comp-card" style="border-left: 3px solid #f472b6;">
+            <div class="comp-label" style="color: #f472b6;">Memory</div>
+            <p style="font-size: 0.78em; color: var(--text-muted); margin: 0;">It remembers that this client always gets priority routing — without being told each time</p>
+          </div>
+          <aside class="notes">
+            Walk through each box in sequence. Make it vivid — the point is that all 5 components fire automatically, triggered by a single event. No human needs to press anything after the initial setup.
+          </aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H5: SIGNAL
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Signal: What Starts an Agent</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Agents don't wait — they respond to triggers</p>
+        <table class="data-table">
+          <thead>
+            <tr><th>Signal Type</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Message</td><td class="dim">Someone sends a message to the agent directly</td></tr>
+            <tr><td>Schedule</td><td class="dim">Runs every morning at 8am automatically</td></tr>
+            <tr><td>Event</td><td class="dim">A form is submitted, a file is uploaded to SharePoint</td></tr>
+            <tr><td>Data change</td><td class="dim">A new row is added to a spreadsheet or tracker</td></tr>
+            <tr><td>API / webhook</td><td class="dim">Another system sends a notification to trigger the agent</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight-box teal" style="margin-top: 1em; font-size: 0.82em;">
+          <strong>The signal removes the human trigger.</strong> The agent sits on standby and activates when the right condition is met — this is what makes it feel autonomous.
+        </div>
+        <aside class="notes">
+          Give a vivid example: "Imagine an agent that triggers every time a new project is added to your tracking sheet — it automatically creates the folder structure, drafts the kickoff email, and schedules the first meeting." That's a data-change signal driving a sequence of actions, with zero manual steps.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H6: ACTIONS & TOOLS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Actions &amp; Tools: What an Agent Can Do</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">The agent is only as powerful as its tools</p>
+        <table class="data-table">
+          <thead>
+            <tr><th>Tool</th><th>What it enables</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Web search</td><td class="dim">Look up live information from the internet</td></tr>
+            <tr><td>File reader</td><td class="dim">Read documents, spreadsheets, PDFs</td></tr>
+            <tr><td>Email / calendar</td><td class="dim">Send emails, create meetings, read inbox</td></tr>
+            <tr><td>Spreadsheet write</td><td class="dim">Update or add rows to a tracker or data file</td></tr>
+            <tr><td>Form submission</td><td class="dim">Fill and submit web forms automatically</td></tr>
+            <tr><td>API calls</td><td class="dim">Talk to external systems — CRM, ERP, databases</td></tr>
+            <tr><td>Code execution</td><td class="dim">Run calculations, process and transform data</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight-box gold" style="margin-top: 1em; font-size: 0.82em;">
+          <strong>Key insight:</strong> The LLM itself can't <em>do</em> anything — it can only <em>decide</em> what to do. Tools are what give the agent real-world capabilities.
+        </div>
+        <aside class="notes">
+          The LLM is the brain; the tools are the hands. Without tools, an agent is just a very smart planner with no ability to act. This also explains why different agents have different capabilities — it depends entirely on what tools they've been given access to.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H7: MEMORY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Memory: What an Agent Remembers</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Memory is what turns a task into a relationship</p>
+        <div class="memory-split">
+          <div class="memory-card short">
+            <h4>Short-Term Memory (in-session)</h4>
+            <ul>
+              <li>Everything within a single conversation or workflow run</li>
+              <li>Automatically available — the context window</li>
+              <li>Lost when the session ends</li>
+            </ul>
+          </div>
+          <div class="memory-card long">
+            <h4>Long-Term Memory (persisted)</h4>
+            <ul>
+              <li>Stored externally — a database, a file, a notes system</li>
+              <li>Explicitly saved and retrieved between sessions</li>
+              <li>Survives across sessions and interactions</li>
+              <li style="color: var(--text-dim); font-style: italic;">"This client prefers bullet-point summaries" → stored, retrieved next time</li>
+            </ul>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top: 1em; font-size: 0.82em;">
+          Without memory: every interaction starts from scratch. With memory: the agent gets smarter and more personalised over time.
+        </div>
+        <aside class="notes">
+          Draw the analogy to a new colleague vs. a trusted one who knows your preferences. Then ask: "What would you want your AI assistant to remember about how you work?" Most consumer tools (Copilot, ChatGPT) now offer optional memory — this isn't theoretical.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H8: AGENT ARCHITECTURES
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Agent Architectures</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">How agents are structured to handle complex work</p>
+        <div class="arch-grid">
+          <div class="arch-card">
+            <div class="arch-card-num">Pattern 1</div>
+            <h4>Sequential (Pipeline)</h4>
+            <div class="arch-flow">A → B → C → Output</div>
+            <p>Each step feeds into the next in a fixed sequence</p>
+            <div style="font-size: 0.72em; color: var(--text-muted); margin-bottom: 0.4em;"><em>Example:</em> Receive brief → research → draft → format → send</div>
+            <div class="arch-best">Best for: predictable, linear processes</div>
+          </div>
+          <div class="arch-card">
+            <div class="arch-card-num">Pattern 2</div>
+            <h4>Hierarchical</h4>
+            <div class="arch-flow">Manager
+├─ Sub-agent A
+├─ Sub-agent B
+└─ Sub-agent C</div>
+            <p>One "manager" agent coordinates specialist sub-agents</p>
+            <div style="font-size: 0.72em; color: var(--text-muted); margin-bottom: 0.4em;"><em>Example:</em> Research + Writing + Review agents coordinated by a planner</div>
+            <div class="arch-best">Best for: complex tasks with distinct specialisms</div>
+          </div>
+          <div class="arch-card">
+            <div class="arch-card-num">Pattern 3</div>
+            <h4>Multi-agent (Collaborative)</h4>
+            <div class="arch-flow">Draft ⟷ Critique
+      ⟷ Fact-check</div>
+            <p>Multiple agents work in parallel, share findings, check each other</p>
+            <div style="font-size: 0.72em; color: var(--text-muted); margin-bottom: 0.4em;"><em>Example:</em> One drafts, one critiques, one fact-checks — simultaneously</div>
+            <div class="arch-best">Best for: high-stakes output needing multiple perspectives</div>
+          </div>
+        </div>
+        <aside class="notes">
+          For most practical day-to-day use cases, sequential is what people encounter first. Hierarchical and multi-agent are more relevant for complex automated pipelines. Understanding the concept prepares them for what's possible.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H9: DESIGNING AN AGENT
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Designing an Agent: The Prompting System</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">A well-designed agent starts with a well-designed system prompt</p>
+        <table class="agent-design-table">
+          <thead>
+            <tr><th>Element</th><th>What to define</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Role</td>
+              <td>Who is this agent?</td>
+              <td>"You are a project coordination assistant."</td>
+            </tr>
+            <tr>
+              <td>Goal</td>
+              <td>What must it achieve?</td>
+              <td>"Your job is to process incoming project requests and produce a structured brief."</td>
+            </tr>
+            <tr>
+              <td>Tools</td>
+              <td>What can it use?</td>
+              <td>"You have access to: web search, email, and the project tracker spreadsheet."</td>
+            </tr>
+            <tr>
+              <td>Constraints</td>
+              <td>What must it not do?</td>
+              <td>"Do not make decisions without confirming with the user. Never email external parties."</td>
+            </tr>
+            <tr>
+              <td>Output</td>
+              <td>How should it respond?</td>
+              <td>"Always return a structured brief with: Summary, Key Actions, Owner, Deadline."</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="highlight-box teal" style="margin-top: 1em; font-size: 0.82em;">
+          Think of it as a <strong>job description</strong> for your agent. A vague job description produces a vague employee. Spend the most time on <strong>constraints</strong> — that's where most people underinvest.
+        </div>
+        <aside class="notes">
+          A well-defined constraint set is the difference between an agent you trust and one that occasionally surprises you. Constraints are not about limiting the agent — they're about making it reliably safe and predictable.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H10: WORKFLOW DESIGN PATTERNS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Workflow Design Patterns</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">The building blocks of any agent workflow</p>
+        <div class="workflow-grid">
+          <div class="workflow-card">
+            <div>
+              <div class="workflow-name">Linear</div>
+              <div class="workflow-flow">Trigger → Step 1 → Step 2 → Step 3 → Output</div>
+            </div>
+            <div class="workflow-example">Email received → extract key info → draft reply → send for approval</div>
+          </div>
+          <div class="workflow-card">
+            <div>
+              <div class="workflow-name">Branching</div>
+              <div class="workflow-flow">Trigger → Decision
+├─ If urgent → escalate now
+└─ If routine → add to queue</div>
+            </div>
+            <div class="workflow-example">New request arrives → Is it urgent? → Yes: escalate immediately / No: add to processing queue</div>
+          </div>
+          <div class="workflow-card">
+            <div>
+              <div class="workflow-name">Loop / Retry</div>
+              <div class="workflow-flow">Step → Check quality → if not good → retry</div>
+            </div>
+            <div class="workflow-example">Draft a summary → Is it under 100 words? → If not, compress and try again</div>
+          </div>
+        </div>
+        <aside class="notes">
+          Most real-world agent workflows combine all three patterns. Start with linear — easiest to build and debug. Add branching when you need to handle different scenarios. Loops are useful for quality-control steps.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H11: WHAT CAN AGENTS DO FOR YOU?
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What Can Agents Do For You?</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">From concept to practical use — real examples</p>
+        <div class="usecase-grid">
+          <div class="usecase-card">
+            <h4>Document &amp; Research</h4>
+            <ul>
+              <li>Read a brief, search for context, produce a structured summary</li>
+              <li>Monitor a topic and send a weekly digest</li>
+              <li>Compare two documents and list the differences</li>
+            </ul>
+          </div>
+          <div class="usecase-card">
+            <h4>Communication</h4>
+            <ul>
+              <li>Draft responses to incoming emails based on a template</li>
+              <li>Summarise a long email thread and identify action items</li>
+              <li>Send a follow-up when no reply is received after X days</li>
+            </ul>
+          </div>
+          <div class="usecase-card">
+            <h4>Data &amp; Tracking</h4>
+            <ul>
+              <li>Extract data from incoming documents and log to a spreadsheet</li>
+              <li>Generate a weekly status report from project data</li>
+              <li>Flag anomalies or overdue items in a data feed</li>
+            </ul>
+          </div>
+          <div class="usecase-card">
+            <h4>Workflow Coordination</h4>
+            <ul>
+              <li>Route incoming requests to the right person based on content</li>
+              <li>Create folder, draft kickoff email, schedule meeting — from one trigger</li>
+              <li>Monitor a tracker and alert owners of overdue items</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Pick 2-3 examples most relevant to your audience and ask "Would this save you time each week?" The goal is to make agents feel immediately useful and achievable — not futuristic.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H12: COPILOT AGENTS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Copilot Agents: What's Available Now</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Agents you can use today — no coding required</p>
+        <div class="grid-2" style="gap: 14px;">
+          <div>
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6em;">Pre-built agents in Microsoft 365 Copilot</div>
+            <ul class="feature-list">
+              <li><strong>Facilitator</strong> Summarises meetings and tracks action items in Teams</li>
+              <li><strong>Researcher</strong> Deep research using web + your organisation's data</li>
+              <li><strong>Analyst</strong> Data analysis and insight generation from files</li>
+              <li><strong>Custom agents</strong> Built by your org or IT team for specific workflows</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6em;">What you can configure yourself</div>
+            <ul class="feature-list">
+              <li><strong>System prompt</strong> Instructions that define the agent's behaviour</li>
+              <li><strong>Data sources</strong> Which files and SharePoint content it can access</li>
+              <li><strong>Tools</strong> Web search, file access, calendar integration, and more</li>
+            </ul>
+            <div class="highlight-box teal" style="margin-top: 0.8em; font-size: 0.8em;">
+              Access via: Copilot Chat → Agent selector · Teams → Copilot tab
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Lower the barrier — they don't need to build an agent from scratch to benefit. Pre-built agents exist for immediate use, and customising a Copilot agent requires no coding — just writing instructions, which they've been doing since Session 1.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H13: DEMO 1 — RESEARCHER AGENT
+      ══════════════════════════════════════════════ -->
+      <section class="scrollable">
+        <div class="demo-slide">
+          <h2>Demo 1: Pre-Built Agent — Researcher</h2>
+          <div class="demo-scenario">
+            <strong>Scenario</strong>
+            You have a client meeting next week on AI in retail supply chains. You need a structured briefing — fast.
+          </div>
+          <div class="demo-columns">
+            <div>
+              <div class="demo-prompt-label">Message sent to Researcher agent</div>
+              <div class="demo-prompt">I have a meeting with a retail client next week. They're exploring how AI can improve their supply chain operations. Give me a briefing on:
+- The main ways AI is currently being used in retail supply chains
+- 2-3 recent examples of companies that have done this successfully
+- Key risks or challenges they should be aware of
+
+Format as a structured briefing I can read in 5 minutes.</div>
+            </div>
+            <div class="demo-response-wrapper">
+              <button class="demo-reveal-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                See Agent Response
+              </button>
+              <div class="demo-response-label" style="display:none;">Agent Response</div>
+              <div class="demo-response" data-response="AI IN RETAIL SUPPLY CHAINS — CLIENT BRIEFING
+
+1. HOW AI IS BEING USED
+
+Demand forecasting: AI analyses historical sales, seasonality, and external signals (weather, events) to predict stock needs with far greater accuracy than traditional methods.
+
+Inventory optimisation: Real-time AI monitoring dynamically adjusts reorder points, reducing both overstock and out-of-stock situations.
+
+Logistics & routing: AI optimises delivery routes, warehouse picking sequences, and last-mile fulfilment to cut cost and time.
+
+Supplier risk: AI monitors supplier signals — news, financials, geopolitical events — to flag disruption risk before it materialises.
+
+Returns management: AI classifies and routes returned items automatically, significantly reducing processing time and cost.
+
+2. COMPANY EXAMPLES
+
+Walmart: Uses AI-driven demand forecasting across its entire supply network, reducing excess inventory by ~15%. Their system processes real-time sales data alongside external signals including weather and local events.
+
+Zara (Inditex): AI-powered production planning allows them to respond to emerging trends in under 2 weeks — a core competitive advantage in fast fashion.
+
+Ocado: Built an AI-first supply chain from scratch; their automated warehouse technology is now licensed to other major retailers globally.
+
+3. KEY RISKS & CHALLENGES
+
+Data quality: AI is only as good as the data it's trained on — poor historical data produces poor forecasts.
+
+Over-reliance: Teams can lose the experience and intuition needed to override AI recommendations when context warrants it.
+
+Integration complexity: Connecting AI tools to legacy ERP and logistics systems is often the biggest implementation hurdle.
+
+Change management: Frontline teams may distrust or work around AI recommendations without proper training and buy-in.
+
+RECOMMENDED TALKING POINTS FOR YOUR MEETING
+— Ask about their current forecasting process and where they see the most manual effort
+— Explore whether they have a unified data platform or fragmented systems
+— Frame AI as augmenting their team's judgment, not replacing it"></div>
+            </div>
+          </div>
+          <div class="demo-discussion">
+            <strong>Notice:</strong> The agent searched the web and structured the output without being told the exact format. Compare to how long this research would take manually — and consider that this can be triggered automatically before every client meeting.
+          </div>
+        </div>
+        <aside class="notes">
+          Highlight: structured, sourced, usable output in seconds. Draw the contrast to manual research time. Then ask: "What would you use this for before your next stakeholder meeting?"
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H14: DEMO 2 — CUSTOM AGENT
+      ══════════════════════════════════════════════ -->
+      <section class="scrollable">
+        <div class="demo-slide">
+          <h2>Demo 2: Configuring a Custom Agent</h2>
+          <div class="demo-scenario">
+            <strong>Scenario</strong>
+            Build an agent that processes incoming project requests and returns a structured brief — consistently, from any format of input.
+          </div>
+          <div class="demo-columns">
+            <div>
+              <div class="demo-step-label step-safe">System Prompt (the agent's instructions)</div>
+              <div class="demo-prompt-label">Agent configuration</div>
+              <div class="demo-prompt">You are a project intake assistant.
+
+Your goal is to process incoming project requests and produce a structured project brief.
+
+When given a project request (in any format — email, bullet points, paragraph), you will:
+1. Extract: project name, requestor, objective, key deliverables, deadline, and stakeholders
+2. Identify any missing information and list it as open questions
+3. Return a structured brief using this format:
+
+Project Name:
+Requestor:
+Objective:
+Key Deliverables:
+Deadline:
+Stakeholders:
+Open Questions:
+
+Do not make assumptions about missing information. If something is unclear, list it as an open question.</div>
+            </div>
+            <div>
+              <div class="demo-step-label step-safe">Test with a real, unstructured request</div>
+              <div class="demo-prompt-label">Input sent to the agent</div>
+              <div class="demo-prompt">Hey, can someone look into setting up a new reporting dashboard for the ops team? Sarah asked for it, needs to be ready by end of Q2, should show daily order volumes and fulfilment rates. Not sure who else is involved.</div>
+              <div class="demo-response-wrapper" style="margin-top: 10px;">
+                <button class="demo-reveal-btn">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                  See Agent Output
+                </button>
+                <div class="demo-response-label" style="display:none;">Agent Output</div>
+                <div class="demo-response" data-response="Project Name: Ops Team Reporting Dashboard (provisional)
+
+Requestor: Sarah (full name and team TBC)
+
+Objective: Build a reporting dashboard for the operations team showing daily order volumes and fulfilment rates.
+
+Key Deliverables:
+- Dashboard displaying daily order volume
+- Dashboard displaying fulfilment rate
+- Access provisioned for the ops team
+
+Deadline: End of Q2
+
+Stakeholders: Sarah (requestor); Ops team (end users); additional stakeholders not confirmed.
+
+Open Questions:
+1. Who is Sarah's full name and which team does she sit in?
+2. Who else is involved — technical lead, data team, other stakeholders?
+3. What data source(s) should the dashboard pull from?
+4. What tool or platform should the dashboard be built in?
+5. Are there any specific filters or breakdowns required (e.g. by region, product line)?
+6. Who will own and maintain the dashboard post-delivery?"></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-discussion">
+            <strong>Notice:</strong> It extracted structured output from a casual, unformatted message — and identified 6 missing pieces of information as open questions, without being told to. This is reusable: same agent, any incoming request, consistent output every time.
+          </div>
+        </div>
+        <aside class="notes">
+          This is the core demo of the session. The agent extracted structure from chaos and surfaced missing information. Emphasise: this is just a prompt — no code, no special platform required. The same system prompt in any LLM tool produces this consistently.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H15: DEMO 3 — AGENT VS PLAIN CHAT
+      ══════════════════════════════════════════════ -->
+      <section class="scrollable">
+        <div class="demo-slide">
+          <h2>Demo 3: Agent vs Plain Chat</h2>
+          <div class="demo-scenario">
+            <strong>Scenario</strong>
+            The same unstructured request — sent to plain Copilot Chat vs. the configured agent. Same LLM. Very different output.
+          </div>
+          <div class="demo-columns">
+            <div>
+              <div class="demo-step-label step-danger">Plain Copilot Chat</div>
+              <div class="demo-prompt-label">Prompt</div>
+              <div class="demo-prompt">Process this project request and give me a structured brief.
+
+Hey, can someone look into setting up a new reporting dashboard for the ops team? Sarah asked for it, needs to be ready by end of Q2, should show daily order volumes and fulfilment rates. Not sure who else is involved.</div>
+              <div class="demo-response-wrapper" style="margin-top: 10px;">
+                <button class="demo-reveal-btn">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                  See Chat Response
+                </button>
+                <div class="demo-response-label" style="display:none;">Chat Response (variable)</div>
+                <div class="demo-response" data-response="Sure! Here's a structured brief based on the request:
+
+Project: Reporting Dashboard
+Requested by: Sarah
+Goal: Set up a reporting dashboard for the ops team.
+Features needed: Daily order volumes and fulfilment rates.
+Timeline: End of Q2
+Team: TBC
+
+Let me know if you'd like me to expand on any section or add more detail!"></div>
+              </div>
+            </div>
+            <div>
+              <div class="demo-step-label step-safe">Configured Agent</div>
+              <div class="demo-prompt-label">Same input</div>
+              <div class="demo-prompt">Hey, can someone look into setting up a new reporting dashboard for the ops team? Sarah asked for it, needs to be ready by end of Q2, should show daily order volumes and fulfilment rates. Not sure who else is involved.</div>
+              <div class="demo-response-wrapper" style="margin-top: 10px;">
+                <button class="demo-reveal-btn">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                  See Agent Response
+                </button>
+                <div class="demo-response-label" style="display:none;">Agent Response (consistent)</div>
+                <div class="demo-response" data-response="Project Name: Ops Team Reporting Dashboard (provisional)
+
+Requestor: Sarah (full name and team TBC)
+
+Objective: Build a reporting dashboard for the operations team showing daily order volumes and fulfilment rates.
+
+Key Deliverables:
+- Dashboard displaying daily order volume
+- Dashboard displaying fulfilment rate
+- Access provisioned for the ops team
+
+Deadline: End of Q2
+
+Stakeholders: Sarah (requestor); Ops team (end users); additional stakeholders not confirmed.
+
+Open Questions:
+1. Who is Sarah's full name and which team does she sit in?
+2. Who else is involved — technical lead, data team, other stakeholders?
+3. What data source(s) should the dashboard pull from?
+4. What tool or platform should the dashboard be built in?
+5. Are there any specific filters or breakdowns required (e.g. by region, product line)?
+6. Who will own and maintain the dashboard post-delivery?"></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-discussion">
+            <strong>Same LLM, same input.</strong> The only difference is the system prompt. The agent is a packaged, reusable set of instructions — and it produces consistent, structured output every single time, for any request.
+          </div>
+        </div>
+        <aside class="notes">
+          This makes the contrast visceral. The plain chat response is okay but inconsistent and incomplete — it misses open questions entirely. The agent response follows the exact format every time and flags missing info every time. Consistency at scale is what makes it valuable.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H16: HANDS-ON ACTIVITY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Your Turn — Design Your Agent</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">5 minutes · Think of a task you do regularly</p>
+        <div class="activity-section">
+          <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-teal); margin-bottom: 0.8em;">Write a System Prompt for Your Agent</div>
+          <div class="prompt-box" style="font-size: 0.74em; margin-bottom: 1.2em;">You are a [role].
+
+Your goal is to [what it must achieve].
+
+You have access to: [tools — even if hypothetical for now].
+
+When given [type of input], you will:
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+Always return [output format].
+
+Never [key constraint].</div>
+          <div class="highlight-box teal" style="font-size: 0.82em;">
+            <strong>Debrief question:</strong> What task did you pick — and what would this agent save you each week?
+          </div>
+        </div>
+        <aside class="notes">
+          Walk around and help. Common stumbling blocks: people pick tasks that are too vague ("help me with emails") — push them to be specific about what type of email and what output format. The constraint field is often left empty — prompt them to add at least one. Even a hypothetical agent design is valuable practice for thinking in systems.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H17: KEY TAKEAWAYS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Key Takeaways</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">6 things to remember from Session 3</p>
+        <div class="takeaway-grid">
+          <div class="takeaway-item">
+            <div class="takeaway-num">1</div>
+            <div class="takeaway-text">An agent is given a <strong>goal</strong> — it plans and executes; a chatbot only responds to prompts</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">2</div>
+            <div class="takeaway-text">Every agent has <strong>5 components</strong>: Signal → Input → Reasoning → Actions → Memory</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">3</div>
+            <div class="takeaway-text">The <strong>LLM is the brain, tools are the hands</strong> — without tools, an agent can plan but not act</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">4</div>
+            <div class="takeaway-text">Design an agent like a <strong>job description</strong>: Role + Goal + Tools + Constraints + Output</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">5</div>
+            <div class="takeaway-text">Three architectures: <strong>Sequential, Hierarchical, Multi-agent</strong> — most workflows start sequential</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">6</div>
+            <div class="takeaway-text"><strong>Copilot agents are available today</strong> — no coding required to start using or configuring them</div>
+          </div>
+        </div>
+        <div style="margin-top: 1em; text-align: center; font-size: 0.75em; color: var(--text-dim);">
+          Session 4 → Putting It All Together
+        </div>
+        <aside class="notes">
+          Wrap up by reminding them that Session 4 builds directly on this. Encourage them to try using the Researcher or Analyst Copilot agent before next session, and to bring ideas for the agent they'd like to build.
+        </aside>
+      </section>
+
+    </div><!-- /.slides -->
+  </div><!-- /.reveal -->
+
+  <!-- Reveal.js scripts -->
+  <script src="../assets/reveal/dist/reveal.js"></script>
+  <script src="../assets/reveal/plugin/notes/notes.js"></script>
+  <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
+
+  <!-- Demo reveal logic -->
+  <script src="../assets/js/demo-reveal.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'fade',
+      transitionSpeed: 'fast',
+      slideNumber: 'c/t',
+      showSlideNumber: 'all',
+      progress: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      center: true,
+      width: 1200,
+      height: 700,
+      margin: 0.04,
+      plugins: [ RevealNotes, RevealHighlight ]
+    });
+
+    Reveal.on('ready', function () {
+      window.DemoReveal.init();
+    });
+
+    Reveal.on('slidechanged', function (event) {
+      window.DemoReveal.onSlideChange(event);
+      window.DemoReveal.init();
+    });
+  </script>
+
+</body>
+</html>

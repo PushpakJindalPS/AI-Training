@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 1 — From AI to GenAI | AI Workshop</title>
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
+  <!-- Custom theme -->
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="../assets/css/demos.css" />
+  <!-- Highlight.js theme (for code blocks) -->
+  <link rel="stylesheet" href="../assets/reveal/plugin/highlight/monokai.css" />
+
+  <style>
+    /* ── Session-specific overrides ── */
+
+    /* Title slide */
+    .title-slide { text-align: center; }
+    .title-slide .session-label {
+      font-size: 0.65em;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 0.8em;
+    }
+    .title-slide h1 {
+      font-size: 2.2em;
+      margin-bottom: 0.4em;
+      background: linear-gradient(135deg, #fff 0%, #a0b8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .title-slide .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9em;
+      margin-bottom: 2em;
+    }
+    .title-opener {
+      background: rgba(79,142,247,0.1);
+      border: 1px solid rgba(79,142,247,0.25);
+      border-radius: 10px;
+      padding: 0.8em 1.4em;
+      display: inline-block;
+      font-size: 0.85em;
+      color: var(--text-primary);
+    }
+    .title-opener strong { color: var(--accent-teal); }
+
+    /* Agenda items */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1em;
+      padding: 0.8em 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .agenda-item:last-child { border-bottom: none; }
+    .agenda-num {
+      font-size: 1.4em;
+      font-weight: 800;
+      color: var(--accent-blue);
+      opacity: 0.5;
+      min-width: 1.5em;
+      line-height: 1;
+    }
+    .agenda-text { font-size: 0.9em; color: var(--text-primary); line-height: 1.5; }
+    .agenda-text strong { color: var(--accent-teal); font-weight: 600; }
+
+    /* AI layers */
+    .ai-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .ai-layer {
+      padding: 1em 1.4em;
+      border-radius: var(--radius);
+      margin-bottom: 0.5em;
+      text-align: left;
+    }
+    .ai-layer-1 { background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.2); }
+    .ai-layer-2 { background: rgba(100,255,218,0.08); border: 1px solid rgba(100,255,218,0.2); margin-left: 1em; }
+    .ai-layer-3 { background: rgba(255,209,102,0.08); border: 1px solid rgba(255,209,102,0.2); margin-left: 2em; }
+    .ai-layer h4 { margin-bottom: 0.3em; font-size: 0.95em; }
+    .ai-layer p { font-size: 0.78em; color: var(--text-muted); margin: 0; }
+
+    /* Tool grid */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8em;
+      text-align: left;
+    }
+    .tool-category {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9em 1.1em;
+    }
+    .tool-category h4 {
+      font-size: 0.75em;
+      color: var(--accent-teal);
+      margin-bottom: 0.5em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .tool-category .tools { font-size: 0.78em; color: var(--text-primary); margin-bottom: 0.4em; font-weight: 600; }
+    .tool-category .use-for { font-size: 0.72em; color: var(--text-muted); }
+
+    /* Process steps */
+    .steps {
+      display: flex;
+      gap: 0.5em;
+      align-items: stretch;
+      margin: 1em 0;
+    }
+    .step {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1em;
+      text-align: center;
+    }
+    .step-num {
+      font-size: 2em;
+      font-weight: 800;
+      color: var(--accent-blue);
+      opacity: 0.3;
+      line-height: 1;
+    }
+    .step-title { font-size: 0.85em; font-weight: 700; color: #fff; margin: 0.3em 0; }
+    .step-desc { font-size: 0.72em; color: var(--text-muted); line-height: 1.5; }
+    .step-arrow {
+      flex-shrink: 0;
+      align-self: center;
+      color: var(--accent-blue);
+      font-size: 1.4em;
+      line-height: 1;
+      padding: 0 2px;
+    }
+
+    /* Prompt anatomy */
+    .prompt-parts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .prompt-parts > * { min-width: 0; }
+    .prompt-part {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 1em 1.1em;
+      text-align: left;
+    }
+    .prompt-part.role    { border-left: 3px solid var(--accent-blue); }
+    .prompt-part.inst    { border-left: 3px solid var(--accent-teal); }
+    .prompt-part.ctx     { border-left: 3px solid var(--accent-gold); }
+    .prompt-part.output  { border-left: 3px solid #c084fc; }
+    .prompt-part h4 { font-size: 0.8em; margin-bottom: 0.4em; }
+    .prompt-part h4 .label {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.8em;
+      margin-right: 0.4em;
+    }
+    .role    .label { background: rgba(79,142,247,0.2);  color: var(--accent-blue); }
+    .inst    .label { background: rgba(100,255,218,0.15); color: var(--accent-teal); }
+    .ctx     .label { background: rgba(255,209,102,0.15); color: var(--accent-gold); }
+    .output  .label { background: rgba(192,132,252,0.15); color: #c084fc; }
+    .prompt-part blockquote {
+      font-size: 0.78em;
+      font-style: italic;
+      color: var(--text-muted);
+      margin: 0;
+      border: none;
+      padding: 0;
+    }
+
+    /* Before / After */
+    .compare-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      text-align: left;
+    }
+    .compare-cols > * { min-width: 0; }
+    .compare-box {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 1.1em 1.3em;
+    }
+    .compare-box.before { border-top: 3px solid #f87171; }
+    .compare-box.after  { border-top: 3px solid var(--accent-teal); }
+    .compare-label {
+      font-size: 0.68em;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.7em;
+    }
+    .compare-box.before .compare-label { color: #f87171; }
+    .compare-box.after  .compare-label { color: var(--accent-teal); }
+    .compare-box blockquote {
+      font-size: 0.8em;
+      font-style: italic;
+      color: var(--text-primary);
+      margin: 0 0 0.8em;
+      padding: 0;
+      border: none;
+    }
+    .change-list { list-style: none; padding: 0; margin: 0; }
+    .change-list li {
+      font-size: 0.74em;
+      padding: 0.25em 0;
+      color: var(--text-muted);
+    }
+    .change-list li::before { content: "+ "; color: var(--accent-teal); font-weight: 700; }
+
+    /* System/User split */
+    .two-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      text-align: left;
+    }
+    .two-panel > * { min-width: 0; }
+    .panel {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 1.2em;
+    }
+    .panel.system { border-top: 3px solid var(--accent-blue); }
+    .panel.user   { border-top: 3px solid var(--accent-teal); }
+    .panel-label {
+      font-size: 0.7em;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.6em;
+    }
+    .panel.system .panel-label { color: var(--accent-blue); }
+    .panel.user   .panel-label { color: var(--accent-teal); }
+    .panel p { font-size: 0.82em; color: var(--text-muted); }
+    .panel blockquote {
+      font-size: 0.78em;
+      font-style: italic;
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.04);
+      border-radius: 6px;
+      padding: 0.6em 0.9em;
+      margin: 0.6em 0 0;
+      border: none;
+    }
+
+    /* Takeaways grid */
+    .takeaway-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8em;
+    }
+    .takeaway-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9em 1em;
+      text-align: left;
+    }
+    .takeaway-num {
+      font-size: 1.5em;
+      font-weight: 800;
+      color: var(--accent-blue);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 0.3em;
+    }
+    .takeaway-text { font-size: 0.78em; color: var(--text-primary); line-height: 1.5; }
+    .takeaway-text strong { color: var(--accent-teal); }
+
+    /* Activity */
+    .activity-section {
+      background: linear-gradient(135deg, rgba(100,255,218,0.05), rgba(79,142,247,0.05));
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-lg);
+      padding: 1.4em 1.8em;
+      text-align: left;
+    }
+
+    /* Nav hint */
+    .nav-hint {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65em;
+      color: var(--text-dim);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Home link */
+    .home-link {
+      position: fixed;
+      top: 16px;
+      left: 20px;
+      font-size: 0.72em;
+      color: var(--text-dim);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 100;
+      transition: color 0.2s;
+    }
+    .home-link:hover { color: var(--accent-blue); }
+
+    /* Speaker notes hint */
+    .notes-hint {
+      position: fixed;
+      top: 16px;
+      right: 100px;
+      font-size: 0.65em;
+      color: var(--text-dim);
+      z-index: 100;
+    }
+
+    /* Vertical nav indicator */
+    .reveal .navigate-down { color: var(--accent-teal); }
+
+    /* Demo build slides — fixed header layout */
+    .demo-build-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .demo-header {
+      flex-shrink: 0;
+      text-align: center;
+      padding-bottom: 0.5em;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.9em;
+    }
+    .demo-objective {
+      display: inline-block;
+      background: rgba(79,142,247,0.08);
+      border: 1px solid rgba(79,142,247,0.2);
+      border-radius: 8px;
+      padding: 0.45em 1.1em;
+      font-size: 0.75em;
+      color: var(--text-muted);
+      max-width: 700px;
+      text-align: left;
+    }
+    .demo-objective strong { color: var(--accent-blue); margin-right: 0.4em; }
+    .demo-build-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Home link -->
+  <img src="../assets/images/02.%20PS%20Logo_Vertical.png" alt="Preferred Square" style="position:fixed; top:12px; right:16px; height:40px; z-index:100; opacity:0.85;" />
+  <a href="../index.html" class="home-link" target="_blank">← All Sessions</a>
+  <div class="notes-hint">Press S for speaker notes</div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ══════════════════════════════════════════════
+           H1: TITLE SLIDE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="title-slide">
+          <div class="session-label">Module 1 of 4 · AI WORKSHOP</div>
+          <h1>From AI to GenAI:<br/>Understanding the Technology</h1>
+        </div>
+        <aside class="notes">
+          Start with a quick show of hands — "Who has used an AI tool — Copilot, ChatGPT, or anything else — in the last week?" This sets the tone: they're already using these tools, now they'll understand what's actually happening under the hood.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H2: AGENDA
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What We'll Cover Today</h2>
+        <div style="margin-top: 1.2em;">
+          <div class="agenda-item">
+            <div class="agenda-num">01</div>
+            <div class="agenda-text"><strong>What is AI</strong> — and how did we get to GenAI?</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">02</div>
+            <div class="agenda-text"><strong>How does an LLM actually work?</strong> (no math required)</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">03</div>
+            <div class="agenda-text"><strong>How do you write prompts</strong> that get great results?</div>
+          </div>
+          <div class="agenda-item">
+            <div class="agenda-num">04</div>
+            <div class="agenda-text"><strong>Live demos</strong> — using an LLM for real BA tasks</div>
+          </div>
+        </div>
+        <aside class="notes">
+          Frame this session as "foundational". Everything in Sessions 2, 3, and 4 builds on what we cover today. The concepts apply to any AI tool — Copilot, Claude, ChatGPT, or whatever comes next.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H3 (NEW): QUESTION SLIDE — What is AI?
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+          <div style="font-size:0.7em; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent-blue); margin-bottom:0.8em;">Before we begin</div>
+          <h1 style="font-size:3em; font-weight:800; color:#fff; letter-spacing:-0.03em; margin:0 0 0.6em;">What is AI?</h1>
+        </div>
+        <aside class="notes">
+          Pause here and invite 2–3 responses from the audience. Don't correct or guide — just listen. You'll refer back to these answers as you move through the session.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H4: WHAT IS AI? (with vertical slides)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <!-- H4 main -->
+        <section>
+          <h2>What is AI?</h2>
+          <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 1.2em;">AI is not one thing — it's a family of technologies</p>
+          <div class="ai-layers">
+            <div class="ai-layer ai-layer-1">
+              <h4 style="color: var(--accent-blue);">Artificial Intelligence (AI)</h4>
+              <p>Any system that mimics human decision-making</p>
+            </div>
+            <div class="ai-layer ai-layer-2">
+              <h4 style="color: var(--accent-teal);">Machine Learning (ML)</h4>
+              <p>AI that <em>learns from data</em> instead of following fixed rules</p>
+            </div>
+            <div class="ai-layer ai-layer-3">
+              <h4 style="color: var(--accent-gold);">Deep Learning</h4>
+              <p>ML using neural networks to find complex patterns</p>
+            </div>
+          </div>
+          <p style="font-size: 0.7em; color: var(--text-dim); margin-top: 0.8em; text-align: right;">↓ See everyday examples</p>
+          <aside class="notes">
+            Most people think of AI as one monolithic thing. This slide breaks that mental model. You don't need to explain neural networks — just establish that these are different levels of sophistication, each building on the last.
+          </aside>
+        </section>
+
+        <!-- H4 vertical: Everyday examples -->
+        <section>
+          <h2>AI in Everyday Life</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Each layer in action</p>
+          <div class="grid-3" style="margin-top: 0.8em;">
+            <div class="card">
+              <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 0.6em;">AI</div>
+              <div style="font-size: 1.4em; margin-bottom: 0.4em;">📧</div>
+              <div style="font-size: 0.85em; font-weight: 600; color: #fff; margin-bottom: 0.3em;">Gmail spam filter</div>
+              <div style="font-size: 0.75em; color: var(--text-muted);">Rule + pattern based — is this email spam? Yes / No</div>
+            </div>
+            <div class="card">
+              <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-teal); text-transform: uppercase; margin-bottom: 0.6em;">ML</div>
+              <div style="font-size: 1.4em; margin-bottom: 0.4em;">🎬</div>
+              <div style="font-size: 0.85em; font-weight: 600; color: #fff; margin-bottom: 0.3em;">Netflix recommendations</div>
+              <div style="font-size: 0.75em; color: var(--text-muted);">Learns from your watch history to predict what you'll enjoy</div>
+            </div>
+            <div class="card">
+              <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 0.6em;">Deep Learning</div>
+              <div style="font-size: 1.4em; margin-bottom: 0.4em;">🌐</div>
+              <div style="font-size: 0.85em; font-weight: 600; color: #fff; margin-bottom: 0.3em;">Google Translate</div>
+              <div style="font-size: 0.75em; color: var(--text-muted);">Face recognition, real-time translation — neural networks at scale</div>
+            </div>
+          </div>
+          <aside class="notes">
+            Keep this brief. The goal is to make the layers tangible with tools they've already used.
+          </aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H5: THE AI FAMILY TREE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2 style="margin-bottom:0.6em;">The AI Family Tree</h2>
+        <img src="../assets/images/ai_branches_no_genai.svg"
+             alt="AI branches diagram showing Machine Learning, NLP, Computer Vision, Deep Learning and other subfields"
+             style="width:100%; max-width:780px; display:block; margin:0 auto;" />
+        <aside class="notes">
+          Walk through the diagram — AI is the top-level field. Machine Learning, NLP, and Computer Vision are subfields. Deep Learning is a subfield of ML. Point out Robotics, Expert Systems, Planning, and Speech Processing on the right. The key message: AI is not one thing, it's a family of different technologies.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H6: WHAT IS GENERATIVE AI? (with vertical)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <!-- H6 main -->
+        <section>
+          <h2>What is Generative AI?</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">GenAI is the layer that <em>creates</em> — not just classifies</p>
+          <div class="compare-cols">
+            <div class="compare-box before">
+              <div class="compare-label">Traditional AI</div>
+              <p style="font-size: 0.82em; color: var(--text-muted); margin-bottom: 0.5em;">Given input → predicts a <strong style="color: #f87171;">label or score</strong></p>
+              <div style="font-size: 0.78em; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 0.7em 0.9em; color: var(--text-primary); font-style: italic;">
+                "Is this email spam?" → <strong style="color: #f87171;">Yes / No</strong>
+              </div>
+            </div>
+            <div class="compare-box after">
+              <div class="compare-label">Generative AI</div>
+              <p style="font-size: 0.82em; color: var(--text-muted); margin-bottom: 0.5em;">Given input → <strong style="color: var(--accent-teal);">generates new content</strong></p>
+              <div style="font-size: 0.78em; background: rgba(100,255,218,0.06); border: 1px solid rgba(100,255,218,0.2); border-radius: 8px; padding: 0.7em 0.9em; color: var(--text-primary); font-style: italic;">
+                "Write a professional reply to this email" → <strong style="color: var(--accent-teal);">full draft</strong>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.7em; color: var(--text-dim); margin-top: 0.8em; text-align: right;">↓ What can GenAI generate?</p>
+          <aside class="notes">
+            The key shift is from classifying existing things to creating new things. This is why GenAI feels so different — it's not just answering yes/no, it's producing work.
+          </aside>
+        </section>
+
+        <!-- H6 vertical: What GenAI can generate -->
+        <section>
+          <h2>What Can GenAI Generate?</h2>
+          <div class="grid-4" style="margin-top: 1em;">
+            <div class="card" style="text-align: center;">
+              <div style="font-size: 2em; margin-bottom: 0.3em;">📝</div>
+              <div style="font-size: 0.85em; font-weight: 700; color: var(--accent-blue); margin-bottom: 0.3em;">Text</div>
+              <div style="font-size: 0.72em; color: var(--text-muted);">Documents, emails, reports, code</div>
+            </div>
+            <div class="card" style="text-align: center;">
+              <div style="font-size: 2em; margin-bottom: 0.3em;">🖼️</div>
+              <div style="font-size: 0.85em; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.3em;">Images</div>
+              <div style="font-size: 0.72em; color: var(--text-muted);">DALL-E, Midjourney</div>
+            </div>
+            <div class="card" style="text-align: center;">
+              <div style="font-size: 2em; margin-bottom: 0.3em;">🎬</div>
+              <div style="font-size: 0.85em; font-weight: 700; color: var(--accent-gold); margin-bottom: 0.3em;">Audio & Video</div>
+              <div style="font-size: 0.72em; color: var(--text-muted);">Sora, ElevenLabs</div>
+            </div>
+            <div class="card" style="text-align: center;">
+              <div style="font-size: 2em; margin-bottom: 0.3em;">📊</div>
+              <div style="font-size: 0.85em; font-weight: 700; color: #c084fc; margin-bottom: 0.3em;">Data</div>
+              <div style="font-size: 0.72em; color: var(--text-muted);">Tables, JSON, structured outputs</div>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top: 1.2em; font-size: 0.83em;">
+            For BAs, the most impactful modality is <strong>text</strong> — requirements, summaries, stakeholder communications, analysis.
+          </div>
+          <aside class="notes">
+            Keep focus on text — that's what BAs will use every day. Images, video etc. are context to show the breadth of the technology.
+          </aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H7: GENAI FAMILY TREE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2 style="margin-bottom:0.6em;">Where Does Generative AI Fit?</h2>
+        <img src="../assets/images/ai_branches_genai_topology.svg"
+             alt="AI branches diagram with Generative AI highlighted, showing it draws on Deep Learning, NLP, Computer Vision and Speech"
+             style="width:100%; max-width:780px; display:block; margin:0 auto;" />
+        <aside class="notes">
+          The amber dashed lines show that Generative AI isn't a standalone branch — it draws on Deep Learning, NLP, Computer Vision, and Speech Processing all at once. That's what makes it powerful and different from earlier AI tools.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H8: THE GENAI LANDSCAPE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>The GenAI Landscape</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Many tools, one underlying technology</p>
+        <div class="tool-grid">
+          <div class="tool-category">
+            <h4>Chat & Writing</h4>
+            <div class="tools">ChatGPT · Claude · Copilot Chat · Gemini</div>
+            <div class="use-for">Drafting, summarizing, analysis</div>
+          </div>
+          <div class="tool-category">
+            <h4>Productivity</h4>
+            <div class="tools">Copilot in Word/Excel/PPT · Notion AI</div>
+            <div class="use-for">Document work, data analysis</div>
+          </div>
+          <div class="tool-category">
+            <h4>Automation</h4>
+            <div class="tools">n8n · Make · Zapier AI</div>
+            <div class="use-for">Workflows, repetitive tasks</div>
+          </div>
+          <div class="tool-category">
+            <h4>Search & Research</h4>
+            <div class="tools">Perplexity · Bing AI</div>
+            <div class="use-for">Research, fact-finding</div>
+          </div>
+        </div>
+        <div class="highlight-box teal" style="margin-top: 1em; font-size: 0.8em;">
+          Different interfaces — most run on the same small set of underlying models (GPT, Claude, Gemini, Llama). <strong>Learn to prompt well and you can use any of them.</strong>
+        </div>
+        <aside class="notes">
+          Avoid positioning any one tool as "the best." The goal is to help BAs see that the skill they're building today — prompting and working with LLMs — is transferable across all these tools. The tool may change next year; the skill won't.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H6: HOW LLMs WORK (with vertical slides)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <!-- H6 main -->
+        <section>
+          <h2>How LLMs Work</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">An LLM is a very sophisticated autocomplete</p>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-title">Training</div>
+              <div class="step-desc">Reads billions of documents — books, websites, code, conversations</div>
+            </div>
+            <div class="step-arrow">›</div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-title">Pattern Learning</div>
+              <div class="step-desc">Learns which words, ideas, and structures follow each other</div>
+            </div>
+            <div class="step-arrow">›</div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-title">Generation</div>
+              <div class="step-desc">Predicts the most useful next tokens, one at a time</div>
+            </div>
+          </div>
+          <p style="font-size: 0.7em; color: var(--text-dim); margin-top: 0.8em; text-align: right;">↓ The autocomplete analogy</p>
+          <aside class="notes">
+            Avoid math or diagrams of neural networks. The autocomplete analogy is enough. What matters is: it's not "thinking" the way humans do — it's sophisticated pattern matching at massive scale. This is important later when we talk about hallucinations.
+          </aside>
+        </section>
+
+        <!-- H6 vertical: The autocomplete analogy -->
+        <section>
+          <h2>Autocomplete</h2>
+          <div class="card accent" style="margin: 1em 0; padding: 1.4em 1.8em; text-align: center;">
+            <p style="font-size: 1em; color: var(--text-primary); font-style: italic; line-height: 1.7;">
+              Like a very <strong>well-read colleague</strong> who can complete your sentence —<br/>
+              but has read <strong>everything ever written</strong>, in every language.
+            </p>
+          </div>
+          <div class="grid-2" style="margin-top: 1em;">
+            <div class="highlight-box">
+              <strong>What it IS doing</strong>
+              <p style="font-size: 0.8em; margin-top: 0.4em; color: var(--text-muted);">Sophisticated pattern matching at massive scale — predicting the most useful next word given everything it's seen</p>
+            </div>
+            <div class="highlight-box gold">
+              <strong>What it is NOT doing</strong>
+              <p style="font-size: 0.8em; margin-top: 0.4em; color: var(--text-muted);">"Thinking" the way humans do — it doesn't have beliefs, intentions, or real understanding</p>
+            </div>
+          </div>
+          <p style="font-size: 0.78em; color: var(--text-muted); margin-top: 1em;">This is why LLMs can be confidently wrong (hallucinate) — they're completing patterns, not checking facts.</p>
+          <aside class="notes">
+            This distinction matters. Don't dwell on hallucinations — just plant the seed that the model is pattern matching, not reasoning. We'll revisit this in Session 2.
+          </aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H7: TOKENS & CONTEXT WINDOWS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Tokens &amp; Context Windows</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Two concepts that explain LLM limits</p>
+        <div class="grid-2">
+          <div class="card">
+            <h3 style="margin-bottom: 0.6em;">Tokens</h3>
+            <ul class="icon-list" style="font-size: 0.82em;">
+              <li>A token ≈ ¾ of a word</li>
+              <li>"Knowledge Worker" = ~3 tokens</li>
+              <li>Very large documents may be truncated</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom: 0.6em;">Context Window</h3>
+            <ul class="icon-list" style="font-size: 0.82em;">
+              <li>The model's "working memory" per session</li>
+              <li>Includes your messages <em>and</em> its replies</li>
+              <li>Modern models: 100K–200K tokens (300–500 pages)</li>
+              <li>Exceed it → model forgets earlier messages</li>
+            </ul>
+          </div>
+        </div>
+        <div class="highlight-box gold" style="margin-top: 1em; font-size: 0.82em;">
+          <strong>Practical tip:</strong> If the model seems to "forget" what you said earlier in a long session, start a fresh conversation and re-provide the key context.
+        </div>
+        <aside class="notes">
+          Don't go deep here. Just make sure they understand why pasting a very large document might not always work as expected, and why context matters in long conversations.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H: CONTEXT CARRYOVER
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Context Carryover</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">The LLM remembers everything in your current conversation</p>
+        <div class="grid-2">
+          <div>
+            <h3 style="margin-bottom: 0.7em;">How it works</h3>
+            <ul class="icon-list" style="font-size: 0.82em;">
+              <li>Every message + every reply is appended to the context</li>
+              <li>The model sees the full history each time it responds</li>
+              <li>This is why "make it shorter" or "change the tone" works</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin-bottom: 0.7em;">Best practices</h3>
+            <ul class="icon-list" style="font-size: 0.82em;">
+              <li>Start a <strong>new chat</strong> for a completely different task</li>
+              <li>Re-state important context in very long conversations</li>
+              <li>The model does <em>not</em> remember previous sessions (unless memory is explicitly enabled)</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          This explains a common frustration — "why did it forget what I told it?" — and sets up better habits. Consistent across all tools.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H8: PROMPT ENGINEERING (with vertical per element)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <!-- H8 main: All 4 parts overview -->
+        <section>
+          <h2>Prompt</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Garbage in, garbage out — but it's easy to fix</p>
+          <div class="prompt-parts">
+            <div class="prompt-part role">
+              <h4><span class="label">Role</span> Who should it act as?</h4>
+              <blockquote>"You are an experienced professional reviewing a requirements document."</blockquote>
+            </div>
+            <div class="prompt-part inst">
+              <h4><span class="label">Instruction</span> What do you want?</h4>
+              <blockquote>"Review the following requirements and identify any ambiguities or missing information."</blockquote>
+            </div>
+            <div class="prompt-part ctx">
+              <h4><span class="label">Context</span> What background does it need?</h4>
+              <blockquote>"This is for an ERP migration project. The audience is the development team."</blockquote>
+            </div>
+            <div class="prompt-part output">
+              <h4><span class="label">Output Format</span> How should it respond?</h4>
+              <blockquote>"Return a numbered list of issues. Keep each point under 2 sentences."</blockquote>
+            </div>
+          </div>
+          <aside class="notes">
+            Most people only provide the instruction. Adding role + context + output format dramatically improves results — and this works the same way in every AI tool you'll ever use.
+          </aside>
+        </section>
+
+        <!-- H8 vertical: Role deep dive -->
+        <section>
+          <h2>Element 1: Role</h2>
+          <div class="highlight-box" style="margin-bottom: 1em; font-size: 0.88em;">
+            <strong>"Who should the model act as?"</strong>
+          </div>
+          <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 1em;">Setting a role shifts the model's perspective, vocabulary, and level of detail.</p>
+          <div class="grid-2">
+            <div class="card">
+              <div style="font-size: 0.7em; color: var(--accent-blue); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5em;">Generic</div>
+              <p style="font-size: 0.82em; font-style: italic; color: var(--text-muted);">"Summarize this document."</p>
+              <p style="font-size: 0.75em; color: var(--text-dim); margin-top: 0.5em;">→ Generic summary, no particular audience or purpose</p>
+            </div>
+            <div class="card accent">
+              <div style="font-size: 0.7em; color: var(--accent-teal); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5em;">With Role</div>
+              <p style="font-size: 0.82em; font-style: italic; color: var(--text-primary);">"You are an experienced professional. Summarize this document."</p>
+              <p style="font-size: 0.75em; color: var(--text-dim); margin-top: 0.5em;">→ Focuses on requirements, stakeholders, business impact</p>
+            </div>
+          </div>
+          <aside class="notes">Keep this snappy. The role is the first lever that makes a big difference.</aside>
+        </section>
+
+        <!-- H8 vertical: Instruction -->
+        <section>
+          <h2>Element 2: Instruction</h2>
+          <div class="highlight-box" style="margin-bottom: 1em; font-size: 0.88em;">
+            <strong>"What do you want it to do?"</strong>
+          </div>
+          <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 1em;">Be specific. Vague instructions produce vague results.</p>
+          <div class="grid-2">
+            <div class="card">
+              <div style="font-size: 0.7em; color: #f87171; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5em;">Vague</div>
+              <p style="font-size: 0.82em; font-style: italic; color: var(--text-muted);">"Help me with this document."</p>
+            </div>
+            <div class="card accent">
+              <div style="font-size: 0.7em; color: var(--accent-teal); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5em;">Specific</div>
+              <p style="font-size: 0.82em; font-style: italic; color: var(--text-primary);">"Identify all functional requirements, list any ambiguities, and flag any dependencies between requirements."</p>
+            </div>
+          </div>
+          <aside class="notes">The instruction is the core of the prompt. Everything else supports it.</aside>
+        </section>
+
+        <!-- H8 vertical: Context -->
+        <section>
+          <h2>Element 3: Context</h2>
+          <div class="highlight-box" style="margin-bottom: 1em; font-size: 0.88em;">
+            <strong>"What background does it need?"</strong>
+          </div>
+          <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 1em;">The model only knows what you tell it. Background context shapes every decision it makes.</p>
+          <ul style="font-size: 0.83em; color: var(--text-primary); text-align: left; padding-left: 1.2em;">
+            <li style="margin-bottom: 0.5em;">Who is the <strong>audience</strong>? (technical? executive? external?)</li>
+            <li style="margin-bottom: 0.5em;">What is the <strong>project or situation</strong>?</li>
+            <li style="margin-bottom: 0.5em;">What are the <strong>constraints</strong>? (deadline, budget, policy)</li>
+            <li>What has <strong>already been decided</strong>?</li>
+          </ul>
+          <aside class="notes">Context is where BAs have a natural advantage — they're used to gathering and providing context for stakeholders. Same skill applies here.</aside>
+        </section>
+
+        <!-- H8 vertical: Output format -->
+        <section>
+          <h2>Element 4: Output Format</h2>
+          <div class="highlight-box" style="margin-bottom: 1em; font-size: 0.88em;">
+            <strong>"How should it respond?"</strong>
+          </div>
+          <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 1em;">Specifying format removes back-and-forth and gives you copy-paste ready output.</p>
+          <div class="grid-2">
+            <div>
+              <div style="font-size: 0.75em; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; margin-bottom: 0.5em;">Format options</div>
+              <ul class="icon-list" style="font-size: 0.82em;">
+                <li>Bullet list / numbered list</li>
+                <li>Table</li>
+                <li>Paragraph (max N words)</li>
+                <li>Specific document sections</li>
+                <li>JSON / structured data</li>
+              </ul>
+            </div>
+            <div class="card accent">
+              <div style="font-size: 0.7em; color: var(--accent-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5em;">Example</div>
+              <p style="font-size: 0.78em; font-style: italic; color: var(--text-primary);">"Return a numbered list of issues. Keep each point under 2 sentences. End with a one-paragraph overall risk summary."</p>
+            </div>
+          </div>
+          <aside class="notes">Output format is the most overlooked element. When specified well, the output is often directly usable without editing.</aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H9: BEFORE vs AFTER
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Prompt: Before vs After</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">The same question — two very different results</p>
+        <div class="compare-cols">
+          <div class="compare-box before">
+            <div class="compare-label">Weak Prompt</div>
+            <blockquote>"Summarize this document."</blockquote>
+            <ul class="change-list" style="list-style: none; padding: 0;">
+              <li style="font-size: 0.74em; color: var(--text-dim); padding: 0.2em 0;">No role or perspective</li>
+              <li style="font-size: 0.74em; color: var(--text-dim); padding: 0.2em 0;">No audience specified</li>
+              <li style="font-size: 0.74em; color: var(--text-dim); padding: 0.2em 0;">No focus area</li>
+              <li style="font-size: 0.74em; color: var(--text-dim); padding: 0.2em 0;">No output format</li>
+            </ul>
+          </div>
+          <div class="compare-box after">
+            <div class="compare-label">Strong Prompt</div>
+            <blockquote>"You are an experienced professional. Summarize the following requirements document for a non-technical stakeholder. Focus on business impact, not technical details. Use 5 bullet points, each under 20 words."</blockquote>
+            <ul class="change-list">
+              <li>Role (BA context)</li>
+              <li>Audience (non-technical stakeholder)</li>
+              <li>Focus (business impact)</li>
+              <li>Output format (5 bullets, word limit)</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Run this live — paste the same document into both prompts and show the difference in output. This is one of the most impactful moments in the session. The point is not "use this exact template" — it's "every piece of context you add makes the output more useful."
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H12: FEW-SHOT EXAMPLES
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Few-Shot Examples</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Show, don't just tell</p>
+        <div class="compare-cols">
+          <div class="card">
+            <div style="font-size: 0.7em; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5em;">Zero-shot (no example)</div>
+            <div class="prompt-box">"Write a project status update."</div>
+          </div>
+          <div class="card accent">
+            <div style="font-size: 0.7em; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5em;">Few-shot (with example)</div>
+            <div class="prompt-box" style="font-size: 0.68em;">"Write a project status update in this format:
+<strong>Status:</strong> [Green/Amber/Red]
+<strong>This week:</strong> [2 sentences]
+<strong>Next week:</strong> [2 sentences]
+<strong>Blockers:</strong> [if any]
+
+Here's a good example: [paste one]
+Now write one for: [paste your project details]"</div>
+          </div>
+        </div>
+        <div class="highlight-box teal" style="margin-top: 1em; font-size: 0.82em;">
+          <strong>Why it works:</strong> The model calibrates exactly to your format, tone, and length — no back-and-forth needed. Ideal for templated BA outputs: status reports, BRDs, meeting summaries.
+        </div>
+        <aside class="notes">
+          Particularly powerful for BAs who produce templated outputs — status reports, BRDs, meeting summaries. Spend 2 minutes showing this live. Works the same in any LLM tool.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H13: CHAIN OF THOUGHT
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Chain of Thought Prompting</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Ask it to think before it answers</p>
+        <div class="grid-2" style="margin-bottom: 1em;">
+          <div class="highlight-box">
+            <strong>The problem</strong>
+            <p style="font-size: 0.8em; margin-top: 0.4em; color: var(--text-muted);">For complex tasks, LLMs sometimes jump to a conclusion that's wrong</p>
+          </div>
+          <div class="highlight-box teal">
+            <strong>The fix</strong>
+            <p style="font-size: 0.8em; margin-top: 0.4em; color: var(--text-muted);">Add "think step by step" or "reason through this before answering"</p>
+          </div>
+        </div>
+        <div class="prompt-box" style="font-size: 0.73em; margin-bottom: 1em;">"You are reviewing a business requirements document. Before giving your assessment, list the key business objectives, list the stated assumptions, and identify any gaps between them. Then provide your overall assessment."</div>
+        <div class="grid-3">
+          <div style="text-align: center; font-size: 0.78em; color: var(--text-muted);">📄 Analysing complex documents</div>
+          <div style="text-align: center; font-size: 0.78em; color: var(--text-muted);">⚖️ Comparing options</div>
+          <div style="text-align: center; font-size: 0.78em; color: var(--text-muted);">🔍 Diagnosing process issues</div>
+        </div>
+        <aside class="notes">
+          The single most underused prompting technique. Dramatically improves quality on analytical tasks — exactly what BAs do. Works identically across all LLM tools.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H14: DEMO — Calendar PA Prompt (vertical build)
+      ══════════════════════════════════════════════ -->
+      <section>
+
+        <!-- H14 main: Objective only -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content">
+              <p style="font-size: 0.78em; color: var(--text-dim);">↓ Let's build it section by section</p>
+            </div>
+          </div>
+          <aside class="notes">
+            Introduce the objective. Tell the audience: "We're going to build this prompt live, one section at a time, using the 4-part framework we just covered."
+          </aside>
+        </section>
+
+        <!-- H14 V1: Role -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content">
+              <div class="prompt-part role" style="max-width: 680px; width: 100%;">
+                <h4><span class="label">Role</span> Who should it act as?</h4>
+                <blockquote>"You are my personal assistant and manage my calendar."</blockquote>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Start with the Role. This tells the model the persona it should adopt — a PA with calendar access. Everything else builds on this.
+          </aside>
+        </section>
+
+        <!-- H14 V2: Instruction -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content">
+              <div class="prompt-part inst" style="max-width: 680px; width: 100%;">
+                <h4><span class="label">Instruction</span> What do you want?</h4>
+                <blockquote>Read my whole calendar for the day. Categorise each meeting into Interview, Internal, or External — in that priority order. For interview meetings, identify the candidate, locate their CV from emails or OneDrive, and generate a technical interview questionnaire.</blockquote>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            The instruction is the core of the prompt. Note the priority order — Interview first, then Internal, then External. This matters because every meeting must fall into exactly one category.
+          </aside>
+        </section>
+
+        <!-- H14 V3: Context -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content">
+              <div class="prompt-part ctx" style="max-width: 680px; width: 100%;">
+                <h4><span class="label">Context</span> What background does it need?</h4>
+                <blockquote>Internal = all attendees from Preferred Square only. External = any attendee outside Preferred Square. Interview = identified from invitees list or meeting title. Do not fabricate any information. Include meeting links for all meetings.</blockquote>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Context is where we define the rules the model needs to categorise correctly. Without this, "Internal" and "External" are meaningless labels. The "do not fabricate" constraint prevents hallucination.
+          </aside>
+        </section>
+
+        <!-- H14 V4: Output Format -->
+        <section data-transition="none">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content">
+              <div class="prompt-part output" style="max-width: 680px; width: 100%;">
+                <h4><span class="label">Output Format</span> How should it respond?</h4>
+                <blockquote>Structured lists under Interview / Internal / External headings — each with meeting time, location, attendees, agenda, and (for interviews) candidate name, CV status, and questionnaire.</blockquote>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Output Format is what makes the response usable at a glance. Without it, the model might give us a paragraph of text. With it, we get a structured, scannable daily briefing.
+          </aside>
+        </section>
+
+        <!-- H14 V5: Full Prompt -->
+        <section data-transition="none" class="scrollable">
+          <div class="demo-build-wrap">
+            <div class="demo-header">
+              <h2>Demo</h2>
+              <div class="demo-objective">
+                <strong>Objective</strong>Define a prompt for an LLM to act as your Personal Assistant and manage your calendar — built using the 4 prompt elements.
+              </div>
+            </div>
+            <div class="demo-build-content" style="align-items: flex-start; padding-top: 0.5em;">
+              <div style="width: 100%;">
+                <div class="demo-prompt-label" style="margin-bottom: 0.5em;">Full Prompt</div>
+                <div style="position: relative;">
+                  <button id="copy-prompt-btn" onclick="copyPrompt()" style="position:absolute; top:8px; right:8px; z-index:10; display:flex; align-items:center; gap:5px; background:rgba(79,142,247,0.15); border:1px solid rgba(79,142,247,0.35); color:var(--accent-blue); border-radius:6px; padding:4px 10px; font-size:0.65em; font-weight:600; cursor:pointer; transition:all 0.2s;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span id="copy-btn-label">Copy</span>
+                  </button>
+                <div id="full-prompt-text" class="demo-prompt" style="font-size: 0.7em; white-space: pre-wrap; text-align: left;">You are my personal assistant and manage my calendar.
+
+Your responsibility involves reading my whole calendar for the day and categorise each meeting into one of the following categories in the given order:
+1. Interview meetings
+2. Internal Meetings. Any meeting with no attendee outside Preferred Square should be considered internal meeting.
+3. External Meetings. Any meeting with any attendee outside Preferred Square should be considered external meeting.
+
+Do not fabricate any information and include meeting links for all the meetings.
+All the meetings for the day should be considered without any exception.
+If any meeting is categorized as interview meeting:
+  - Try to identify the candidate from the invitees list or meeting title
+  - If any candidate is identified, try to find the CV by reading my emails or look in the files/folders on OneDrive
+  - If the CV is located, design a technical interview questionnaire along with the responses
+Make sure to include all my meetings for today, each meeting should be categorised in only one of Interview / Internal / External list.
+
+Output Format:
+
+Interview Meetings:
+1. DA Interview | 10:00 AM - 11:00 AM | Burj Khalifa
+   Internal Attendees: Vineet.sharma@preferredsquare.com
+   Candidate Name: Aman Gupta
+   CV/Resume: Check related emails or files in OneDrive to locate the CV
+   Interview questionnaire: Design a technical questionnaire based on the CV, skip if the CV not found
+
+Internal Meetings:
+1. Timesheet Process Mapping | 11:00 - 12:00 PM | Empire Estate
+   Internal Attendees: sagar.s@preferredsquare.com, Vineet.s@preferredsquare.com
+   Agenda: Streamline the timesheet filling process
+
+External Meetings:
+1. Dashboard update | 3:00 - 4:00 PM | Shard
+   Internal Attendees: abhishek.j@preferredsquare.com, bhor.c@preferredsquare.com
+   External Attendees: mark@abc.com, scott@abc.com
+   Agenda: Discuss the progress on the dashboard development</div>
+                </div><!-- /.relative wrapper -->
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Show the full assembled prompt. You can paste this directly into Copilot or ChatGPT with calendar access enabled. Ask the audience: "Which of the 4 sections do you think has the most impact here?"
+          </aside>
+        </section>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H17: HANDS-ON ACTIVITY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Your Turn</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Open Copilot</p>
+        <div class="activity-section">
+          <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-teal); margin-bottom: 0.8em;">Objective</div>
+          <div class="prompt-box" style="font-size: 0.78em; margin-bottom: 1.2em;">Define a prompt to read your emails and prepare 2 lists:<br>
+1. List of emails awaiting response<br>
+2. Action items for the day</div>
+          <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 0.6em;">Task</div>
+          <p style="font-size: 0.82em; color: var(--text-primary); margin-bottom: 0.8em;">Rewrite the prompt using all 4 elements:</p>
+          <div class="grid-4" style="margin-bottom: 1em;">
+            <div style="text-align: center; font-size: 0.75em; color: var(--accent-blue); font-weight: 600;">Role</div>
+            <div style="text-align: center; font-size: 0.75em; color: var(--accent-teal); font-weight: 600;">Instruction</div>
+            <div style="text-align: center; font-size: 0.75em; color: var(--accent-gold); font-weight: 600;">Context</div>
+            <div style="text-align: center; font-size: 0.75em; color: #c084fc; font-weight: 600;">Output Format</div>
+          </div>
+        </div>
+        <aside class="notes">
+          Give them 5 minutes to actually do this. Walk around and help. Common stumbling block: people aren't sure what "role" to use. Suggest "You are an experienced professional" or "You are an executive assistant" depending on the context.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H18: SUPER POWERS OF AN LLM
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Super Powers of an LLM</h2>
+        <div style="text-align: center; margin: 1.2em 0 1.4em;">
+          <p style="font-size: 0.92em; color: var(--text-primary); margin-bottom: 0.6em;">Are LLMs natively capable of reading your emails or accessing your inbox or calendar?</p>
+          <div class="fragment" style="display: inline-block; background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.3); border-radius: 10px; padding: 0.4em 1.4em; font-size: 1.2em; font-weight: 800; color: #f87171; letter-spacing: 0.06em;">No</div>
+        </div>
+        <div class="fragment">
+          <p style="font-size: 0.78em; color: var(--text-muted); text-align: center; margin-bottom: 1.2em;">LLMs only know what's in their training data — they have no live access to your systems. Two techniques bridge this gap:</p>
+          <div class="grid-2" style="max-width: 700px; margin: 0 auto;">
+            <div class="card" style="text-align: center; border-color: rgba(100,255,218,0.3);">
+              <div style="font-size: 1.3em; font-weight: 800; color: var(--accent-teal); margin-bottom: 0.3em;">RAG</div>
+              <div style="font-size: 0.75em; color: var(--text-muted);">Retrieval-Augmented Generation</div>
+            </div>
+            <div class="card" style="text-align: center; border-color: rgba(255,209,102,0.3);">
+              <div style="font-size: 1.3em; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.3em;">Tools</div>
+              <div style="font-size: 0.75em; color: var(--text-muted);">Function Calling &amp; Actions</div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Key point: out of the box, an LLM has no access to your emails, calendar, files, or any live data. It only knows what it was trained on. RAG and Tools are the two mechanisms that give it "superpowers" — the ability to read and act on your actual data.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H19: RAG
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>RAG</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Retrieval-Augmented Generation — giving the LLM access to your data</p>
+        <div class="highlight-box teal" style="margin-bottom: 1.2em; font-size: 0.85em;">
+          <strong>What it is:</strong> Before the LLM generates a response, RAG <em>retrieves</em> relevant content from an external source — your inbox, calendar, files, or a database — and injects it into the prompt as context.
+        </div>
+        <div class="grid-2" style="margin-bottom: 1.2em;">
+          <div class="card">
+            <div style="font-size: 0.68em; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5em;">Without RAG</div>
+            <p style="font-size: 0.8em; color: var(--text-muted);">LLM has no idea what's in your inbox or calendar — it can't answer questions about your actual meetings or emails.</p>
+          </div>
+          <div class="card accent">
+            <div style="font-size: 0.68em; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5em;">With RAG</div>
+            <p style="font-size: 0.8em; color: var(--text-primary);">Your emails and calendar events are fetched and passed to the LLM — it now has the context it needs to categorise, summarise, and respond.</p>
+          </div>
+        </div>
+        <div class="highlight-box" style="font-size: 0.8em;">
+          <strong>In our demo:</strong> When the PA prompt runs in Copilot, RAG retrieves your actual calendar events and emails from Microsoft 365 — feeding them into the LLM so it can categorise meetings and find CVs.
+        </div>
+        <aside class="notes">
+          RAG = fetch first, then generate. The LLM doesn't "browse" your inbox — the data is retrieved by the system and handed to the model as part of the prompt. This is how Copilot reads your emails and calendar: it retrieves them from Microsoft 365 before generating a response.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H20: TOOLS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Tools</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Function Calling — letting the LLM take actions beyond generating text</p>
+        <div class="highlight-box gold" style="margin-bottom: 1.2em; font-size: 0.85em;">
+          <strong>What it is:</strong> Tools allow an LLM to call external functions or services — reading files, searching emails, writing to a calendar, or triggering a workflow — rather than just producing text.
+        </div>
+        <div class="grid-2" style="margin-bottom: 1.2em;">
+          <div class="card">
+            <div style="font-size: 0.68em; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5em;">Without Tools</div>
+            <p style="font-size: 0.8em; color: var(--text-muted);">The LLM can only generate text. It cannot look up a file on OneDrive, check your inbox, or update your calendar.</p>
+          </div>
+          <div class="card" style="border-color: rgba(255,209,102,0.3);">
+            <div style="font-size: 0.68em; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5em;">With Tools</div>
+            <p style="font-size: 0.8em; color: var(--text-primary);">The LLM can call a "search OneDrive" tool, a "read email" tool, or a "get calendar events" tool — and use the results to build its response.</p>
+          </div>
+        </div>
+        <div class="highlight-box" style="font-size: 0.8em;">
+          <strong>In our demo:</strong> When the PA prompt asks Copilot to find a candidate's CV, it uses a tool to search OneDrive and emails — the LLM doesn't guess, it actually looks.
+        </div>
+        <aside class="notes">
+          Tools = the LLM as an orchestrator. Instead of just answering, it decides which tool to call, calls it, gets the result, and uses that to generate a better response. This is the foundation of AI agents — which we cover in Module 3.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H18: KEY TAKEAWAYS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Key Takeaways</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">6 things to remember from Session 1</p>
+        <div class="takeaway-grid">
+          <div class="takeaway-item">
+            <div class="takeaway-num">1</div>
+            <div class="takeaway-text">GenAI <strong>creates</strong> new content — traditional AI classifies existing content</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">2</div>
+            <div class="takeaway-text">LLMs <strong>predict the next token</strong> — they're not "thinking", they're pattern matching at scale</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">3</div>
+            <div class="takeaway-text">Great prompt = <strong>Role + Instruction + Context + Output format</strong></div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">4</div>
+            <div class="takeaway-text">Context window = <strong>working memory</strong> — start fresh when switching topics</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">5</div>
+            <div class="takeaway-text"><strong>Few-shot + Chain of Thought</strong> are your two most powerful prompting techniques</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">6</div>
+            <div class="takeaway-text">These skills are <strong>transferable</strong> — works in Copilot, Claude, ChatGPT, or whatever comes next</div>
+          </div>
+        </div>
+        <aside class="notes">
+          Wrap up by reminding them that Session 2 builds directly on everything covered today. Encourage them to try at least one prompt improvement before next session.
+        </aside>
+      </section>
+
+    </div><!-- /.slides -->
+  </div><!-- /.reveal -->
+
+  <!-- Reveal.js scripts -->
+  <script src="../assets/reveal/dist/reveal.js"></script>
+  <script src="../assets/reveal/plugin/notes/notes.js"></script>
+  <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
+
+  <!-- Demo reveal logic -->
+  <script src="../assets/js/demo-reveal.js"></script>
+
+  <script>
+    function copyPrompt() {
+      const text = document.getElementById('full-prompt-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const label = document.getElementById('copy-btn-label');
+        const btn = document.getElementById('copy-prompt-btn');
+        label.textContent = 'Copied!';
+        btn.style.background = 'rgba(100,255,218,0.15)';
+        btn.style.borderColor = 'rgba(100,255,218,0.45)';
+        btn.style.color = 'var(--accent-teal)';
+        setTimeout(() => {
+          label.textContent = 'Copy';
+          btn.style.background = 'rgba(79,142,247,0.15)';
+          btn.style.borderColor = 'rgba(79,142,247,0.35)';
+          btn.style.color = 'var(--accent-blue)';
+        }, 2000);
+      });
+    }
+
+    Reveal.initialize({
+      hash: true,
+      transition: 'fade',
+      transitionSpeed: 'fast',
+      slideNumber: 'c/t',
+      showSlideNumber: 'all',
+      progress: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      center: true,
+      width: 1200,
+      height: 700,
+      margin: 0.04,
+      plugins: [ RevealNotes, RevealHighlight ]
+    });
+
+    // Initialise demo buttons
+    Reveal.on('ready', function () {
+      window.DemoReveal.init();
+    });
+
+    // Reset demos when navigating away and back
+    Reveal.on('slidechanged', function (event) {
+      window.DemoReveal.onSlideChange(event);
+      // Re-init buttons on new slide
+      window.DemoReveal.init();
+    });
+  </script>
+
+</body>
+</html>

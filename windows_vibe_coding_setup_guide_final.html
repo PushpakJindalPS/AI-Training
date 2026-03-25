@@ -1,0 +1,238 @@
+
+<style>
+  .guide { padding: 20px 0; font-size: 15px; color: var(--color-text-primary); }
+  .phase { margin-bottom: 32px; }
+  .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .phase-badge { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; }
+  .badge-py { background: #B5D4F4; color: #042C53; }
+  .badge-vs { background: #9FE1CB; color: #04342C; }
+  .badge-gh { background: #F4C0D1; color: #4B1528; }
+  .phase-title { font-size: 17px; font-weight: 500; color: var(--color-text-primary); }
+  .phase-subtitle { font-size: 13px; color: var(--color-text-secondary); margin-top: 1px; }
+  .steps { display: flex; flex-direction: column; gap: 18px; padding-left: 4px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-num { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--color-border-secondary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); flex-shrink: 0; margin-top: 1px; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 500; font-size: 14px; color: var(--color-text-primary); margin-bottom: 4px; }
+  .step-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+  .step-desc code, .tip code, .warn code, .team-box code, .alert-box code { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 4px; padding: 1px 5px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); }
+  .tip { background: var(--color-background-secondary); border-left: 3px solid var(--color-border-secondary); border-radius: 0 6px 6px 0; padding: 8px 12px; margin-top: 8px; font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+  .tip strong { color: var(--color-text-primary); font-weight: 500; }
+  .warn { background: var(--color-background-warning); border-left: 3px solid var(--color-border-warning); border-radius: 0 6px 6px 0; padding: 8px 12px; margin-top: 8px; font-size: 12px; color: var(--color-text-warning); line-height: 1.5; }
+  .warn strong { color: var(--color-text-warning); font-weight: 500; }
+  .team-box { background: var(--color-background-info); border: 1.5px solid var(--color-border-info); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+  .team-box-title { font-size: 13px; font-weight: 500; color: var(--color-text-info); margin-bottom: 8px; }
+  .team-box-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .team-box-body strong { color: var(--color-text-primary); font-weight: 500; }
+  .example-row { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+  .ex-label { font-size: 12px; color: var(--color-text-secondary); }
+  .ex-chip { background: var(--color-background-secondary); border: 1px solid var(--color-border-secondary); border-radius: 5px; padding: 3px 9px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); }
+  .alert-box { background: var(--color-background-danger); border: 1.5px solid var(--color-border-danger); border-radius: 8px; padding: 14px 16px; margin-top: 16px; }
+  .alert-box-title { font-size: 13px; font-weight: 500; color: var(--color-text-danger); margin-bottom: 8px; }
+  .alert-box-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .alert-box-body strong { color: var(--color-text-primary); font-weight: 500; }
+  .usage-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .usage-pill { background: var(--color-background-secondary); border: 1px solid var(--color-border-secondary); border-radius: 6px; padding: 5px 10px; font-size: 12px; color: var(--color-text-secondary); }
+  .usage-pill strong { color: var(--color-text-primary); font-weight: 500; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 24px 0; }
+  .url { font-family: var(--font-mono); font-size: 12px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 4px; padding: 1px 5px; color: var(--color-text-info); }
+  .version-badge { display: inline-flex; align-items: center; gap: 6px; background: #B5D4F4; color: #042C53; border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 500; margin-bottom: 14px; }
+  .shortcut { background: var(--color-background-secondary); border: 1px solid var(--color-border-secondary); border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); white-space: nowrap; }
+</style>
+<div class="guide">
+
+  <!-- Phase 1: Python -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge badge-py">1</div>
+      <div>
+        <div class="phase-title">Install Python 3.12.9 on Windows</div>
+        <div class="phase-subtitle">Stable LTS-class release — widely supported by all major libraries</div>
+      </div>
+    </div>
+    <div class="version-badge">⭐ Recommended: Python 3.12.9</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Download the Windows installer</div>
+          <div class="step-desc">Go to <span class="url">python.org/downloads/release/python-3129</span> — scroll to the <strong>Files</strong> section and click <strong>"Windows installer (64-bit)"</strong>. This downloads <code>python-3.12.9-amd64.exe</code>.</div>
+          <div class="tip"><strong>Not sure if your Windows is 64-bit?</strong> Press <span class="shortcut">Win + Pause/Break</span> or go to Settings → System → About. Almost all modern laptops are 64-bit.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Run the installer — don't miss this step</div>
+          <div class="step-desc">Double-click the <code>.exe</code>. On the first screen check both options at the bottom:
+            <br>☑ <strong>Use admin privileges when installing py.exe</strong>
+            <br>☑ <strong>Add python.exe to PATH</strong>
+            <br><br>Then click <strong>Install Now</strong>.
+          </div>
+          <div class="warn"><strong>Critical:</strong> If you skip "Add python.exe to PATH", your terminal won't recognise the <code>python</code> command and you'll need to reinstall.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Disable the PATH length limit</div>
+          <div class="step-desc">At the end of installation, click <strong>"Disable path length limit"</strong> when prompted — this prevents errors with deeply nested project folders on Windows.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Verify the installation</div>
+          <div class="step-desc">Press <span class="shortcut">Win + R</span>, type <code>cmd</code>, hit Enter. Run <code>python --version</code> — you should see <code>Python 3.12.9</code>. Also run <code>pip --version</code> to confirm the package manager is ready.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Phase 2: VS Code -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge badge-vs">2</div>
+      <div>
+        <div class="phase-title">Install VS Code on Windows</div>
+        <div class="phase-subtitle">Your code editor</div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Download VS Code</div>
+          <div class="step-desc">Go to <span class="url">code.visualstudio.com</span> — click <strong>"Download for Windows"</strong>. This gives you <code>VSCodeSetup-x64.exe</code>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Install with the right options</div>
+          <div class="step-desc">Run the installer, accept the license, and on the <strong>Select Additional Tasks</strong> screen check all of these:
+            <br>☑ <strong>Add "Open with Code" to Windows Explorer file context menu</strong>
+            <br>☑ <strong>Add "Open with Code" to Windows Explorer directory context menu</strong>
+            <br>☑ <strong>Add to PATH</strong>
+            <br>☑ <strong>Register Code as an editor for supported file types</strong>
+          </div>
+          <div class="tip">The "Open with Code" options let you right-click any folder in File Explorer and open it directly in VS Code — very handy.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Install the Python extension</div>
+          <div class="step-desc">Open VS Code → press <span class="shortcut">Ctrl + Shift + X</span> → search <strong>Python</strong> → install the one published by <strong>Microsoft</strong>. This adds syntax highlighting, IntelliSense, and debugging.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Select Python 3.12.9 as your interpreter</div>
+          <div class="step-desc">Press <span class="shortcut">Ctrl + Shift + P</span> → type <strong>Python: Select Interpreter</strong> → select <strong>Python 3.12.9</strong> from the list.</div>
+          <div class="tip"><strong>Don't see it?</strong> Click <strong>"Enter interpreter path"</strong> and browse to <code>C:\Users\YourName\AppData\Local\Programs\Python\Python312\python.exe</code>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Test it with a quick file</div>
+          <div class="step-desc">Press <span class="shortcut">Ctrl + N</span> → save as <code>hello.py</code> → type <code>print("Hello, World!")</code> → press <span class="shortcut">F5</span>. You should see the output in the Terminal panel at the bottom.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Phase 3: GitHub Copilot -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge badge-gh">3</div>
+      <div>
+        <div class="phase-title">Set up GitHub Copilot</div>
+        <div class="phase-subtitle">Your AI coding assistant inside VS Code</div>
+      </div>
+    </div>
+
+    <!-- Team convention box -->
+    <div class="team-box">
+      <div class="team-box-title">👥 Team account convention — follow this for all members</div>
+      <div class="team-box-body">
+        Use your <strong>official Square email ID</strong> to register on GitHub. This ensures your account is linked to the organisation and is auditable by the team admin.
+        <br><br>
+        Your GitHub username <strong>must start with the prefix <code>PS</code></strong> followed by your name or identifier. Keep it consistent and professional.
+        <div class="example-row">
+          <span class="ex-label">Examples:</span>
+          <span class="ex-chip">PSjohnsmith</span>
+          <span class="ex-chip">PSanitaroy</span>
+          <span class="ex-chip">PSrahulverma</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Create your GitHub account with your Square email</div>
+          <div class="step-desc">Go to <span class="url">github.com</span> → click <strong>Sign up</strong>. When prompted for an email, enter your <strong>Square email ID</strong> (e.g. <code>yourname@squareinc.com</code>). Complete the email verification step.</div>
+          <div class="warn"><strong>Do not use a personal email.</strong> Using your Square email keeps the account traceable and eligible for any organisation-level Copilot licences the team may set up in future.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Set your username with the "PS" prefix</div>
+          <div class="step-desc">During signup, enter a username that <strong>starts with <code>PS</code></strong> followed by your name, e.g. <code>PSjohnsmith</code> or <code>PSanitaroy</code>. Avoid special characters unless needed for uniqueness.</div>
+          <div class="tip"><strong>Username already taken?</strong> Try <code>PSjohn-smith</code> or <code>PSanitaroy2</code> — always keep the <code>PS</code> prefix.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Activate GitHub Copilot on your account</div>
+          <div class="step-desc">Go to <span class="url">github.com/features/copilot</span> → click <strong>Get Copilot Free</strong>. No credit card is required for the free plan.</div>
+          <div class="tip"><strong>Student?</strong> Go to <span class="url">education.github.com/pack</span> and verify your student status to get Copilot Pro for free.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Install GitHub Copilot extensions in VS Code</div>
+          <div class="step-desc">Press <span class="shortcut">Ctrl + Shift + X</span> → search <strong>GitHub Copilot</strong> → install both:
+            <br>• <strong>GitHub Copilot</strong> — inline code suggestions
+            <br>• <strong>GitHub Copilot Chat</strong> — AI chat sidebar
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Sign in to GitHub inside VS Code</div>
+          <div class="step-desc">A pop-up appears in the bottom-right — click <strong>Sign in to GitHub</strong>. Your browser opens → click <strong>Authorize Visual-Studio-Code</strong> → allow when Windows asks → you'll be redirected back to VS Code automatically.</div>
+          <div class="tip"><strong>No pop-up?</strong> Click the Accounts icon (person icon) in the bottom-left of VS Code → <strong>Sign in with GitHub to use GitHub Copilot</strong>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usage limit warning -->
+    <div class="alert-box">
+      <div class="alert-box-title">⚠️ Important — free plan usage limits</div>
+      <div class="alert-box-body">
+        The free version of GitHub Copilot comes with <strong>limited monthly usage</strong> that resets each month. Once the quota is exhausted, Copilot will stop working until the next reset.
+        <div class="usage-row">
+          <div class="usage-pill"><strong>2,000</strong> code completions / month</div>
+          <div class="usage-pill"><strong>50</strong> chat messages / month</div>
+        </div>
+        <br>
+        <strong>Please do not exhaust your quota before the Friday workshop.</strong> Avoid casually experimenting with Copilot in the days leading up to it — save your usage so you have the full experience available during the session. The workshop is where you'll get the most value from it.
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Research Agent | AI Workshop</title>
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
+  <!-- Custom theme -->
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <!-- Highlight.js theme (for code blocks) -->
+  <link rel="stylesheet" href="../assets/reveal/plugin/highlight/monokai.css" />
+
+  <style>
+    /* ── Module-specific styles ── */
+
+    /* Title slide */
+    .title-slide { text-align: center; }
+    .title-slide .session-label {
+      font-size: 0.65em;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-teal);
+      margin-bottom: 0.8em;
+    }
+    .title-slide h1 {
+      font-size: 2em;
+      margin-bottom: 0.4em;
+      background: linear-gradient(135deg, #fff 0%, #64ffda 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .title-slide .subtitle {
+      color: var(--text-muted);
+      font-size: 0.88em;
+      margin-bottom: 2em;
+    }
+    .title-opener {
+      background: rgba(100,255,218,0.08);
+      border: 1px solid rgba(100,255,218,0.22);
+      border-radius: 10px;
+      padding: 0.8em 1.4em;
+      display: inline-block;
+      font-size: 0.82em;
+      color: var(--text-primary);
+    }
+
+    /* Phase pipeline */
+    .phase-pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45em;
+      text-align: left;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .phase-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    .phase-badge {
+      font-size: 0.6em;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25em 0.7em;
+      border-radius: 4px;
+      min-width: 9em;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .phase-1 .phase-badge { background: rgba(79,142,247,0.18); color: var(--accent-blue); border: 1px solid rgba(79,142,247,0.35); }
+    .phase-2 .phase-badge { background: rgba(255,209,102,0.15); color: var(--accent-gold); border: 1px solid rgba(255,209,102,0.35); }
+    .phase-3 .phase-badge { background: rgba(100,255,218,0.12); color: var(--accent-teal); border: 1px solid rgba(100,255,218,0.3); }
+    .phase-4 .phase-badge { background: rgba(200,100,255,0.12); color: #c864ff; border: 1px solid rgba(200,100,255,0.3); }
+    .phase-5 .phase-badge { background: rgba(255,100,100,0.1); color: #ff7070; border: 1px solid rgba(255,100,100,0.28); }
+    .phase-nodes {
+      font-size: 0.72em;
+      color: var(--text-muted);
+    }
+    .phase-nodes strong { color: var(--text-primary); }
+    .phase-arrow {
+      font-size: 0.75em;
+      color: var(--text-dim);
+      padding-left: 1.5em;
+      padding-top: 0.1em;
+    }
+
+    /* Node detail cards */
+    .node-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8em;
+      text-align: left;
+    }
+    .node-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9em 1.1em;
+    }
+    .node-card h4 {
+      font-size: 0.82em;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 0.4em;
+    }
+    .node-card p, .node-card li {
+      font-size: 0.72em;
+      color: var(--text-muted);
+      margin: 0.15em 0;
+    }
+    .node-card .node-label {
+      font-size: 0.6em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 0.5em;
+    }
+    .principle-box {
+      grid-column: 1 / -1;
+      background: rgba(100,255,218,0.06);
+      border: 1px solid rgba(100,255,218,0.2);
+      border-radius: var(--radius);
+      padding: 0.7em 1.1em;
+      font-size: 0.75em;
+      color: var(--accent-teal);
+    }
+    .principle-box strong { color: #fff; }
+
+    /* Async diagram */
+    .async-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2em;
+      text-align: left;
+    }
+    .async-box {
+      border-radius: var(--radius);
+      padding: 1em 1.2em;
+    }
+    .async-box.bad {
+      background: rgba(255,80,80,0.07);
+      border: 1px solid rgba(255,80,80,0.22);
+    }
+    .async-box.good {
+      background: rgba(100,255,218,0.07);
+      border: 1px solid rgba(100,255,218,0.22);
+    }
+    .async-box h4 {
+      font-size: 0.78em;
+      font-weight: 700;
+      margin-bottom: 0.6em;
+    }
+    .async-box.bad h4 { color: #ff7070; }
+    .async-box.good h4 { color: var(--accent-teal); }
+    .async-box pre {
+      font-size: 0.65em;
+      color: var(--text-muted);
+      margin: 0;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      background: none;
+    }
+
+    /* Data sources grid */
+    .source-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8em;
+      text-align: left;
+    }
+    .source-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85em 1em;
+    }
+    .source-card .branch-label {
+      font-size: 0.65em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-teal);
+      margin-bottom: 0.5em;
+    }
+    .source-card h4 { font-size: 0.82em; font-weight: 700; margin-bottom: 0.4em; color: #fff; }
+    .source-card p { font-size: 0.7em; color: var(--text-muted); margin: 0.2em 0; }
+    .source-card .url { font-size: 0.62em; color: var(--text-dim); font-family: monospace; margin-top: 0.5em; word-break: break-all; }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76em;
+      text-align: left;
+    }
+    .data-table th {
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85em;
+      letter-spacing: 0.08em;
+      padding: 0.5em 0.8em;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 0.6em 0.8em;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    .data-table td:first-child { color: var(--text-primary); font-weight: 600; }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    /* Prompt display */
+    .prompt-block {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9em 1.2em;
+      text-align: left;
+      font-size: 0.72em;
+      font-family: monospace;
+      color: var(--text-muted);
+      white-space: pre-wrap;
+      line-height: 1.65;
+    }
+    .prompt-block .kw { color: var(--accent-blue); font-weight: 700; }
+    .prompt-block .label { color: var(--accent-gold); }
+    .prompt-block .comment { color: var(--text-dim); }
+
+    .prompt-annotation {
+      display: flex;
+      gap: 0.6em;
+      align-items: flex-start;
+      margin-bottom: 0.5em;
+    }
+    .prompt-annotation .ann-tag {
+      font-size: 0.62em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.2em 0.55em;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 0.1em;
+    }
+    .ann-role { background: rgba(79,142,247,0.15); color: var(--accent-blue); border: 1px solid rgba(79,142,247,0.3); }
+    .ann-inst { background: rgba(100,255,218,0.12); color: var(--accent-teal); border: 1px solid rgba(100,255,218,0.28); }
+    .ann-const { background: rgba(255,80,80,0.1); color: #ff7070; border: 1px solid rgba(255,80,80,0.25); }
+    .ann-out { background: rgba(255,209,102,0.12); color: var(--accent-gold); border: 1px solid rgba(255,209,102,0.28); }
+    .prompt-annotation p { font-size: 0.76em; color: var(--text-muted); margin: 0; }
+
+    /* Temperature scale */
+    .temp-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      text-align: left;
+    }
+    .temp-row {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 0.65em 1em;
+      border: 1px solid var(--border);
+    }
+    .temp-row.active {
+      border-color: rgba(100,255,218,0.4);
+      background: rgba(100,255,218,0.06);
+    }
+    .temp-badge {
+      font-size: 0.75em;
+      font-weight: 700;
+      font-family: monospace;
+      color: var(--accent-gold);
+      min-width: 6em;
+    }
+    .temp-row.active .temp-badge { color: var(--accent-teal); }
+    .temp-desc { font-size: 0.72em; color: var(--text-muted); }
+    .temp-use { font-size: 0.67em; color: var(--text-dim); }
+    .temp-row.active .temp-desc, .temp-row.active .temp-use { color: var(--text-primary); }
+    .active-tag {
+      font-size: 0.58em;
+      font-weight: 700;
+      color: var(--accent-teal);
+      border: 1px solid rgba(100,255,218,0.35);
+      border-radius: 4px;
+      padding: 0.15em 0.5em;
+      margin-left: auto;
+    }
+
+    /* Five patterns */
+    .pattern-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55em;
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .pattern-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9em;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.7em 1em;
+    }
+    .pattern-num {
+      font-size: 1.3em;
+      font-weight: 800;
+      color: var(--accent-teal);
+      opacity: 0.5;
+      min-width: 1.2em;
+      line-height: 1;
+    }
+    .pattern-text h4 { font-size: 0.82em; font-weight: 700; color: #fff; margin-bottom: 0.2em; }
+    .pattern-text p { font-size: 0.7em; color: var(--text-muted); margin: 0; }
+
+    /* Activity */
+    .activity-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-align: left;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .activity-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7em;
+    }
+    .a-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .a-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-teal);
+      flex-shrink: 0;
+      margin-top: 0.3em;
+    }
+    .a-line {
+      width: 2px;
+      flex: 1;
+      background: rgba(100,255,218,0.2);
+      min-height: 1.5em;
+    }
+    .a-content {
+      padding-bottom: 0.7em;
+      flex: 1;
+    }
+    .a-content h4 { font-size: 0.78em; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.1em; }
+    .a-content p { font-size: 0.68em; color: var(--text-dim); margin: 0; }
+
+    /* Activity examples */
+    .example-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      margin-top: 0.6em;
+    }
+    .chip {
+      font-size: 0.65em;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.25em 0.75em;
+    }
+
+    /* Takeaways */
+    .takeaway-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4em;
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .takeaway-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8em;
+      padding: 0.5em 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .takeaway-item:last-child { border-bottom: none; }
+    .takeaway-num {
+      font-size: 1em;
+      font-weight: 800;
+      color: var(--accent-teal);
+      opacity: 0.45;
+      min-width: 1.4em;
+      line-height: 1.4;
+    }
+    .takeaway-text { font-size: 0.8em; color: var(--text-primary); line-height: 1.55; }
+
+    /* Code inline */
+    code {
+      font-family: monospace;
+      background: rgba(255,255,255,0.07);
+      border-radius: 3px;
+      padding: 0.1em 0.4em;
+      font-size: 0.9em;
+      color: var(--accent-gold);
+    }
+
+    /* Section intro */
+    .section-intro {
+      font-size: 0.82em;
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto 1em;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Merge node visual */
+    .merge-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4em;
+      margin: 0.4em 0 0.8em;
+      font-size: 0.75em;
+    }
+    .merge-in {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3em;
+    }
+    .merge-branch {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.25em 0.7em;
+      color: var(--text-muted);
+      font-size: 0.88em;
+    }
+    .merge-arrow { color: var(--text-dim); font-size: 1.4em; }
+    .merge-node {
+      background: rgba(100,255,218,0.1);
+      border: 1px solid rgba(100,255,218,0.3);
+      border-radius: 8px;
+      padding: 0.5em 1em;
+      color: var(--accent-teal);
+      font-weight: 700;
+    }
+    .merge-out-arrow { color: var(--text-dim); font-size: 1.4em; }
+    .merge-out {
+      background: rgba(79,142,247,0.1);
+      border: 1px solid rgba(79,142,247,0.3);
+      border-radius: 8px;
+      padding: 0.5em 1em;
+      color: var(--accent-blue);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <img src="../assets/images/02.%20PS%20Logo_Vertical.png" alt="Preferred Square"
+       style="position:fixed; top:12px; right:16px; height:40px; z-index:100; opacity:0.85;" />
+
+  <!-- Back to home -->
+  <a href="../index.html" class="home-link" target="_blank">← All Sessions</a>
+
+  <!-- Speaker notes hint -->
+  <div class="notes-hint">Press <kbd>S</kbd> for speaker notes</div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ─────────────────────────────── SLIDE 1 — Title ─────────────────────────────── -->
+      <section class="title-slide">
+        <div class="session-label">Finance Agent · AI Workshop</div>
+        <h1>Building an AI Workflow:<br/>Finance Research Agent</h1>
+        <p class="subtitle">A real production workflow, built in n8n — no code required · ~45–60 min</p>
+        <div class="title-opener">
+          Everything we've covered — <strong>prompts, LLMs, agents, n8n</strong> — comes together in one real workflow. <strong>13 nodes. 5 phases. One ticker in, one research brief out.</strong>
+        </div>
+        <aside class="notes">
+          Open with context. "Everything we've covered — prompts, LLMs, agents, n8n — we're going to see it all come together in one real workflow. This isn't a toy example. This workflow runs against live data and produces a professional-quality output. By the end of this session you'll be able to read any n8n workflow and understand exactly what it's doing."
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 2 — Business Problem ─────────────────────────────── -->
+      <section>
+        <h2>What does a human analyst do today?</h2>
+        <p class="section-intro">The manual process — for a single company</p>
+        <div class="node-grid" style="grid-template-columns: 1fr 1fr 1fr; max-width: 820px; margin: 0 auto 0.9em;">
+          <div class="node-card">
+            <div class="node-label">Step 1</div>
+            <h4>SEC EDGAR</h4>
+            <p>Look up latest 10-K and 10-Q filings from the regulator</p>
+          </div>
+          <div class="node-card">
+            <div class="node-label">Step 2</div>
+            <h4>Yahoo Finance</h4>
+            <p>Check current price, market cap, 52-week range</p>
+          </div>
+          <div class="node-card">
+            <div class="node-label">Step 3</div>
+            <h4>News search</h4>
+            <p>Find recent business stories — filter for relevance</p>
+          </div>
+          <div class="node-card" style="grid-column: 1 / 3;">
+            <div class="node-label">Step 4</div>
+            <h4>Synthesise</h4>
+            <p>Read everything across all three sources, write a structured brief, format it for sharing</p>
+          </div>
+          <div class="node-card" style="background: rgba(255,209,102,0.07); border-color: rgba(255,209,102,0.25);">
+            <div class="node-label" style="color: var(--accent-gold);">Time</div>
+            <h4 style="color: var(--accent-gold);">45–90 min</h4>
+            <p>Per company, for a competent analyst</p>
+          </div>
+        </div>
+        <div style="background: rgba(100,255,218,0.07); border: 1px solid rgba(100,255,218,0.25); border-radius: 8px; padding: 0.65em 1.2em; font-size: 0.78em; color: var(--accent-teal); max-width: 820px; margin: 0 auto; text-align: left;">
+          <strong style="color:#fff;">This workflow does the same thing</strong> — end to end, in under 60 seconds, for any publicly listed US company, triggered by a single API call with a ticker symbol.
+        </div>
+        <aside class="notes">
+          This is the ROI framing. Don't dwell on it, but make it concrete. The question to ask the room: "What's the equivalent in your work? Where are you manually gathering information from 2–3 sources and synthesising it into a document?" That's where this pattern applies.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 3 — Workflow at a Glance ─────────────────────────────── -->
+      <section>
+        <h2>13 nodes · 5 phases · One ticker in, one brief out</h2>
+        <div class="phase-pipeline" style="margin-top: 0.6em;">
+          <div class="phase-row phase-1">
+            <div class="phase-badge">Phase 1 — Entry</div>
+            <div class="phase-nodes">Webhook &nbsp;→&nbsp; <strong>GETtickermap</strong> &nbsp;→&nbsp; <strong>Validate ticker</strong> &nbsp;→&nbsp; <strong>Extract CIK</strong></div>
+          </div>
+          <div class="phase-arrow">↓</div>
+          <div class="phase-row phase-2">
+            <div class="phase-badge">Phase 2 — Async</div>
+            <div class="phase-nodes">Extract CIK &nbsp;→&nbsp; <strong>Respond to Webhook</strong> &nbsp;&nbsp;<em style="color:var(--accent-gold); font-size:0.88em;">returns HTTP 202 immediately</em></div>
+          </div>
+          <div class="phase-arrow">↓</div>
+          <div class="phase-row phase-3">
+            <div class="phase-badge">Phase 3 — Parallel</div>
+            <div class="phase-nodes"><strong>SEC EDGAR</strong> &nbsp;|&nbsp; <strong>Yahoo Finance</strong> &nbsp;|&nbsp; <strong>News Search</strong> &nbsp;&nbsp;<em style="color:var(--accent-teal); font-size:0.88em;">all three run simultaneously</em></div>
+          </div>
+          <div class="phase-arrow">↓</div>
+          <div class="phase-row phase-4">
+            <div class="phase-badge">Phase 4 — Process</div>
+            <div class="phase-nodes"><strong>Merge</strong> &nbsp;→&nbsp; <strong>Combine</strong> &nbsp;→&nbsp; <strong>Build Prompt</strong> &nbsp;→&nbsp; <strong>Generate Brief</strong></div>
+          </div>
+          <div class="phase-arrow">↓</div>
+          <div class="phase-row phase-5">
+            <div class="phase-badge">Phase 5 — Output</div>
+            <div class="phase-nodes"><strong>Format as HTML</strong> &nbsp;→&nbsp; <code>AAPL_brief_2025-03-25.html</code></div>
+          </div>
+        </div>
+        <aside class="notes">
+          Walk through the five phases slowly. The key insight to land: Phase 3 runs in parallel — three HTTP requests happen simultaneously, not one after the other. That's intentional architecture, not an accident. Come back to this when you reach the Merge node.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 4 — Phase 1: Validation ─────────────────────────────── -->
+      <section>
+        <h2>Phase 1 — Always validate before you do anything expensive</h2>
+        <div class="node-grid" style="margin-top: 0.5em;">
+          <div class="node-card">
+            <div class="node-label">Node 1</div>
+            <h4>Webhook</h4>
+            <p>Listens at <code>/financial-research</code> for incoming requests</p>
+            <p>Configured in <code>responseNode</code> mode — a downstream node controls the HTTP reply</p>
+          </div>
+          <div class="node-card">
+            <div class="node-label">Node 2</div>
+            <h4>GETtickermap</h4>
+            <p>Fetches the full SEC EDGAR company list — every registered public company and their CIK identifier</p>
+            <p>Ready and waiting before validation completes</p>
+          </div>
+          <div class="node-card">
+            <div class="node-label">Node 3</div>
+            <h4>Validate ticker</h4>
+            <p>Three rules: reject empty input · enforce 1–5 uppercase letters (NASDAQ format) · block reserved strings like <code>TEST</code>, <code>NULL</code></p>
+            <p>Protects downstream nodes from bad input</p>
+          </div>
+          <div class="node-card">
+            <div class="node-label">Node 4</div>
+            <h4>Extract CIK</h4>
+            <p>Looks up the ticker in the company map</p>
+            <p>Zero-pads the CIK to 10 digits (SEC URL format: <code>CIK0000320193</code>)</p>
+            <p>Outputs a clean <code>&#123; ticker, cik &#125;</code> object</p>
+          </div>
+          <div class="principle-box">
+            <strong>Key principle:</strong> Validate early. The cheapest place to catch a bad input is before you've made four API calls.
+          </div>
+        </div>
+        <aside class="notes">
+          Ask the room: "Why validate before you fetch data?" The answer is cost and reliability — every wasted API call is time and money. In a production workflow, input validation is always the first node after the trigger.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 5 — Phase 2: Async ─────────────────────────────── -->
+      <section>
+        <h2>Phase 2 — Don't make the caller wait</h2>
+        <p class="section-intro">Respond immediately, then keep working</p>
+        <div class="async-compare">
+          <div class="async-box bad">
+            <h4>✗ Synchronous (the wrong way)</h4>
+            <pre>Caller sends request
+  → Workflow runs
+    (60 sec of API calls + LLM)
+  → Caller waits...
+  → Caller's timeout: 30 sec ✗
+  → Connection dropped</pre>
+          </div>
+          <div class="async-box good">
+            <h4>✓ Async (this workflow)</h4>
+            <pre>Caller sends request
+  → Validate ticker (&lt; 1 sec)
+  → <strong>HTTP 202 Accepted</strong>
+    { status: "accepted",
+      ticker: "AAPL" }
+  → Caller unblocked ✓
+  → Workflow continues in background
+  → HTML brief delivered when ready</pre>
+          </div>
+        </div>
+        <div style="background: rgba(255,209,102,0.07); border: 1px solid rgba(255,209,102,0.22); border-radius: 8px; padding: 0.65em 1.2em; font-size: 0.76em; color: var(--text-muted); margin-top: 0.8em; text-align: left; max-width: 820px; margin-left: auto; margin-right: auto;">
+          <strong style="color: var(--accent-gold);">Why it matters:</strong> Most real-world AI workflows take longer than a browser or API client will wait. Delivery via a separate channel could mean: a Slack message, an email, a webhook callback, or a file on a shared drive.
+        </div>
+        <aside class="notes">
+          This is an architectural pattern that appears in almost every production AI system. The caller gets a fast acknowledgement; the actual output arrives asynchronously. Ask: "How do results get back to you in the tools you use today?" — they'll usually describe some version of this pattern already.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 6 — Phase 3: Parallel Fetch ─────────────────────────────── -->
+      <section>
+        <h2>Phase 3 — Three sources · One go · Not one at a time</h2>
+        <p class="section-intro">Each source is independent — running them sequentially would triple the wait time for no reason</p>
+        <div class="source-grid">
+          <div class="source-card">
+            <div class="branch-label">Branch A</div>
+            <h4>SEC EDGAR</h4>
+            <p>Full submission history — 10-K annual, 10-Q quarterly, 8-K current reports</p>
+            <p>Most authoritative financial source — direct from the regulator</p>
+            <p class="url">data.sec.gov/submissions/CIK{cik}.json</p>
+          </div>
+          <div class="source-card">
+            <div class="branch-label">Branch B</div>
+            <h4>Yahoo Finance</h4>
+            <p>1 year of daily price data — current price, previous close, 52-week high/low, market cap, currency, exchange</p>
+            <p class="url">query1.finance.yahoo.com/v8/finance/chart/{ticker}</p>
+          </div>
+          <div class="source-card">
+            <div class="branch-label">Branch C</div>
+            <h4>News Search</h4>
+            <p>Latest English-language business news mentioning the ticker — titles, sources, dates, descriptions, URLs</p>
+            <p class="url">newsdata.io/api/1/latest?q={ticker}&language=en</p>
+          </div>
+        </div>
+        <div class="principle-box" style="margin-top: 0.7em;">
+          <strong>Total wait time for Phase 3 = time of the slowest single request</strong> — not the sum of all three. This pattern is worth replicating anywhere you gather context from multiple independent sources.
+        </div>
+        <aside class="notes">
+          Point out the architectural elegance: the total wait time for Phase 3 is the time of the slowest single request — not the sum of all three. This is a pattern worth replicating anywhere you're gathering context from multiple independent sources.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 7 — Merge Node ─────────────────────────────── -->
+      <section>
+        <h2>The Merge Node — Waiting for everyone before moving on</h2>
+        <div class="merge-visual" style="margin: 0.6em 0 0.8em;">
+          <div class="merge-in">
+            <div class="merge-branch">SEC EDGAR</div>
+            <div class="merge-branch">Yahoo Finance</div>
+            <div class="merge-branch">News Search</div>
+          </div>
+          <div class="merge-arrow">→</div>
+          <div class="merge-node">Merge<br/><small style="font-size:0.7em; font-weight:400; opacity:0.7;">Combine · By Position</small></div>
+          <div class="merge-out-arrow">→</div>
+          <div class="merge-out">Combine<br/><small style="font-size:0.7em; font-weight:400; opacity:0.7;">All data available</small></div>
+        </div>
+        <div class="node-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="node-card">
+            <div class="node-label">Without the Merge node</div>
+            <h4 style="color: #ff7070;">Incomplete data</h4>
+            <p>The Combine node fires as soon as the first branch finishes — processes missing two out of three sources</p>
+            <p>LLM brief built on partial information</p>
+          </div>
+          <div class="node-card" style="border-color: rgba(100,255,218,0.3);">
+            <div class="node-label">With the Merge node</div>
+            <h4 style="color: var(--accent-teal);">All three complete</h4>
+            <p>Merge waits for all three inputs before releasing data downstream</p>
+            <p>Mode: <code>Combine → Merge by Position</code></p>
+          </div>
+          <div class="principle-box">
+            <strong>Parallel</strong> = doing multiple things at once. <strong>Merge</strong> = waiting until they're all done. Together these two patterns are how you build fast, reliable data-gathering workflows.
+          </div>
+        </div>
+        <aside class="notes">
+          The Merge node is the synchronisation point. Ask: "Can you think of a workflow in your work where you'd want to pull from multiple sources simultaneously?"
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 8 — Normalise Before LLM ─────────────────────────────── -->
+      <section>
+        <h2>Never send raw API responses to an LLM</h2>
+        <p class="section-intro">The Combine node curates exactly what the model needs to see</p>
+        <table class="data-table" style="max-width: 820px; margin: 0 auto 0.8em;">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Raw response</th>
+              <th>What's extracted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SEC EDGAR</td>
+              <td>Full submission history — potentially thousands of filings</td>
+              <td>3 most recent 10-K, 10-Q, and 8-K only</td>
+            </tr>
+            <tr>
+              <td>Yahoo Finance</td>
+              <td>Full year of daily OHLCV price data</td>
+              <td>Current price, prev close, 52-wk high/low, market cap, currency</td>
+            </tr>
+            <tr>
+              <td>News Search</td>
+              <td>All articles returned by the API</td>
+              <td>Top 5 articles: title, source, date, description, URL</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="node-grid" style="grid-template-columns: 1fr 1fr 1fr; max-width: 820px; margin: 0 auto;">
+          <div class="node-card">
+            <h4>Context window limit</h4>
+            <p>You can't send 1,000 SEC filings — the LLM simply won't fit them</p>
+          </div>
+          <div class="node-card">
+            <h4>Signal vs noise</h4>
+            <p>Irrelevant data distracts the model and degrades output quality</p>
+          </div>
+          <div class="node-card">
+            <h4>Cost</h4>
+            <p>Smaller prompts = fewer tokens = lower cost per workflow run</p>
+          </div>
+        </div>
+        <aside class="notes">
+          This is a direct callback to Session 1 — context windows are finite. The Combine node is doing the work of a human analyst who'd scan through hundreds of filings and pick only the relevant ones before writing the brief. Curating the context before the LLM sees it is one of the most impactful things you can do for output quality.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 9 — Build Prompt ─────────────────────────────── -->
+      <section>
+        <h2>Building the Prompt — The most important node in the workflow</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.9em; max-width: 860px; margin: 0.5em auto 0; text-align: left;">
+          <div>
+            <p style="font-size: 0.72em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.5em;">System Prompt</p>
+            <div class="prompt-annotation">
+              <span class="ann-tag ann-role">Role</span>
+              <p>You are a <strong>senior equity research analyst</strong>.</p>
+            </div>
+            <div class="prompt-annotation">
+              <span class="ann-tag ann-inst">Instruction</span>
+              <p>Generate a structured, factual financial research brief <strong>based strictly on the data provided</strong>.</p>
+            </div>
+            <div class="prompt-annotation">
+              <span class="ann-tag ann-const">Constraint</span>
+              <p>Do not speculate, hallucinate figures, or make buy/sell recommendations.</p>
+            </div>
+            <div class="prompt-annotation">
+              <span class="ann-tag ann-const">Fallback</span>
+              <p>Mark missing sections <code>[DATA UNAVAILABLE]</code>.</p>
+            </div>
+          </div>
+          <div>
+            <p style="font-size: 0.72em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.5em;">User Message + Output Format</p>
+            <div class="prompt-block" style="font-size: 0.67em;">
+<span class="comment">Generate a financial research brief for {ticker}.</span>
+
+<span class="label">SEC FILINGS:</span>  {10-K, 10-Q, 8-K metadata}
+<span class="label">FINANCIALS:</span>   {price, market cap, 52-wk range}
+<span class="label">RECENT NEWS:</span>  {top 5 news articles}
+
+<span class="kw">Structure output as:</span>
+## 1. Executive Summary
+## 2. Recent SEC Filings
+## 3. Financial Highlights
+## 4. Recent News &amp; Events
+## 5. Risk Flags
+## 6. KPI Snapshot</div>
+            <div class="prompt-annotation" style="margin-top: 0.5em;">
+              <span class="ann-tag ann-out">Output</span>
+              <p>Six <code>##</code> headings — so the HTML formatter can reliably parse and style each section</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          This is Session 1 prompt engineering applied directly in production. Point out each element: Role, Instruction, Constraints, Output format. The output format instruction — the six ## headings — is particularly important. By specifying exactly what headings the LLM should produce, the downstream HTML formatter can reliably parse and style the output. Structure in = structure out.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 10 — LLM Call / Temperature ─────────────────────────────── -->
+      <section>
+        <h2>Temperature 0.2 — and why it matters here</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; max-width: 840px; margin: 0.5em auto 0; text-align: left;">
+          <div>
+            <p style="font-size: 0.72em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.5em;">Node configuration</p>
+            <table class="data-table" style="font-size: 0.78em;">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Model</td><td><code>gpt-4o</code> — complex synthesis task</td></tr>
+                <tr><td>max_tokens</td><td><code>2,000</code> — thorough brief, no runaway generation</td></tr>
+                <tr><td>temperature</td><td><code>0.2</code> — factual, deterministic, consistent</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top: 0.7em; font-size: 0.72em; color: var(--text-muted); background: rgba(100,255,218,0.06); border: 1px solid rgba(100,255,218,0.2); border-radius: 6px; padding: 0.6em 0.9em;">
+              Running this workflow 100 times on the same ticker produces <strong style="color:#fff;">structurally identical briefs</strong> — varying only with the input data. That predictability is exactly what you want for a professional output.
+            </div>
+          </div>
+          <div>
+            <p style="font-size: 0.72em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.5em;">Temperature scale</p>
+            <div class="temp-scale">
+              <div class="temp-row active">
+                <div class="temp-badge">0.0 – 0.3</div>
+                <div>
+                  <div class="temp-desc">Factual · consistent · low creativity</div>
+                  <div class="temp-use">Research briefs · data extraction · classification</div>
+                </div>
+                <div class="active-tag">This workflow</div>
+              </div>
+              <div class="temp-row">
+                <div class="temp-badge">0.5 – 0.7</div>
+                <div>
+                  <div class="temp-desc">Balanced — some variation, coherent</div>
+                  <div class="temp-use">Summaries · explanations · general Q&amp;A</div>
+                </div>
+              </div>
+              <div class="temp-row">
+                <div class="temp-badge">0.8 – 1.0</div>
+                <div>
+                  <div class="temp-desc">High creativity · varied output</div>
+                  <div class="temp-use">Brainstorming · copywriting · ideation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Temperature is one of the most consequential prompt-level decisions in a production workflow. Ask the room: "Would you want the model to be creative when generating a financial brief?" — the answer is clearly no. But you might want creativity for brainstorming workflows. They now have the mental model to make that call themselves.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 11 — Format Output ─────────────────────────────── -->
+      <section>
+        <h2>From LLM markdown to a shareable HTML document</h2>
+        <p class="section-intro">The Format as HTML node converts the raw LLM response into a styled, publication-quality file</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; max-width: 840px; margin: 0 auto; text-align: left;">
+          <div>
+            <p style="font-size: 0.7em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.4em;">Input (raw LLM text)</p>
+            <div class="prompt-block" style="font-size: 0.67em;">
+## 1. Executive Summary
+Apple Inc. (AAPL) reported...
+
+**Key financials:**
+- Revenue: $94.9B (Q1 FY2025)
+- Market cap: $3.2T</div>
+            <div style="text-align: center; font-size: 0.9em; color: var(--text-dim); margin: 0.4em 0;">↓ JavaScript code node</div>
+            <div class="prompt-block" style="font-size: 0.67em; border-color: rgba(100,255,218,0.3);">
+&lt;h2&gt;1. Executive Summary&lt;/h2&gt;
+&lt;p&gt;Apple Inc. (AAPL) reported...&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Key financials:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Revenue: $94.9B (Q1 FY2025)&lt;/li&gt;
+  &lt;li&gt;Market cap: $3.2T&lt;/li&gt;
+&lt;/ul&gt;</div>
+          </div>
+          <div>
+            <p style="font-size: 0.7em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.4em;">Output file</p>
+            <div class="node-grid" style="grid-template-columns: 1fr; gap: 0.5em;">
+              <div class="node-card" style="padding: 0.6em 0.9em;">
+                <p>Georgia serif font — equity research house style</p>
+              </div>
+              <div class="node-card" style="padding: 0.6em 0.9em;">
+                <p>860px container — readable at screen width</p>
+              </div>
+              <div class="node-card" style="padding: 0.6em 0.9em;">
+                <p>Disclaimer footer — important for any financial output</p>
+              </div>
+              <div class="node-card" style="padding: 0.6em 0.9em; border-color: rgba(255,209,102,0.3);">
+                <p>Named <code>AAPL_brief_2025-03-25.html</code> — encoded as Base64 for download</p>
+              </div>
+            </div>
+            <div style="margin-top: 0.5em; font-size: 0.7em; color: var(--text-muted); background: rgba(79,142,247,0.07); border: 1px solid rgba(79,142,247,0.2); border-radius: 6px; padding: 0.5em 0.8em;">
+              <strong style="color: var(--accent-blue);">Reusable pattern:</strong> LLM → raw text → code node → formatted document. Works for reports, proposals, briefings, summaries.
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Point out that the LLM was instructed to use ## headings precisely so this formatter can reliably find and convert them. The workflow is a chain where each node's output is designed to be the next node's input. That design thinking is the core skill.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 12 — Five Patterns ─────────────────────────────── -->
+      <section>
+        <h2>Five patterns to take everywhere</h2>
+        <p class="section-intro">Every high-quality AI workflow you build will use some combination of these</p>
+        <div class="pattern-list">
+          <div class="pattern-item">
+            <div class="pattern-num">1</div>
+            <div class="pattern-text">
+              <h4>Validate at the entry point</h4>
+              <p>Bad input causes cascading failures. The cheapest fix is at the front door.</p>
+            </div>
+          </div>
+          <div class="pattern-item">
+            <div class="pattern-num">2</div>
+            <div class="pattern-text">
+              <h4>Respond asynchronously</h4>
+              <p>Don't make callers wait for long-running AI tasks. Acknowledge immediately, deliver when ready.</p>
+            </div>
+          </div>
+          <div class="pattern-item">
+            <div class="pattern-num">3</div>
+            <div class="pattern-text">
+              <h4>Gather context in parallel</h4>
+              <p>Independent data sources should run simultaneously. Use a Merge node to synchronise.</p>
+            </div>
+          </div>
+          <div class="pattern-item">
+            <div class="pattern-num">4</div>
+            <div class="pattern-text">
+              <h4>Normalise before the LLM</h4>
+              <p>Curate what the model sees. Less noise = better output. Structured input = structured output.</p>
+            </div>
+          </div>
+          <div class="pattern-item">
+            <div class="pattern-num">5</div>
+            <div class="pattern-text">
+              <h4>Match temperature to the task</h4>
+              <p>Low temperature for factual, consistent outputs. Higher temperature for creative tasks.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          These are the five things to write down. Everything else in the workflow is implementation detail — these patterns are architectural principles that apply to any domain: HR, operations, procurement, product, legal. Ask: "Which of these five would be most useful in the workflow you sketched at the end of Session 4?"
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 13 — Activity ─────────────────────────────── -->
+      <section>
+        <h2>Activity — Design your own research agent</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; max-width: 860px; margin: 0.5em auto 0; text-align: left;">
+          <div>
+            <p style="font-size: 0.7em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.5em;">Sketch your workflow — pick a domain you work in</p>
+            <div class="activity-flow">
+              <div class="activity-step">
+                <div class="a-connector"><div class="a-dot"></div><div class="a-line"></div></div>
+                <div class="a-content"><h4>Trigger</h4><p>How does the request come in?</p></div>
+              </div>
+              <div class="activity-step">
+                <div class="a-connector"><div class="a-dot"></div><div class="a-line"></div></div>
+                <div class="a-content"><h4>Validation</h4><p>What do you need to check before fetching data?</p></div>
+              </div>
+              <div class="activity-step">
+                <div class="a-connector"><div class="a-dot"></div><div class="a-line"></div></div>
+                <div class="a-content"><h4>Async response</h4><p>What do you tell the caller while you work?</p></div>
+              </div>
+              <div class="activity-step">
+                <div class="a-connector"><div class="a-dot"></div><div class="a-line"></div></div>
+                <div class="a-content"><h4>Data sources (parallel)</h4><p>Source A, Source B, Source C — what are they?</p></div>
+              </div>
+              <div class="activity-step">
+                <div class="a-connector"><div class="a-dot"></div><div class="a-line"></div></div>
+                <div class="a-content"><h4>Combine &amp; normalise</h4><p>What do you extract from each source?</p></div>
+              </div>
+              <div class="activity-step">
+                <div class="a-connector"><div class="a-dot"></div><div class="a-line"></div></div>
+                <div class="a-content"><h4>LLM prompt</h4><p>What role? What output structure?</p></div>
+              </div>
+              <div class="activity-step">
+                <div class="a-connector"><div class="a-dot"></div></div>
+                <div class="a-content"><h4>Output</h4><p>What format? Where does it go?</p></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size: 0.7em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.5em;">Examples to prompt thinking</p>
+            <div class="example-chips" style="flex-direction: column; gap: 0.4em;">
+              <div class="node-card" style="padding: 0.6em 0.9em;">
+                <h4 style="font-size: 0.78em;">Supplier research brief</h4>
+                <p>Companies House · news · internal procurement data</p>
+              </div>
+              <div class="node-card" style="padding: 0.6em 0.9em;">
+                <h4 style="font-size: 0.78em;">Project status brief</h4>
+                <p>Jira · Confluence · email threads</p>
+              </div>
+              <div class="node-card" style="padding: 0.6em 0.9em;">
+                <h4 style="font-size: 0.78em;">Candidate brief</h4>
+                <p>LinkedIn overview · job spec · interview notes</p>
+              </div>
+              <div class="node-card" style="padding: 0.6em 0.9em;">
+                <h4 style="font-size: 0.78em;">Client brief</h4>
+                <p>CRM data · recent emails · public news</p>
+              </div>
+            </div>
+            <div style="margin-top: 0.6em; background: rgba(255,209,102,0.07); border: 1px solid rgba(255,209,102,0.22); border-radius: 6px; padding: 0.6em 0.9em; font-size: 0.72em; color: var(--text-muted);">
+              <strong style="color: var(--accent-gold);">Debrief question:</strong> "Which data source would be hardest to connect programmatically — and what would you do manually while that's being solved?"
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Give participants 10–15 minutes to sketch this out individually or in pairs. Debrief by asking 2–3 people to share their domain and their three parallel data sources. The debrief question surfaces the realistic constraint: not everything has an API yet.
+        </aside>
+      </section>
+
+      <!-- ─────────────────────────────── SLIDE 14 — Key Takeaways ─────────────────────────────── -->
+      <section>
+        <h2>Key Takeaways</h2>
+        <div class="takeaway-list" style="margin-top: 0.5em;">
+          <div class="takeaway-item">
+            <div class="takeaway-num">1</div>
+            <div class="takeaway-text">A real production workflow follows the same building blocks you've already learned — <strong>nothing new, just combined</strong></div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">2</div>
+            <div class="takeaway-text"><strong>Validate early</strong> — protect expensive downstream operations from bad input</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">3</div>
+            <div class="takeaway-text"><strong>Async response</strong> — acknowledge fast, deliver when ready</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">4</div>
+            <div class="takeaway-text"><strong>Parallel fetch + Merge</strong> — gather independent data simultaneously, synchronise before processing</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">5</div>
+            <div class="takeaway-text"><strong>Normalise before the LLM</strong> — curate context, structure input, specify output format</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">6</div>
+            <div class="takeaway-text"><strong>Temperature is a design decision</strong> — 0.2 for factual consistency, higher for creativity</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">7</div>
+            <div class="takeaway-text">The <strong>output format you specify in the prompt</strong> determines how reliably you can process the LLM's response downstream</div>
+          </div>
+        </div>
+        <aside class="notes">
+          Wrap up by connecting this back to the full workshop arc. Every session has built towards this: a real, running, production-quality AI workflow. The patterns here are transferable to any domain they work in.
+        </aside>
+      </section>
+
+    </div><!-- /.slides -->
+  </div><!-- /.reveal -->
+
+  <!-- Reveal.js scripts -->
+  <script src="../assets/reveal/dist/reveal.js"></script>
+  <script src="../assets/reveal/plugin/notes/notes.js"></script>
+  <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'fade',
+      transitionSpeed: 'fast',
+      slideNumber: 'c/t',
+      showSlideNumber: 'all',
+      progress: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      center: true,
+      width: 1200,
+      height: 700,
+      margin: 0.04,
+      plugins: [ RevealNotes, RevealHighlight ]
+    });
+  </script>
+
+</body>
+</html>

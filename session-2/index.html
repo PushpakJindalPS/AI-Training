@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 2 — Reliability &amp; Power Features | AI Workshop</title>
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
+  <!-- Custom theme -->
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="../assets/css/demos.css" />
+  <!-- Highlight.js theme -->
+  <link rel="stylesheet" href="../assets/reveal/plugin/highlight/monokai.css" />
+
+  <style>
+    /* ── Session-specific styles ── */
+
+    /* Title slide */
+    .title-slide { text-align: center; }
+    .title-slide .session-label {
+      font-size: 0.65em; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--accent-blue); margin-bottom: 0.8em;
+    }
+    .title-slide h1 {
+      font-size: 2em; margin-bottom: 0.4em;
+      background: linear-gradient(135deg, #fff 0%, #a0b8ff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .title-slide .subtitle { color: var(--text-muted); font-size: 0.9em; margin-bottom: 2em; }
+    .title-opener {
+      background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.25);
+      border-radius: 10px; padding: 0.8em 1.4em; display: inline-block;
+      font-size: 0.85em; color: var(--text-primary);
+    }
+    .title-opener strong { color: var(--accent-teal); }
+
+    /* Agenda */
+    .agenda-item {
+      display: flex; align-items: flex-start; gap: 1em;
+      padding: 0.8em 0; border-bottom: 1px solid var(--border);
+    }
+    .agenda-item:last-child { border-bottom: none; }
+    .agenda-num {
+      font-size: 1.4em; font-weight: 800; color: var(--accent-blue);
+      opacity: 0.5; min-width: 1.5em; line-height: 1;
+    }
+    .agenda-text { font-size: 0.9em; color: var(--text-primary); line-height: 1.5; }
+    .agenda-text strong { color: var(--accent-teal); font-weight: 600; }
+
+    /* Data tables */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.78em; }
+    .data-table th {
+      background: rgba(79,142,247,0.12); color: var(--accent-blue);
+      padding: 0.6em 0.9em; text-align: left; font-weight: 700;
+      font-size: 0.85em; letter-spacing: 0.06em; text-transform: uppercase;
+      border-bottom: 1px solid rgba(79,142,247,0.2);
+    }
+    .data-table td {
+      padding: 0.6em 0.9em; border-bottom: 1px solid var(--border);
+      color: var(--text-primary); line-height: 1.5; vertical-align: top;
+    }
+    .data-table td:first-child { font-weight: 600; color: #fff; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .data-table.risk td:first-child { color: var(--accent-gold); }
+
+    /* Hallucination examples box */
+    .hallucination-box {
+      background: rgba(248,113,113,0.06); border: 1px solid rgba(248,113,113,0.2);
+      border-radius: var(--radius); padding: 1em 1.2em;
+    }
+    .hallucination-box .box-label {
+      font-size: 0.7em; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #f87171; margin-bottom: 0.6em;
+    }
+    .hallucination-box li {
+      font-size: 0.78em; color: var(--text-muted); padding: 0.3em 0;
+      border-bottom: 1px solid rgba(248,113,113,0.1); line-height: 1.5; list-style: none;
+    }
+    .hallucination-box li:last-child { border-bottom: none; }
+
+    /* Techniques grid */
+    .technique-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .technique-grid > * { min-width: 0; }
+    .technique {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1em 1.2em;
+    }
+    .technique h4 { font-size: 0.85em; margin-bottom: 0.4em; display: flex; align-items: center; gap: 0.5em; }
+    .technique-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--accent-blue); color: #fff; font-size: 0.75em; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .technique p { font-size: 0.76em; color: var(--text-muted); margin: 0; line-height: 1.5; }
+    .technique .example {
+      font-size: 0.73em; color: var(--text-primary); font-style: italic;
+      margin-top: 0.4em; background: rgba(255,255,255,0.04);
+      border-radius: 5px; padding: 0.4em 0.7em;
+    }
+
+    /* Framework box */
+    .framework-box {
+      background: rgba(100,255,218,0.06); border: 1px solid rgba(100,255,218,0.2);
+      border-radius: var(--radius); padding: 1.2em 1.4em; text-align: center;
+    }
+    .framework-question {
+      font-size: 0.88em; font-style: italic; color: var(--text-primary);
+      margin-bottom: 1em; line-height: 1.5;
+    }
+    .framework-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .framework-options > * { min-width: 0; }
+    .framework-option { background: var(--bg-card); border-radius: var(--radius); padding: 0.9em; }
+    .framework-option.shape { border-top: 3px solid var(--accent-teal); }
+    .framework-option.generate { border-top: 3px solid var(--accent-gold); }
+    .framework-option h4 { font-size: 0.82em; margin-bottom: 0.3em; }
+    .framework-option.shape h4 { color: var(--accent-teal); }
+    .framework-option.generate h4 { color: var(--accent-gold); }
+    .framework-option p { font-size: 0.75em; color: var(--text-muted); margin: 0; line-height: 1.5; }
+
+    /* Compare columns */
+    .compare-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; }
+    .compare-cols > * { min-width: 0; }
+    .compare-box { background: var(--bg-card); border-radius: var(--radius); padding: 1.1em 1.3em; }
+    .compare-box.before { border-top: 3px solid rgba(255,255,255,0.15); }
+    .compare-box.after  { border-top: 3px solid var(--accent-teal); }
+    .compare-label {
+      font-size: 0.68em; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.7em;
+    }
+    .compare-box.before .compare-label { color: var(--text-muted); }
+    .compare-box.after  .compare-label { color: var(--accent-teal); }
+    .compare-box blockquote {
+      font-size: 0.78em; font-style: italic; color: var(--text-primary);
+      margin: 0; padding: 0; border: none; line-height: 1.6;
+    }
+    .compare-box p { font-size: 0.74em; color: var(--text-muted); margin-top: 0.6em; }
+
+    /* Format examples */
+    .format-examples { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .format-examples > * { min-width: 0; }
+    .format-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.9em 1em;
+    }
+    .format-card h4 {
+      font-size: 0.75em; font-weight: 700; color: var(--accent-blue);
+      margin-bottom: 0.5em; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .format-card blockquote {
+      font-size: 0.74em; font-style: italic; color: var(--text-muted);
+      margin: 0; padding: 0; border: none; line-height: 1.5;
+    }
+
+    /* Capability list */
+    .capability-list {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1em 1.2em;
+    }
+    .capability-list h4 { font-size: 0.78em; font-weight: 700; margin-bottom: 0.6em; }
+    .capability-list ul { list-style: none; padding: 0; margin: 0; }
+    .capability-list li {
+      font-size: 0.74em; color: var(--text-muted); padding: 0.25em 0; line-height: 1.5;
+    }
+    .capability-list li::before { content: "• "; color: var(--accent-teal); }
+    .capability-list.cant li::before { color: #f87171; }
+
+    /* Takeaways */
+    .takeaway-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; }
+    .takeaway-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.9em 1em; text-align: left;
+    }
+    .takeaway-num {
+      font-size: 1.5em; font-weight: 800; color: var(--accent-blue);
+      opacity: 0.3; line-height: 1; margin-bottom: 0.3em;
+    }
+    .takeaway-text { font-size: 0.78em; color: var(--text-primary); line-height: 1.5; }
+    .takeaway-text strong { color: var(--accent-teal); }
+
+    /* Demo step labels */
+    .demo-step-label {
+      font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.5em; padding: 4px 10px;
+      border-radius: 999px; display: inline-block;
+    }
+    .step-danger { background: rgba(248,113,113,0.15); color: #f87171; }
+    .step-safe   { background: rgba(100,255,218,0.12); color: var(--accent-teal); }
+
+    /* Activity section */
+    .activity-section {
+      background: linear-gradient(135deg, rgba(100,255,218,0.05), rgba(79,142,247,0.05));
+      border: 1px solid var(--border-bright); border-radius: var(--radius-lg);
+      padding: 1.4em 1.8em; text-align: left;
+    }
+
+    /* Nav UI */
+    .home-link {
+      position: fixed; top: 16px; left: 20px; font-size: 0.72em;
+      color: var(--text-dim); text-decoration: none; display: flex;
+      align-items: center; gap: 5px; z-index: 100; transition: color 0.2s;
+    }
+    .home-link:hover { color: var(--accent-blue); }
+    .notes-hint { position: fixed; top: 16px; right: 100px; font-size: 0.65em; color: var(--text-dim); z-index: 100; }
+    .nav-hint {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      font-size: 0.65em; color: var(--text-dim); pointer-events: none; z-index: 100;
+    }
+    .reveal .navigate-down { color: var(--accent-teal); }
+  </style>
+</head>
+<body>
+
+  <img src="../assets/images/02.%20PS%20Logo_Vertical.png" alt="Preferred Square" style="position:fixed; top:12px; right:16px; height:40px; z-index:100; opacity:0.85;" />
+  <a href="../index.html" class="home-link" target="_blank">← All Sessions</a>
+  <div class="notes-hint">Press S for speaker notes</div>
+  <div class="nav-hint">→ next slide · ↓ deep dive · F fullscreen</div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ══════════════════════════════════════════════
+           H1: TITLE SLIDE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="title-slide">
+          <div class="session-label">Session 2 of 4 · AI Workshop</div>
+          <h1>Getting the Best Out of LLMs:<br/>Reliability &amp; Power Features</h1>
+          <p class="subtitle">~1 hour · Demos + hands-on activity</p>
+          <div class="title-opener">
+            Quick recap: <strong>What's the one prompting tip from Session 1 you've already tried?</strong>
+          </div>
+        </div>
+        <aside class="notes">
+          Quick recap opener — ask: "What's the one prompting tip from Session 1 you've already tried?" Gets people engaged and surfaces real experience from the week.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H2: AGENDA
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What We'll Cover Today</h2>
+        <div class="agenda-item">
+          <div class="agenda-num">1</div>
+          <div class="agenda-text"><strong>What LLMs are reliably good at</strong> — and where they fail</div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-num">2</div>
+          <div class="agenda-text"><strong>What hallucinations are</strong> and how to prevent them</div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-num">3</div>
+          <div class="agenda-text"><strong>Advanced prompting patterns</strong> that get consistent results</div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-num">4</div>
+          <div class="agenda-text"><strong>Live demo:</strong> using AI for data analysis and presentation work</div>
+        </div>
+        <aside class="notes">
+          Session 1 was about understanding the technology. Session 2 is about working with it smartly — knowing its edges and using the right patterns to get reliable, high-quality output every time.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H3: WHAT LLMS ARE GOOD AT + V1: WHY THESE WORK
+      ══════════════════════════════════════════════ -->
+      <section>
+        <section>
+          <h2>What LLMs Are Good At</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Use AI confidently for these tasks</p>
+          <table class="data-table">
+            <thead>
+              <tr><th>Task</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Reformatting &amp; restructuring</td><td>"Convert these bullet notes into a table"</td></tr>
+              <tr><td>Summarizing</td><td>"Summarize this 10-page report in 5 bullets"</td></tr>
+              <tr><td>Rewriting &amp; tone adjustment</td><td>"Make this email more formal"</td></tr>
+              <tr><td>Generating variations</td><td>"Give me 3 alternative ways to phrase this"</td></tr>
+              <tr><td>Explaining concepts</td><td>"Explain GDPR in plain English"</td></tr>
+              <tr><td>Extracting from documents</td><td>"List all action items in this meeting transcript"</td></tr>
+              <tr><td>Drafting from structure</td><td>"Write a BRD using this outline: [paste outline]"</td></tr>
+              <tr><td>Translation</td><td>"Translate this into French"</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size: 0.7em; color: var(--text-dim); margin-top: 0.8em; text-align: right;">↓ Why these work reliably</p>
+          <aside class="notes">
+            These tasks have one thing in common — the model is working with your content or producing output where you can easily verify correctness. There's no hidden "fact" it needs to know. This is the sweet spot for BAs.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Why These Tasks Work Reliably</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">The model is working with <em>your</em> content — not recalling facts</p>
+          <div class="highlight-box teal" style="margin-bottom: 1em;">
+            <p style="font-size: 0.88em; line-height: 1.7; margin: 0;">When you paste in the source material, the model does <strong>comprehension and synthesis</strong> — not recall. That's where it's most reliable.</p>
+          </div>
+          <div class="grid-3">
+            <div style="background: var(--bg-card); border-radius: var(--radius); padding: 0.9em; border: 1px solid var(--border); text-align: center;">
+              <div style="font-size: 1.5em; margin-bottom: 0.3em;">✏️</div>
+              <div style="font-size: 0.78em; font-weight: 700; color: #fff; margin-bottom: 0.2em;">You provide the content</div>
+              <div style="font-size: 0.7em; color: var(--text-muted);">Source docs, notes, emails</div>
+            </div>
+            <div style="background: var(--bg-card); border-radius: var(--radius); padding: 0.9em; border: 1px solid var(--border); text-align: center;">
+              <div style="font-size: 1.5em; margin-bottom: 0.3em;">🔄</div>
+              <div style="font-size: 0.78em; font-weight: 700; color: #fff; margin-bottom: 0.2em;">AI shapes &amp; transforms</div>
+              <div style="font-size: 0.7em; color: var(--text-muted);">Restructures, rewrites, extracts</div>
+            </div>
+            <div style="background: var(--bg-card); border-radius: var(--radius); padding: 0.9em; border: 1px solid var(--border); text-align: center;">
+              <div style="font-size: 1.5em; margin-bottom: 0.3em;">✅</div>
+              <div style="font-size: 0.78em; font-weight: 700; color: #fff; margin-bottom: 0.2em;">You verify easily</div>
+              <div style="font-size: 0.7em; color: var(--text-muted);">Check against your source</div>
+            </div>
+          </div>
+          <aside class="notes">
+            This is the mental model that underlies everything in this session. Reliable = working with content you own. Risky = asking the model to recall or generate facts.
+          </aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H4: WHAT LLMS ARE NOT GOOD AT
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What LLMs Are NOT Good At</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Always verify these — never trust blindly</p>
+        <table class="data-table risk">
+          <thead>
+            <tr><th>Task</th><th>Why it's risky</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Stating facts, statistics, dates</td><td>May confabulate plausible-sounding but wrong data</td></tr>
+            <tr><td>Recent events</td><td>Workshop data has a cutoff — it may not know</td></tr>
+            <tr><td>Calculations &amp; maths</td><td>Can make arithmetic errors, especially multi-step</td></tr>
+            <tr><td>Legal / regulatory specifics</td><td>Rules change; model may be outdated or wrong</td></tr>
+            <tr><td>Citing sources</td><td>Will sometimes invent citations that don't exist</td></tr>
+            <tr><td>Predicting outcomes</td><td>No real-world knowledge beyond training data</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight-box" style="margin-top: 0.8em;">
+          <p style="font-size: 0.84em; margin: 0;"><strong>Key rule for BAs:</strong> If the output contains a number, a name, a date, or a specific claim — verify it independently before using it.</p>
+        </div>
+        <aside class="notes">
+          This isn't about distrust — it's about using the right tool for the right job. You wouldn't use Excel to write a narrative report; you wouldn't use an LLM as a source of truth for regulatory compliance. Clear boundaries make you more effective, not less.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H5: HALLUCINATIONS + V1: WHY THEY HAPPEN
+      ══════════════════════════════════════════════ -->
+      <section>
+        <section>
+          <h2>What Are Hallucinations?</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">The model confidently says something that isn't true</p>
+          <div class="grid-2">
+            <div>
+              <p style="font-size: 0.84em; color: var(--text-muted); line-height: 1.7; margin-bottom: 0.8em;">LLMs generate the most statistically likely next token — they don't "look things up." When they don't know something, they don't say "I don't know" — they generate a plausible-sounding answer.</p>
+              <div class="highlight-box">
+                <p style="font-size: 0.82em; margin: 0;"><strong>Analogy:</strong> Like a colleague who's brilliant at structuring arguments but will fill gaps in their knowledge with educated guesses — and won't always tell you when they're guessing.</p>
+              </div>
+            </div>
+            <div class="hallucination-box">
+              <div class="box-label">Classic Examples</div>
+              <ul>
+                <li>Invented statistics: <em>"Studies show 73% of BAs use AI tools"</em> — made up</li>
+                <li>Fake citations: <em>"According to Smith et al. (2021)..."</em> — paper doesn't exist</li>
+                <li>Wrong dates or names: Confidently incorrect factual claims</li>
+                <li>Outdated information presented as current</li>
+              </ul>
+            </div>
+          </div>
+          <p style="font-size: 0.7em; color: var(--text-dim); margin-top: 0.8em; text-align: right;">↓ Why this is a structural property, not a bug</p>
+          <aside class="notes">
+            The hallucination problem is not a bug that will be "fixed" — it's a fundamental property of how LLMs work. The solution is workflow design, not model improvement. That's what the next slide covers.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Why Hallucinations Happen</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">Understanding the root cause helps you prevent it</p>
+          <div class="grid-2" style="margin-bottom: 1em;">
+            <div style="background: var(--bg-card); border-radius: var(--radius); padding: 1.1em; border: 1px solid var(--border);">
+              <h4 style="font-size: 0.82em; color: var(--accent-blue); margin-bottom: 0.5em;">How LLMs generate text</h4>
+              <p style="font-size: 0.76em; color: var(--text-muted); line-height: 1.6; margin: 0;">LLMs predict the most statistically likely next word based on patterns in training data. They are not searching a database — they are completing a pattern. They cannot distinguish "I know this" from "this sounds right."</p>
+            </div>
+            <div style="background: var(--bg-card); border-radius: var(--radius); padding: 1.1em; border: 1px solid rgba(248,113,113,0.2);">
+              <h4 style="font-size: 0.82em; color: #f87171; margin-bottom: 0.5em;">Where it goes wrong</h4>
+              <p style="font-size: 0.76em; color: var(--text-muted); line-height: 1.6; margin: 0;">When asked about something rare, recent, or specific, the model still generates a confident-sounding pattern — but the underlying "fact" may not exist. It fills gaps with plausible-sounding text.</p>
+            </div>
+          </div>
+          <div class="highlight-box teal">
+            <p style="font-size: 0.84em; line-height: 1.6; margin: 0;"><strong>Key insight:</strong> Hallucination is not random — it's a structural property. The model cannot flag its own uncertainty reliably. <strong>The solution is in how you design your prompts.</strong></p>
+          </div>
+          <aside class="notes">
+            Once participants understand hallucination as a structural property, not a random flaw, they'll naturally move towards the mitigation strategies on the next slide.
+          </aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H6: HOW TO PREVENT HALLUCINATIONS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>How to Prevent Hallucinations</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">4 practical techniques for reliable output</p>
+        <div class="technique-grid">
+          <div>
+            <div class="technique">
+              <h4><span class="technique-num">1</span> Ground the model with your own data</h4>
+              <p>Paste the actual document, data, or facts into the prompt. Model can only draw on what you give it.</p>
+              <div class="example">"Based only on the following document, answer this question: ..."</div>
+            </div>
+            <div class="technique" style="margin-top: 10px;">
+              <h4><span class="technique-num">2</span> Ask it to flag uncertainty</h4>
+              <p>Explicitly instruct it to say "I don't know" when uncertain.</p>
+              <div class="example">"If you are not certain, say so. Do not invent statistics."</div>
+            </div>
+          </div>
+          <div>
+            <div class="technique">
+              <h4><span class="technique-num">3</span> Break complex tasks into steps</h4>
+              <p>Instead of one big prompt, build up reasoning incrementally.</p>
+              <div class="example">Step 1: list themes → Step 2: find evidence → Step 3: summarize</div>
+            </div>
+            <div class="technique" style="margin-top: 10px;">
+              <h4><span class="technique-num">4</span> Verify anything that matters</h4>
+              <p>Any number, name, date, or specific claim used in a deliverable: check it.</p>
+              <div class="example">Treat AI output like a first draft from a junior colleague</div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Technique 1 (grounding) is the most powerful. When you paste in the actual source material, the model is essentially doing comprehension and synthesis — not recall. That's where it's most reliable.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H7: DETERMINISTIC VS NON-DETERMINISTIC
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Deterministic vs Non-Deterministic Tasks</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Match the task type to your verification level</p>
+        <div class="grid-2" style="margin-bottom: 1em;">
+          <div style="background: rgba(100,255,218,0.05); border: 1px solid rgba(100,255,218,0.2); border-radius: var(--radius); padding: 1.1em;">
+            <h4 style="color: var(--accent-teal); font-size: 0.84em; margin-bottom: 0.5em;">Deterministic Tasks</h4>
+            <p style="font-size: 0.76em; color: var(--text-muted); margin-bottom: 0.6em; line-height: 1.5;">Reformatting, extraction, translation, summarizing from given text. The "right answer" is obvious — you can check it at a glance.</p>
+            <div style="font-size: 0.73em; color: var(--accent-teal); font-weight: 600;">→ Low verification burden</div>
+          </div>
+          <div style="background: rgba(255,209,102,0.05); border: 1px solid rgba(255,209,102,0.2); border-radius: var(--radius); padding: 1.1em;">
+            <h4 style="color: var(--accent-gold); font-size: 0.84em; margin-bottom: 0.5em;">Non-Deterministic Tasks</h4>
+            <p style="font-size: 0.76em; color: var(--text-muted); margin-bottom: 0.6em; line-height: 1.5;">Factual claims, analysis conclusions, recommendations, predictions. The "right answer" isn't obvious — it requires external validation.</p>
+            <div style="font-size: 0.73em; color: var(--accent-gold); font-weight: 600;">→ Higher verification burden</div>
+          </div>
+        </div>
+        <div class="framework-box">
+          <div class="framework-question">"Is this task about <em>shaping</em> content I already have, or <em>generating</em> knowledge I don't have?"</div>
+          <div class="framework-options">
+            <div class="framework-option shape">
+              <h4>Shaping</h4>
+              <p>Use confidently, light verification. You own the source material.</p>
+            </div>
+            <div class="framework-option generate">
+              <h4>Generating</h4>
+              <p>Use as a starting point, verify before trusting. Model is recalling.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          This is the most important mental model in the session. It doesn't require deep technical knowledge — just the habit of asking "where did this come from?" before using AI output in a deliverable.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H8: ROLE-BASED PROMPTS + V1: WHY IT WORKS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <section>
+          <h2>Advanced Prompting: Role-Based Prompts</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Give the model a perspective to work from</p>
+          <div class="compare-cols">
+            <div class="compare-box before">
+              <div class="compare-label">Basic instruction</div>
+              <blockquote>"Review this requirements document."</blockquote>
+              <p>Generic, helpful, polite response. No specific focus or critical angle.</p>
+            </div>
+            <div class="compare-box after">
+              <div class="compare-label">Role-based</div>
+              <blockquote>"You are a skeptical senior project manager who has seen many projects fail due to unclear requirements. Review the following requirements document. Flag any vague statements, missing acceptance criteria, and assumptions that could become problems during delivery."</blockquote>
+            </div>
+          </div>
+          <p style="font-size: 0.7em; color: var(--text-dim); margin-top: 0.8em; text-align: right;">↓ Why it works + multiple roles</p>
+          <aside class="notes">
+            Role-based prompting is particularly powerful for getting critical, constructive feedback — something LLMs naturally avoid unless you explicitly ask for it. BAs often need someone to challenge their work; this gives you that.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Why Role-Based Prompts Work</h2>
+          <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">The role activates a specific frame of knowledge and attitude</p>
+          <div class="grid-2" style="margin-bottom: 1em;">
+            <div style="background: var(--bg-card); border-radius: var(--radius); padding: 1.1em; border: 1px solid var(--border);">
+              <h4 style="font-size: 0.82em; color: var(--accent-blue); margin-bottom: 0.5em;">What the role does</h4>
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="font-size: 0.76em; color: var(--text-muted); padding: 0.25em 0; line-height: 1.5;">• Shifts the model's "perspective" and vocabulary</li>
+                <li style="font-size: 0.76em; color: var(--text-muted); padding: 0.25em 0; line-height: 1.5;">• Activates relevant domain knowledge and patterns</li>
+                <li style="font-size: 0.76em; color: var(--text-muted); padding: 0.25em 0; line-height: 1.5;">• Changes what the model prioritises in the output</li>
+              </ul>
+            </div>
+            <div style="background: var(--bg-card); border-radius: var(--radius); padding: 1.1em; border: 1px solid var(--border);">
+              <h4 style="font-size: 0.82em; color: var(--accent-teal); margin-bottom: 0.5em;">Power technique: multiple roles</h4>
+              <p style="font-size: 0.76em; color: var(--text-muted); margin-bottom: 0.5em; line-height: 1.5;">Review once as a BA, once as a developer, once as a QA tester — in a single prompt:</p>
+              <div style="background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.2); border-radius: 6px; padding: 0.6em 0.8em; font-size: 0.74em; font-style: italic; color: var(--text-muted);">"Review this first as a BA, then as a developer, then as a QA tester. For each role, list the top 2 concerns."</div>
+            </div>
+          </div>
+          <div class="highlight-box teal">
+            <p style="font-size: 0.84em; margin: 0;"><strong>"Skeptical senior PM"</strong> produces very different output from <strong>"helpful assistant"</strong> — same input, same model. The role is the key variable.</p>
+          </div>
+          <aside class="notes">
+            BAs often need critical feedback on their own work. Role-based prompting gives you a constructive critic on demand. The multiple-roles technique is particularly powerful for requirements review.
+          </aside>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H9: CONSTRAINT-BASED PROMPTS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Advanced Prompting: Constraint-Based Prompts</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Tell it what NOT to do</p>
+        <table class="data-table">
+          <thead>
+            <tr><th>Constraint</th><th>What it prevents</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>"Do not add information not in the source"</td><td>Hallucination</td></tr>
+            <tr><td>"Do not use jargon"</td><td>Inaccessible output</td></tr>
+            <tr><td>"Flag assumptions explicitly, do not state them as facts"</td><td>Hidden assumptions</td></tr>
+            <tr><td>"Do not exceed 200 words"</td><td>Over-verbose output</td></tr>
+            <tr><td>"Ask me if anything is unclear before answering"</td><td>Misunderstood tasks</td></tr>
+            <tr><td>"Do not recommend solutions — only identify problems"</td><td>Premature conclusions</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight-box" style="margin-top: 0.8em;">
+          <p style="font-size: 0.84em; margin: 0;">LLMs default to being <strong>helpful, comprehensive, and agreeable</strong> — constraints give you direct control over those defaults.</p>
+        </div>
+        <aside class="notes">
+          The last two are especially useful in BA work. "Ask me if anything is unclear" prevents the model from making assumptions about your intent. "Identify problems only" is great for gap analysis work.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H10: OUTPUT FORMAT CONTROL
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Advanced Prompting: Output Format Control</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Tell it exactly what structure you need</p>
+        <div class="format-examples">
+          <div class="format-card">
+            <h4>Tables</h4>
+            <blockquote>"Return the results as a table with columns: Requirement ID, Description, Priority, Owner, Open Questions."</blockquote>
+          </div>
+          <div class="format-card">
+            <h4>Numbered Lists + Sub-Points</h4>
+            <blockquote>"Return as a numbered list. Under each point, add a sub-bullet with the business rationale."</blockquote>
+          </div>
+          <div class="format-card">
+            <h4>Structured Document</h4>
+            <blockquote>"Use this exact structure: ## Executive Summary / ## Key Findings (bullet list) / ## Risks / ## Recommended Next Steps"</blockquote>
+          </div>
+          <div class="format-card">
+            <h4>JSON / Structured Data</h4>
+            <blockquote>"Return as JSON with keys: title, summary, action_items, owner, deadline."</blockquote>
+          </div>
+        </div>
+        <div class="highlight-box teal" style="margin-top: 0.8em;">
+          <p style="font-size: 0.84em; margin: 0;">Once you know you always need output in a specific format — <strong>build that template into your prompt and reuse it.</strong></p>
+        </div>
+        <aside class="notes">
+          Output format control is underused. Once you know you always need requirements in a specific template, build that template into your prompt and reuse it. This is the start of building personal "prompt templates" — which we'll build on in Session 3 with agents.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H11: BUILDING PROMPT TEMPLATES
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Building Your Own Prompt Templates</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">Stop rewriting prompts — build a library</p>
+        <div class="grid-2">
+          <div>
+            <p style="font-size: 0.84em; color: var(--text-muted); margin-bottom: 0.8em; line-height: 1.6;">Save your best prompts as reusable templates with placeholders. Copy-paste into any LLM tool as needed.</p>
+            <div style="background: var(--bg-card); border-radius: var(--radius); padding: 0.9em; border: 1px solid var(--border);">
+              <div style="font-size: 0.72em; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.5em; letter-spacing: 0.06em; text-transform: uppercase;">Where to store them</div>
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="font-size: 0.76em; color: var(--text-muted); padding: 0.2em 0;">• A Word or Notion doc with prompts by use case</li>
+                <li style="font-size: 0.76em; color: var(--text-muted); padding: 0.2em 0;">• Organised by task type (requirements, comms, analysis)</li>
+                <li style="font-size: 0.76em; color: var(--text-muted); padding: 0.2em 0;">• Start building today — add to it after each session</li>
+              </ul>
+            </div>
+            <div class="highlight-box teal" style="margin-top: 0.8em;">
+              <p style="font-size: 0.8em; margin: 0;">This is the low-tech version of what an AI Agent does — a pre-configured prompt that runs consistently.</p>
+            </div>
+          </div>
+          <div>
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--accent-blue); margin-bottom: 0.5em; letter-spacing: 0.06em; text-transform: uppercase;">Example — Meeting Notes to Action Items</div>
+            <div class="prompt-box" style="font-size: 0.72em;">You are an experienced professional. Read the following meeting notes and extract:
+1. A list of decisions made (with owner if mentioned)
+2. A list of action items (format: Action | Owner | Due Date)
+3. A list of open questions that need follow-up
+
+Do not add anything not in the notes. If owner or due date is not mentioned, write "TBC".
+
+Meeting notes:
+<span style="color: var(--accent-gold);">[PASTE NOTES HERE]</span></div>
+          </div>
+        </div>
+        <aside class="notes">
+          Encourage BAs to start building a personal prompt library today. By Session 3, they'll see how this scales into automated agents.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H12: AI FOR DATA IN EXCEL
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Using AI for Data in Excel</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">AI as your spreadsheet co-pilot</p>
+        <div class="grid-2">
+          <div class="capability-list">
+            <h4 style="color: var(--accent-teal);">What AI can do with Excel</h4>
+            <ul>
+              <li>Explain what a formula does in plain English</li>
+              <li>Write a formula from a plain-English description</li>
+              <li>Suggest a chart type for a given dataset</li>
+              <li>Summarize trends in a table</li>
+              <li>Identify anomalies or outliers</li>
+              <li>Draft the narrative for a data section</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--accent-blue); margin-bottom: 0.5em; letter-spacing: 0.06em; text-transform: uppercase;">Example Prompts</div>
+            <div class="prompt-box" style="font-size: 0.72em; margin-bottom: 8px;">"Explain what this formula does:
+=SUMIFS(D2:D100, B2:B100, "North", C2:C100, "Q1")"</div>
+            <div class="prompt-box" style="font-size: 0.72em; margin-bottom: 8px;">"I have a table: Date, Region, Sales Rep, Revenue. Write an Excel formula to calculate total revenue for North region in Q1 2025."</div>
+            <div class="prompt-box" style="font-size: 0.72em;">"Look at this sales data [paste table]. What are the 3 most notable trends you see?"</div>
+          </div>
+        </div>
+        <aside class="notes">
+          The key mindset shift: you don't need to know the formula syntax — you describe what you want and let the model write it. Verify the formula works, but you don't need to understand every character.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H13: AI FOR PRESENTATIONS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Using AI for Presentations</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1em;">From brief to slide structure in seconds</p>
+        <div class="grid-2">
+          <div>
+            <div class="capability-list" style="margin-bottom: 8px;">
+              <h4 style="color: var(--accent-teal);">What AI can help with</h4>
+              <ul>
+                <li>Generating a slide outline from a text brief</li>
+                <li>Writing concise slide titles and bullet points</li>
+                <li>Suggesting a logical narrative flow</li>
+                <li>Drafting speaker notes</li>
+                <li>Condensing dense documents into presentation content</li>
+              </ul>
+            </div>
+            <div class="capability-list cant" style="border-color: rgba(248,113,113,0.2);">
+              <h4 style="color: #f87171;">What AI cannot do</h4>
+              <ul style="">
+                <li style="color: var(--text-muted);">Apply your company's slide template</li>
+                <li style="color: var(--text-muted);">Insert actual charts (can describe what to use)</li>
+                <li style="color: var(--text-muted);">Replace your judgment on what the audience needs</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--accent-blue); margin-bottom: 0.5em; letter-spacing: 0.06em; text-transform: uppercase;">Example Prompt</div>
+            <div class="prompt-box" style="font-size: 0.72em; margin-bottom: 8px;">You are an experienced professional preparing a presentation for leadership. Based on the following project summary, create an 8-slide outline. For each slide:
+- Slide title
+- 3-4 bullet points
+- One speaker note
+
+Tone: executive-level. Focus on decisions and outcomes, not process detail.
+
+[Paste project summary]</div>
+            <div class="highlight-box teal" style="font-size: 0.84em;">AI does the 80% heavy lifting — you do the 20% polish.</div>
+          </div>
+        </div>
+        <aside class="notes">
+          The fastest workflow is: use AI to generate the structure and content → paste into your template → refine. The AI does the 80% heavy lifting; you do the 20% polish. This is a 3x speed-up for most BAs.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H14: DEMO 1 — HALLUCINATION LIVE EXAMPLE
+      ══════════════════════════════════════════════ -->
+      <section class="scrollable">
+        <div class="demo-slide">
+          <h2>Demo 1: Hallucination — Live Example</h2>
+          <div class="demo-scenario">
+            <strong>Purpose</strong>
+            Show a hallucination happening — then show how grounding prevents it. Same model, same topic, completely different reliability.
+          </div>
+          <div class="demo-columns">
+            <div>
+              <div class="demo-step-label step-danger">Step 1 — Without grounding</div>
+              <div class="demo-prompt-label">Prompt</div>
+              <div class="demo-prompt">What were the key findings of the Gartner report on AI adoption in business analysis published in 2024?</div>
+              <div class="demo-response-wrapper">
+                <button class="demo-reveal-btn">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                  See AI Response
+                </button>
+                <div class="demo-response-label" style="display:none;">AI Response (fabricated)</div>
+                <div class="demo-response" data-response="The 2024 Gartner report on AI adoption in the enterprise identified several key findings:
+
+1. 68% of knowledge workers reported using AI tools weekly in their workflows, up from 41% in 2023.
+
+2. Top three use cases: document drafting (72%), stakeholder communication (64%), and process gap analysis (58%).
+
+3. Organisations using structured prompt frameworks saw 34% improvement in output quality vs ad-hoc usage.
+
+4. Data quality concerns remained the primary barrier, cited by 79% of respondents.
+
+5. Gartner predicts that by 2026, AI-assisted work will become a baseline expectation in 85% of enterprise environments.
+
+— Gartner Research, 'AI Adoption in Enterprise Workflows', Q2 2024"></div>
+              </div>
+            </div>
+            <div>
+              <div class="demo-step-label step-safe">Step 2 — With grounding</div>
+              <div class="demo-prompt-label">Prompt</div>
+              <div class="demo-prompt">Based only on the following text, what are the key findings about AI adoption?
+Do not add any information not present in this text. If something is not mentioned, say "not covered in source."
+
+[Paste any real paragraph from a document you have]</div>
+              <div class="demo-response-wrapper">
+                <button class="demo-reveal-btn">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                  See AI Response
+                </button>
+                <div class="demo-response-label" style="display:none;">AI Response (grounded)</div>
+                <div class="demo-response" data-response="Based on the provided text, here are the findings about AI adoption:
+
+[Model extracts only what is in your pasted paragraph]
+
+Items not mentioned in the source text:
+• Specific adoption percentages: not covered in source
+• Named research reports or citations: not covered in source
+• Predictions or future timelines: not covered in source
+
+The model stays strictly within the content you provided.
+No statistics or claims have been added beyond the source text."></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-discussion">
+            <strong>Notice:</strong> Step 1 produced specific statistics, a named Gartner report, and confident findings — almost certainly fabricated. Step 2 stayed within the source. The change was entirely in the prompt structure, not the model.
+          </div>
+        </div>
+        <aside class="notes">
+          What to highlight: The fabricated response in Step 1 looks convincing — specific percentages, report name, quarters. That's what makes hallucinations dangerous. Step 2 shows how one constraint ("based only on the following") eliminates the problem entirely. Same model, completely different reliability.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H15: DEMO 2 — ROLE + CONSTRAINT PROMPTING
+      ══════════════════════════════════════════════ -->
+      <section class="scrollable">
+        <div class="demo-slide">
+          <h2>Demo 2: Role + Constraint Prompting</h2>
+          <div class="demo-scenario">
+            <strong>Scenario</strong>
+            Review a draft requirements document critically — using role, constraints, and format control together.
+          </div>
+          <div class="demo-columns">
+            <div>
+              <div class="demo-prompt-label">Prompt</div>
+              <div class="demo-prompt">You are a senior developer who has been burned by vague requirements in the past. Review the following requirements document. Do not be polite — be direct.
+
+For each requirement, flag if it is: (a) clear and testable, (b) vague and needs clarification, or (c) missing acceptance criteria entirely.
+
+Return as a table: Requirement | Assessment | Specific Issue | Suggested Fix
+
+Do not add requirements that aren't there. Do not summarize — go requirement by requirement.
+
+Requirements:
+1. The system should be fast
+2. Users must be able to export reports
+3. The dashboard should refresh every 5 minutes with live data from Salesforce
+4. The UI should be user-friendly
+5. Admins can manage user permissions</div>
+            </div>
+            <div class="demo-response-wrapper">
+              <button class="demo-reveal-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                See AI Response
+              </button>
+              <div class="demo-response-label" style="display:none;">AI Response</div>
+              <div class="demo-response" data-response="Requirement | Assessment | Specific Issue | Suggested Fix
+------------|------------|----------------|-------------
+The system should be fast | (c) Missing AC | "Fast" is unmeasurable. No load target, no response time defined. | Rewrite: "Pages must load within 2 seconds for 95% of requests under normal load (up to 500 concurrent users)."
+Users must be able to export reports | (b) Vague | Export to what format? PDF, Excel, CSV? Which reports? Who can export? | Rewrite: "Registered users can export any report view to .xlsx and .pdf format."
+The dashboard should refresh every 5 minutes with live data from Salesforce | (a) Clear &amp; testable | Specific, measurable, source identified. Acceptable. | No change needed — this is a well-formed requirement.
+The UI should be user-friendly | (c) Missing AC | "User-friendly" is an opinion, not a requirement. No usability standard given. | Rewrite: "UI must pass usability testing with 5 representative users achieving ≥80% task completion rate."
+Admins can manage user permissions | (b) Vague | What permissions? Create, edit, delete users? Role assignment? Scope of admin undefined. | Rewrite: "Admin users can create, deactivate, and assign roles to accounts. Roles: Viewer, Editor, Admin.""></div>
+            </div>
+          </div>
+          <div class="demo-discussion">
+            <strong>Notice:</strong> Role ("burned developer") + constraint ("be direct", "do not summarize") + format ("table") combined into a genuinely useful review. Requirement 3 was correctly identified as the only clear, testable one.
+          </div>
+        </div>
+        <aside class="notes">
+          What to highlight: How role + constraints + format control combines into a genuinely useful requirements review tool. The model correctly identified Req 3 as the only well-formed requirement. Run this live — let the output generate in real time.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H16: DEMO 3 — SLIDE OUTLINE FROM PROJECT BRIEF
+      ══════════════════════════════════════════════ -->
+      <section class="scrollable">
+        <div class="demo-slide">
+          <h2>Demo 3: Slide Outline from a Project Brief</h2>
+          <div class="demo-scenario">
+            <strong>Scenario</strong>
+            Turn a raw project summary into an 8-slide executive briefing outline — in seconds.
+          </div>
+          <div class="demo-columns">
+            <div>
+              <div class="demo-prompt-label">Prompt</div>
+              <div class="demo-prompt">You are an experienced professional preparing an executive briefing. Based on the project summary below, create an 8-slide presentation outline. For each slide provide:
+- Slide title
+- 3 bullet points (max 10 words each)
+- One speaker note (1-2 sentences)
+
+Focus on business decisions and outcomes. The audience is senior leadership — no technical detail.
+
+Project summary:
+We are implementing a new customer data platform (CDP) to unify customer data across 4 systems: CRM, ERP, support ticketing, and web analytics. Aim: give sales and marketing a single customer view. Benefits: 20% reduction in manual data reconciliation, faster campaign targeting, improved retention. Timeline: 6 months. Budget: £400K. Key risks: data quality in legacy systems, team adoption.</div>
+            </div>
+            <div class="demo-response-wrapper">
+              <button class="demo-reveal-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                See AI Response
+              </button>
+              <div class="demo-response-label" style="display:none;">AI Response</div>
+              <div class="demo-response" data-response="Slide 1 — The Business Problem
+• Customer data split across four separate systems
+• Sales and marketing lack a unified customer view
+• Manual reconciliation consumes significant team time
+Speaker note: Frame this as a competitive readiness decision, not a technology project.
+
+Slide 2 — The Proposed Solution
+• Implement a Customer Data Platform (CDP)
+• Unify CRM, ERP, support, and web analytics data
+• Give sales and marketing a single view of each customer
+Speaker note: Emphasise this is a business capability — not an IT upgrade.
+
+Slide 3 — Expected Business Benefits
+• 20% reduction in manual data reconciliation work
+• Faster, more targeted marketing campaign execution
+• Improved customer retention through better personalisation
+Speaker note: These are the metrics leadership will track post-implementation.
+
+Slide 4 — Investment &amp; Timeline
+• Total project budget: £400,000
+• Delivery timeline: 6 months end-to-end
+• Decision needed: project initiation and budget approval
+Speaker note: Confirm whether the £400K has been budgeted or requires new approval.
+
+Slide 5 — Key Risks &amp; Mitigation
+• Data quality issues in existing legacy systems
+• Team adoption and change management required
+• Mitigation planning to begin in Month 1
+Speaker note: Acknowledge risks honestly — leadership will ask about them regardless.
+
+Slide 6 — Stakeholder Impact
+• Sales team: single customer view, reduced manual lookup
+• Marketing team: faster campaign targeting capability
+• IT team: data pipeline ownership and ongoing maintenance
+Speaker note: Tailor this slide to the specific people in the room.
+
+Slide 7 — Decision Required Today
+• Approve project initiation and £400K budget
+• Confirm executive sponsor for the programme
+• Agree communications approach for affected teams
+Speaker note: Be explicit about what you need from this meeting — don't leave actions implied.
+
+Slide 8 — Next Steps
+• Week 1: Detailed planning and data quality assessment
+• Month 1: Vendor selection and team onboarding
+• Month 6: CDP go-live and benefit tracking begins
+Speaker note: Show that momentum is ready — the project can start immediately on approval."></div>
+            </div>
+          </div>
+          <div class="demo-discussion">
+            <strong>Ask the room:</strong> "What would you change?" — this is the moment where AI does the heavy lifting and you add the judgment. The structure is there; your expertise refines it.
+          </div>
+        </div>
+        <aside class="notes">
+          What to highlight: How quickly a usable 8-slide structure appears from a single paragraph. Then ask "What would you change?" — shows that AI does the heavy lifting, the BA adds judgment. The model even inferred that Slide 7 should be the call-to-action.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H17: HANDS-ON ACTIVITY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Your Turn — Critical Review Exercise</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">5 minutes · Open any LLM tool you have access to</p>
+        <div class="activity-section">
+          <div style="font-size: 0.7em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-teal); margin-bottom: 0.8em;">The Task</div>
+          <p style="font-size: 0.84em; color: var(--text-primary); margin-bottom: 0.8em;">Paste a piece of your own work (a requirements section, a status update, any document) and use this prompt:</p>
+          <div class="prompt-box" style="font-size: 0.76em; margin-bottom: 1.2em;">You are a critical but constructive reviewer. Review the following document.
+Identify:
+1. Any statements that are vague or unmeasurable
+2. Any missing information a developer or stakeholder would need
+3. Any assumptions stated as facts
+
+Be specific. Return as a numbered list. Do not rewrite the document — only flag issues.
+
+[Paste your document here]</div>
+          <div class="highlight-box teal" style="font-size: 0.84em;">
+            <strong>Debrief question:</strong> Did it catch anything you hadn't noticed?
+          </div>
+        </div>
+        <aside class="notes">
+          Give them 5 minutes. Walk around and help. The most powerful moment is when the model flags something they thought was clear — that's the "aha" moment for this session. Common stumbling block: people aren't sure what document to use. Any work document works.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           H18: KEY TAKEAWAYS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Key Takeaways</h2>
+        <p style="color: var(--text-muted); font-size: 0.82em; margin-bottom: 1.2em;">6 things to remember from Session 2</p>
+        <div class="takeaway-grid">
+          <div class="takeaway-item">
+            <div class="takeaway-num">1</div>
+            <div class="takeaway-text">LLMs are highly reliable for <strong>shaping content you provide</strong> — less reliable for generating facts</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">2</div>
+            <div class="takeaway-text"><strong>Hallucinations</strong> are a fundamental property of LLMs — the answer is workflow design, not blind trust</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">3</div>
+            <div class="takeaway-text"><strong>Ground the model</strong> with your own data to eliminate most hallucination risk</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">4</div>
+            <div class="takeaway-text">Use <strong>role + constraints + format</strong> to get precise, consistent output every time</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">5</div>
+            <div class="takeaway-text">Build a <strong>personal prompt template library</strong> — stop rewriting the same prompt twice</div>
+          </div>
+          <div class="takeaway-item">
+            <div class="takeaway-num">6</div>
+            <div class="takeaway-text"><strong>AI in Excel and PowerPoint</strong> cuts document work time significantly — start using it this week</div>
+          </div>
+        </div>
+        <div style="margin-top: 1em; text-align: center; font-size: 0.75em; color: var(--text-dim);">
+          Session 3 → Agents &amp; Automation
+        </div>
+        <aside class="notes">
+          Wrap up by connecting to Session 3 — prompt templates are the manual version of what agents do automatically. They've already built the mental model they need for the next session.
+        </aside>
+      </section>
+
+    </div><!-- /.slides -->
+  </div><!-- /.reveal -->
+
+  <!-- Reveal.js scripts -->
+  <script src="../assets/reveal/dist/reveal.js"></script>
+  <script src="../assets/reveal/plugin/notes/notes.js"></script>
+  <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
+
+  <!-- Demo reveal logic -->
+  <script src="../assets/js/demo-reveal.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'fade',
+      transitionSpeed: 'fast',
+      slideNumber: 'c/t',
+      showSlideNumber: 'all',
+      progress: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      center: true,
+      width: 1200,
+      height: 700,
+      margin: 0.04,
+      plugins: [RevealNotes, RevealHighlight]
+    });
+    Reveal.on('slidechanged', DemoReveal.onSlideChange);
+    DemoReveal.init();
+  </script>
+</body>
+</html>
