@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 5 — Coding with Copilot | AI Workshop</title>
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="../assets/reveal/dist/reset.css" />
+  <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
+
+  <!-- Custom theme & demo styles -->
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="../assets/css/demos.css" />
+
+  <style>
+    /* ── Session 5 specific styles with larger fonts ── */
+
+    /* Title slide */
+    .title-slide { text-align: center; }
+    .session-label {
+      font-size: 0.85em; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent-blue); margin-bottom: 1em;
+    }
+    .title-slide h1 {
+      font-size: 3em; font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; color: #fff; margin-bottom: 0.5em;
+    }
+    .subtitle { font-size: 1.1em; color: var(--text-muted); margin-bottom: 1.5em; }
+    .title-opener { display: inline-block; font-size: 1.05em; color: var(--text-primary); }
+    .title-opener strong { color: var(--accent-teal); }
+
+    /* Heading styles with larger fonts */
+    h2 {
+      font-size: 2.2em;
+      font-weight: 800;
+      color: var(--accent-blue);
+      margin-bottom: 0.5em;
+    }
+
+    h3 {
+      font-size: 1.6em;
+      font-weight: 700;
+      color: var(--accent-teal);
+      margin-bottom: 0.4em;
+    }
+
+    h4 {
+      font-size: 1.3em;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin-bottom: 0.3em;
+    }
+
+    /* Body text and lists */
+    p, li {
+      font-size: 1.1em;
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    ul, ol {
+      margin: 0.8em 0;
+    }
+
+    ul li, ol li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Tools landscape list */
+    .tools-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8em;
+      margin-top: 0.8em;
+      text-align: left;
+    }
+
+    .tool-item {
+      background: var(--bg-card);
+      border-left: 3px solid var(--accent-blue);
+      border-radius: var(--radius);
+      padding: 1em 1.3em;
+    }
+
+    .tool-item strong {
+      color: var(--accent-teal);
+      font-size: 1.05em;
+    }
+
+    .tool-item p {
+      margin: 0.3em 0 0 0;
+      font-size: 0.95em;
+      color: var(--text-muted);
+    }
+
+    /* Key differences / capabilities boxes */
+    .capabilites-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em;
+      margin-top: 0.8em;
+    }
+
+    .capability-box {
+      background: rgba(79,142,247,0.08);
+      border: 1px solid rgba(79,142,247,0.2);
+      border-radius: var(--radius);
+      padding: 1em 1.2em;
+      text-align: left;
+    }
+
+    .capability-box h4 {
+      font-size: 1.1em;
+      margin-bottom: 0.6em;
+    }
+
+    .capability-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .capability-box li {
+      font-size: 0.95em;
+      color: var(--text-primary);
+      padding: 0.3em 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      line-height: 1.6;
+    }
+
+    .capability-box li:last-child {
+      border-bottom: none;
+    }
+
+    .capability-box li strong {
+      color: var(--accent-teal);
+    }
+
+    /* Use cases section */
+    .use-cases {
+      text-align: left;
+      margin-top: 0.8em;
+    }
+
+    .use-case-item {
+      display: flex;
+      gap: 0.8em;
+      margin-bottom: 0.6em;
+      background: var(--bg-card);
+      padding: 0.7em 1em;
+      border-radius: 6px;
+    }
+
+    .use-case-bullet {
+      color: var(--accent-gold);
+      font-weight: 700;
+      font-size: 1.2em;
+      min-width: 1.5em;
+      line-height: 1;
+    }
+
+    .use-case-text {
+      font-size: 0.95em;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .use-case-text strong {
+      color: var(--accent-teal);
+    }
+
+    /* How it works steps */
+    .how-it-works {
+      display: flex;
+      gap: 0.8em;
+      margin-top: 0.8em;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .work-step {
+      flex: 1;
+      min-width: 160px;
+      background: var(--bg-card);
+      border-top: 3px solid var(--accent-blue);
+      border-radius: var(--radius);
+      padding: 0.9em 1.1em;
+      text-align: center;
+    }
+
+    .work-step-num {
+      font-size: 1.8em;
+      font-weight: 800;
+      color: var(--accent-blue);
+      opacity: 0.4;
+      line-height: 1;
+    }
+
+    .work-step-text {
+      font-size: 0.9em;
+      color: var(--text-primary);
+      margin-top: 0.4em;
+      line-height: 1.5;
+    }
+
+    .work-arrow {
+      font-size: 1.5em;
+      color: var(--accent-teal);
+      opacity: 0.6;
+    }
+
+    /* Interface breakdown */
+    .interface-items {
+      text-align: left;
+      margin-top: 0.8em;
+    }
+
+    .interface-item {
+      background: var(--bg-card);
+      border-left: 3px solid var(--accent-teal);
+      border-radius: var(--radius);
+      padding: 0.8em 1.1em;
+      margin-bottom: 0.6em;
+    }
+
+    .interface-item strong {
+      color: var(--accent-teal);
+      font-size: 1em;
+    }
+
+    .interface-item p {
+      font-size: 0.9em;
+      color: var(--text-muted);
+      margin: 0.3em 0 0 0;
+    }
+
+    /* Modes/Models comparison */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95em;
+      margin-top: 0.8em;
+    }
+
+    .comparison-table th {
+      background: rgba(79,142,247,0.12);
+      color: var(--accent-blue);
+      font-size: 0.9em;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.7em 0.9em;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .comparison-table td {
+      padding: 0.65em 0.9em;
+      color: var(--text-primary);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table td:first-child {
+      color: var(--accent-teal);
+      font-weight: 700;
+      min-width: 80px;
+    }
+
+    /* Exercise boxes */
+    .exercise-box {
+      background: var(--bg-card);
+      border: 2px solid var(--accent-blue);
+      border-radius: var(--radius);
+      padding: 1.2em 1.5em;
+      text-align: left;
+      margin-top: 0.8em;
+    }
+
+    .exercise-title {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--accent-teal);
+      margin-bottom: 0.6em;
+    }
+
+    .exercise-section-title {
+      font-size: 1.05em;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin-top: 1.8em;
+      margin-bottom: 0.6em;
+    }
+
+    .exercise-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.5em 0;
+    }
+
+    .exercise-box li {
+      font-size: 0.95em;
+      color: var(--text-primary);
+      padding: 0.3em 0 0.3em 1.8em;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      line-height: 1.6;
+    }
+
+    .exercise-box li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent-teal);
+      font-weight: 700;
+    }
+
+    .exercise-box li:last-child {
+      border-bottom: none;
+    }
+
+    /* Closing slide */
+    .closing-slide { text-align: center; }
+    .closing-slide h1 {
+      font-size: 2.8em;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.6em;
+    }
+
+    .closing-points {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8em;
+      margin-top: 1.2em;
+      text-align: left;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .closing-point {
+      background: rgba(79,142,247,0.08);
+      border-left: 3px solid var(--accent-teal);
+      border-radius: var(--radius);
+      padding: 0.8em 1.1em;
+      font-size: 1em;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .closing-point strong {
+      color: var(--accent-gold);
+    }
+
+    /* Image styling */
+    .slide-image {
+      max-width: 95%;
+      max-height: 600px;
+      display: block;
+      margin: 0.8em auto;
+      border-radius: var(--radius);
+      border: 1px solid rgba(79,142,247,0.2);
+    }
+
+    /* Fixed UI */
+    .home-link {
+      position: fixed;
+      top: 16px;
+      left: 20px;
+      font-size: 0.9em;
+      color: var(--text-dim);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 100;
+      transition: color 0.2s;
+    }
+
+    .home-link:hover {
+      color: var(--accent-blue);
+    }
+
+    .notes-hint {
+      position: fixed;
+      top: 16px;
+      right: 100px;
+      font-size: 0.85em;
+      color: var(--text-dim);
+      z-index: 100;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+      h2 { font-size: 2em; }
+      h3 { font-size: 1.4em; }
+      h4 { font-size: 1.1em; }
+      p, li { font-size: 0.95em; }
+      .capabilites-grid { grid-template-columns: 1fr; }
+      .how-it-works { flex-direction: column; }
+      .work-arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <img src="../assets/images/02.%20PS%20Logo_Vertical.png" alt="Preferred Square" style="position:fixed; top:12px; right:16px; height:40px; z-index:100; opacity:0.85;" />
+  <a href="../index.html" class="home-link" target="_blank">← All Sessions</a>
+  <div class="notes-hint">Press S for speaker notes</div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 1: TITLE SLIDE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="title-slide">
+          <div class="session-label">Session 5 of 5 · AI Workshop</div>
+          <h1>Coding with Copilot</h1>
+          <p class="subtitle">AI Coding Tools Overview · ~45–60 minutes</p>
+          <div class="title-opener">
+            <strong>Today:</strong> We'll explore the AI coding tools ecosystem, dive deep into GitHub Copilot, and get hands-on with two practical exercises.
+          </div>
+        </div>
+        <aside class="notes">
+          Welcome to Session 5! Today we're diving into AI-powered coding assistants. We'll start with an overview of the tools available, explore GitHub Copilot in detail, and then get hands-on with two practical exercises. By the end of this session, you'll understand how to leverage Copilot for real-world coding tasks.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 2: AI CODING TOOLS LANDSCAPE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>AI Coding Tools Ecosystem</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 1.2em;">
+          <!-- Left Column: Tool Names Only -->
+          <div>
+            <div style="font-size: 1.2em; font-weight: 700; color: var(--accent-teal); margin-bottom: 1em; text-align: center; text-transform: uppercase; letter-spacing: 0.05em;">Tools</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr; gap: 0.8em;">
+              <div style="background: rgba(79,142,247,0.1); border: 2px solid var(--accent-blue); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h4 style="font-size: 1.35em; margin: 0; color: var(--accent-blue);">GitHub Copilot</h4>
+              </div>
+
+              <div style="background: rgba(100,255,218,0.1); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h4 style="font-size: 1.35em; margin: 0; color: var(--accent-teal);">Claude Code</h4>
+              </div>
+
+              <div style="background: rgba(255,209,102,0.1); border: 2px solid var(--accent-gold); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h4 style="font-size: 1.35em; margin: 0; color: var(--accent-gold);">Cursor</h4>
+              </div>
+
+              <div style="background: rgba(192,132,252,0.1); border: 2px solid #c084fc; border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h4 style="font-size: 1.35em; margin: 0; color: #c084fc;">Lovable</h4>
+              </div>
+
+              <div style="background: rgba(79,142,247,0.1); border: 2px solid var(--accent-blue); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h4 style="font-size: 1.35em; margin: 0; color: var(--accent-blue);">Codeium</h4>
+              </div>
+
+              <div style="background: rgba(100,255,218,0.1); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h4 style="font-size: 1.35em; margin: 0; color: var(--accent-teal);">Tabnine</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Combined Use Cases -->
+          <div class="fragment">
+            <div style="font-size: 1.2em; font-weight: 700; color: var(--accent-teal); margin-bottom: 1em; text-align: center; text-transform: uppercase; letter-spacing: 0.05em;">Use Cases</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr; gap: 0.8em;">
+              <div style="background: rgba(79,142,247,0.1); border: 2px solid var(--accent-blue); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h5 style="font-size: 1.35em; font-weight: 700; color: var(--accent-blue); margin: 0;">Write code faster</h5>
+              </div>
+
+              <div style="background: rgba(100,255,218,0.1); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h5 style="font-size: 1.35em; font-weight: 700; color: var(--accent-teal); margin: 0;">Learn what code does</h5>
+              </div>
+
+              <div style="background: rgba(255,209,102,0.1); border: 2px solid var(--accent-gold); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h5 style="font-size: 1.35em; font-weight: 700; color: var(--accent-gold); margin: 0;">Find and fix bugs</h5>
+              </div>
+
+              <div style="background: rgba(192,132,252,0.1); border: 2px solid #c084fc; border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h5 style="font-size: 1.35em; font-weight: 700; color: #c084fc; margin: 0;">Build apps quickly</h5>
+              </div>
+
+              <div style="background: rgba(79,142,247,0.1); border: 2px solid var(--accent-blue); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h5 style="font-size: 1.35em; font-weight: 700; color: var(--accent-blue); margin: 0;">See results instantly</h5>
+              </div>
+
+              <div style="background: rgba(100,255,218,0.1); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+                <h5 style="font-size: 1.35em; font-weight: 700; color: var(--accent-teal); margin: 0;">Write better code</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          This isn't a sales pitch for any tool — the goal is to show participants there's an active ecosystem and help them understand what distinguishes each option. Copilot is our deep-dive focus today because it's widely used and integrated. The skills learned here transfer to other tools.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 3: GITHUB COPILOT
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>GitHub Copilot</h2>
+
+        <div style="margin-top: 3em;">
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2em;">
+            <!-- Step 1 -->
+            <div style="text-align: center;">
+              <div style="background: rgba(79,142,247,0.1); border: 2px solid var(--accent-blue); border-radius: var(--radius); padding: 1.8em;">
+                <div style="font-size: 2.2em; font-weight: 700; color: var(--accent-blue); margin-bottom: 0.6em;">1</div>
+                <div style="font-size: 1.1em; color: var(--text-primary); font-weight: 600; line-height: 1.4;">You write a prompt</div>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div style="text-align: center;">
+              <div style="background: rgba(100,255,218,0.1); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 1.8em;">
+                <div style="font-size: 2.2em; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.6em;">2</div>
+                <div style="font-size: 1.1em; color: var(--text-primary); font-weight: 600; line-height: 1.4;">Copilot sends context</div>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div style="text-align: center;">
+              <div style="background: rgba(255,209,102,0.1); border: 2px solid var(--accent-gold); border-radius: var(--radius); padding: 1.8em;">
+                <div style="font-size: 2.2em; font-weight: 700; color: var(--accent-gold); margin-bottom: 0.6em;">3</div>
+                <div style="font-size: 1.1em; color: var(--text-primary); font-weight: 600; line-height: 1.4;">LLM generates response</div>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div style="text-align: center;">
+              <div style="background: rgba(192,132,252,0.1); border: 2px solid #c084fc; border-radius: var(--radius); padding: 1.8em;">
+                <div style="font-size: 2.2em; font-weight: 700; color: #c084fc; margin-bottom: 0.6em;">4</div>
+                <div style="font-size: 1.1em; color: var(--text-primary); font-weight: 600; line-height: 1.4;">You review &amp; refine</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 2.5em; font-size: 1.3em; color: var(--accent-teal); font-weight: 700;">
+            Repeat until done
+          </div>
+        </div>
+
+        <aside class="notes">
+          This circular flow shows the iterative nature of working with Copilot. It's not a one-shot process — it's a continuous loop of prompting, receiving, and refining. This reinforces the idea that Copilot augments human judgment, not replaces it. Participants should understand that if the first output isn't perfect, they can ask follow-up questions and iterate.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 4: VS CODE INTERFACE OVERVIEW (WITH IMAGE)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>The AI Coding Environment</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">VS Code with Copilot Integration</p>
+
+        <img src="./images/01. VSCode.png" alt="VS Code interface overview showing editor, Copilot sidebar, explorer, and terminal" class="slide-image" />
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.8em; margin-top: 1em;">
+          <div style="background: rgba(79,142,247,0.1); border: 2px solid rgba(79,142,247,0.3); border-radius: var(--radius); padding: 0.9em; text-align: center;">
+            <p style="font-size: 1.1em; font-weight: 700; color: var(--accent-blue); margin-bottom: 0.3em;">Explorer</p>
+            <p style="font-size: 0.9em; color: var(--text-muted); margin: 0;">Project files &amp; structure</p>
+          </div>
+          <div style="background: rgba(100,255,218,0.1); border: 2px solid rgba(100,255,218,0.3); border-radius: var(--radius); padding: 0.9em; text-align: center;">
+            <p style="font-size: 1.1em; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.3em;">Editor</p>
+            <p style="font-size: 0.9em; color: var(--text-muted); margin: 0;">Where you write code</p>
+          </div>
+          <div style="background: rgba(255,209,102,0.1); border: 2px solid rgba(255,209,102,0.3); border-radius: var(--radius); padding: 0.9em; text-align: center;">
+            <p style="font-size: 1.1em; font-weight: 700; color: var(--accent-gold); margin-bottom: 0.3em;">Copilot Chat</p>
+            <p style="font-size: 0.9em; color: var(--text-muted); margin: 0;">Conversational interface</p>
+          </div>
+          <div style="background: rgba(192,132,252,0.1); border: 2px solid rgba(192,132,252,0.3); border-radius: var(--radius); padding: 0.9em; text-align: center;">
+            <p style="font-size: 1.1em; font-weight: 700; color: #c084fc; margin-bottom: 0.3em;">Terminal</p>
+            <p style="font-size: 0.9em; color: var(--text-muted); margin: 0;">Command line &amp; output</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          This slide sets the visual context. Walk through each area of the interface. Point out where Copilot indicators show up. Highlight the chat sidebar — that's our primary interface for the hands-on work. Ask: "Who's used VS Code before?" Reassure non-users that we'll keep it simple.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 5: COPILOT CHAT WINDOW (WITH IMAGE)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Copilot Chat: Your AI Teammate</h2>
+
+        <img src="./images/02. GitHub_Copilot.png" alt="Copilot Chat interface showing chat history, input box, and code actions" class="slide-image" />
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8em; margin-top: 1em;">
+          <div style="background: var(--bg-card); border-top: 3px solid var(--accent-blue); border-radius: var(--radius); padding: 2em 1em; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <h5 style="font-size: 1.05em; font-weight: 700; color: var(--accent-teal); margin: 0;">Modes</h5>
+          </div>
+
+          <div style="background: var(--bg-card); border-top: 3px solid var(--accent-teal); border-radius: var(--radius); padding: 2em 1em; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <h5 style="font-size: 1.05em; font-weight: 700; color: var(--accent-teal); margin: 0;">Models</h5>
+          </div>
+
+          <div style="background: var(--bg-card); border-top: 3px solid var(--accent-gold); border-radius: var(--radius); padding: 2em 1em; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <h5 style="font-size: 1.05em; font-weight: 700; color: var(--accent-teal); margin: 0;">Sessions</h5>
+          </div>
+        </div>
+
+        <aside class="notes">
+          This is the interface participants will use most. Show how to ask questions clearly. Mention that Copilot performs better with specific, detailed prompts. Demonstrate one example: "Ask Copilot to write a Python function that reads a CSV file and returns the row count." Show how it responds, where to copy the code, and how to validate it.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 6: COPILOT MODES (WITH IMAGE)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Modes: Tailoring Copilot's Behavior</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">Three modes for different workflows</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 1.2em; align-items: center;">
+          <!-- Left: Image -->
+          <div>
+            <img src="./images/03. Mode.png" alt="Copilot modes selector showing Ask, Plan, and Agent options" class="slide-image" style="max-width: 100%; height: auto; display: block; border-radius: var(--radius);" />
+          </div>
+
+          <!-- Right: 3 Boxes Stacked Vertically -->
+          <div style="display: grid; grid-template-columns: 1fr; gap: 0.8em;">
+            <!-- Ask Box -->
+            <div class="fragment" style="background: rgba(79,142,247,0.1); border: 2px solid var(--accent-blue); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+              <h4 style="font-size: 1.3em; margin-bottom: 0.5em; color: var(--accent-blue);">Ask</h4>
+              <p style="font-size: 0.95em; color: var(--text-primary); margin: 0;">Quick questions and answers — fast responses to specific queries</p>
+            </div>
+
+            <!-- Plan Box -->
+            <div class="fragment" style="background: rgba(100,255,218,0.1); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+              <h4 style="font-size: 1.3em; margin-bottom: 0.5em; color: var(--accent-teal);">Plan</h4>
+              <p style="font-size: 0.95em; color: var(--text-primary); margin: 0;">Planning and strategy — helps break down complex tasks</p>
+            </div>
+
+            <!-- Agent Box -->
+            <div class="fragment" style="background: rgba(255,209,102,0.1); border: 2px solid var(--accent-gold); border-radius: var(--radius); padding: 1.4em; text-align: center;">
+              <h4 style="font-size: 1.3em; margin-bottom: 0.5em; color: var(--accent-gold);">Agent</h4>
+              <p style="font-size: 0.95em; color: var(--text-primary); margin: 0;">Autonomous execution — Copilot handles multiple steps independently</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Explain each mode with practical examples. Ask mode is for quick clarifications and specific code requests. Plan mode helps participants think through complex projects step-by-step before implementation. Agent mode automates repetitive or complex workflows. Show how the modes influence Copilot's response approach.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 7: AVAILABLE MODELS (WITH IMAGE)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Models: Choosing the Right "Brain"</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">Which model powers your request?</p>
+
+        <img src="./images/05. Models.png" alt="Overview of models available in Copilot including GPT-4, GPT-3.5, Claude, and others" class="slide-image" />
+
+        <aside class="notes">
+          Most participants don't need to manually select models — Copilot handles it. But knowing the tradeoff (capability vs. speed) helps them understand why some Copilot responses are better than others. Tell them: "If Copilot's first response isn't great, try rephrasing the prompt or switching modes — you're interacting with different reasoning approaches each time."
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 9: MODELS CAPABILITY COMPARISON (WITH IMAGE)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>How Models Differ</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">Detailed model comparison</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 1.2em; align-items: start;">
+          <!-- Left: Image -->
+          <div>
+            <img src="./images/06. Models_Zoomin.png" alt="Detailed comparison of model capabilities, speed, and context windows" class="slide-image" style="max-width: 100%; height: auto; display: block; border-radius: var(--radius);" />
+          </div>
+
+          <!-- Right: 4 Boxes in 2x2 Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em;">
+            <!-- Reasoning Capability Box -->
+            <div style="background: rgba(79,142,247,0.1); border: 2px solid var(--accent-blue); border-radius: var(--radius); padding: 1.4em; text-align: center; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;">
+              <h4 style="font-size: 1.3em; margin-bottom: 0; color: var(--accent-blue);">Reasoning Capability</h4>
+            </div>
+
+            <!-- Context Window Size Box -->
+            <div style="background: rgba(100,255,218,0.1); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 1.4em; text-align: center; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;">
+              <h4 style="font-size: 1.3em; margin-bottom: 0; color: var(--accent-teal);">Context Window Size</h4>
+            </div>
+
+            <!-- Speed Box -->
+            <div style="background: rgba(255,209,102,0.1); border: 2px solid var(--accent-gold); border-radius: var(--radius); padding: 1.4em; text-align: center; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;">
+              <h4 style="font-size: 1.3em; margin-bottom: 0; color: var(--accent-gold);">Speed</h4>
+            </div>
+
+            <!-- Cost per Token Box -->
+            <div style="background: rgba(192,132,252,0.1); border: 2px solid var(--accent-purple); border-radius: var(--radius); padding: 1.4em; text-align: center; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;">
+              <h4 style="font-size: 1.3em; margin-bottom: 0; color: var(--accent-purple);">Cost per Token</h4>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Visual comparison table. Don't overload — the key takeaway is that different models have different strengths. In practice, Copilot selects the best one for your needs. If their company's LLM budget is limited, they can use GPT-3.5 and still get good productivity gains.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 10: EXERCISE 1 - DATA WRANGLING
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Exercise 1: Standardizing &amp; Merging CSV Data</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">Hands-on with Copilot</p>
+
+        <div class="exercise-box">
+          <div class="exercise-title">Scenario</div>
+          <p style="font-size: 1.2em; line-height: 1.7;">You have <strong>40 CSV files</strong> in <code>data/messy_sales/</code> with <strong>inconsistent column names</strong>. Some have "Date", others "transaction_date". You need to read all files, standardize columns, and merge into one DataFrame.</p>
+
+          <div class="exercise-section-title">Task</div>
+          <p style="font-size: 0.95em; color: var(--text-primary);">Use Copilot to Clean and Merge the Data</p>
+
+          <div class="exercise-section-title">Expected Outcome</div>
+          <p style="font-size: 0.95em; color: var(--text-muted);">Single CSV file containing all data with standardized column naming.</p>
+
+          <div class="exercise-section-title">Download Sample Data</div>
+          <p style="font-size: 0.95em;"><a href="./data/Exercise%201%20Sales_data.zip" style="color: var(--accent-blue); text-decoration: underline; font-weight: 600;">📥 Download Exercise 1 Sales_data.zip</a> — Contains 40 sample CSV files with inconsistent column names for this exercise.</p>
+        </div>
+
+        <aside class="notes">
+          This exercise teaches participants to translate business requirements into Copilot prompts, review generated code, and iterate. It shows how Copilot augments workflow. The goal is confidence and practical experience.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 11: EXERCISE 2 - WEB APP DEVELOPMENT
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Exercise 2: Building a Reporting Website</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">End-to-end feature development</p>
+
+        <div class="exercise-box">
+          <div class="exercise-title">Scenario</div>
+          <p style="font-size: 0.95em;">Using the merged data from Exercise 1, build a <strong>web-based reporting dashboard</strong> showing: KPIs (total sales, order count), sales by region (table), and top products by revenue.</p>
+
+          <div class="exercise-section-title">Your Task</div>
+          <ul>
+            <li>Create a new directory with <code>index.html</code> and <code>app.py</code></li>
+            <li>Ask Copilot for HTML template: <em>"Create responsive HTML for a sales dashboard with KPIs, region table, and top products table."</em></li>
+            <li>Ask Copilot for backend: <em>"Write Flask code to load the CSV data, calculate KPIs, and serve the dashboard."</em></li>
+            <li>Optional: Add filtering <em>"Add a dropdown to filter by region and update tables dynamically."</em></li>
+            <li>Run locally and validate in browser</li>
+          </ul>
+
+          <div class="exercise-section-title">Prompting Tips</div>
+          <ul style="font-size: 0.9em;">
+            <li><strong>Be specific about tech stack</strong> — mention Flask, React, vanilla HTML</li>
+            <li><strong>Ask for best practices</strong> — accessibility, responsive design, error handling</li>
+            <li><strong>Iterate visually</strong> — ask for styling suggestions, review in browser</li>
+          </ul>
+
+          <div class="exercise-section-title">Time Allocation</div>
+          <p style="font-size: 0.95em; color: var(--text-muted);">~20 minutes (5 min setup + 10 min coding + 5 min testing)</p>
+        </div>
+
+        <aside class="notes">
+          This exercise demonstrates end-to-end feature development with Copilot. Participants see how to rapidly prototype from concept to working product. Emphasize iterative refinement and that Copilot accelerates the scaffolding phase.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           FINAL SLIDE: Q&A & WRAP-UP
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="closing-slide">
+          <h1>You Now Know How to Code with Copilot</h1>
+          <div class="closing-points">
+            <div class="closing-point">
+              <strong>AI coding tools are productivity multipliers</strong> — use them for boilerplate, exploration, and faster iteration
+            </div>
+            <div class="closing-point">
+              <strong>Copilot is your pair programmer, not a replacement</strong> — you own code quality, testing, and decisions
+            </div>
+            <div class="closing-point">
+              <strong>Prompting skills matter</strong> — specific, detailed prompts yield better code
+            </div>
+            <div class="closing-point">
+              <strong>Different modes and models serve different needs</strong> — experiment to find your workflow
+            </div>
+            <div class="closing-point">
+              <strong>Practice is the best teacher</strong> — use Copilot on real projects, share what you learn with your team
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          This is your chance to reinforce the session's core message: AI coding tools are here to stay, and learning to work with them is now a core professional skill. Ask participants: "What's one task from your current project you'd like to try with Copilot?" Encourage them to experiment and iterate. The goal is confidence and practical experience, not mastery on day one.
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="../assets/reveal/dist/reveal.js"></script>
+  <script src="../assets/reveal/plugin/notes/notes.js"></script>
+  <script src="../assets/reveal/plugin/markdown/markdown.js"></script>
+  <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      width: 1400,
+      height: 900,
+      margin: 0.1,
+      minScale: 0.2,
+      maxScale: 2.0,
+      transition: 'slide',
+      transitionSpeed: 'default',
+    });
+  </script>
+</body>
+</html>
