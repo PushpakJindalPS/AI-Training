@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Session 5 — Coding with Copilot | AI Workshop</title>
 
+  <!-- Funky font for vibe coding slide -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet" />
+
   <!-- Reveal.js -->
   <link rel="stylesheet" href="../assets/reveal/dist/reset.css" />
   <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
@@ -279,24 +284,27 @@
       background: var(--bg-card);
       border: 2px solid var(--accent-blue);
       border-radius: var(--radius);
-      padding: 1.2em 1.5em;
+      padding: 2em 2.2em;
       text-align: left;
-      margin-top: 0.8em;
+      margin-top: 0.4em;
+      position: relative;
     }
 
     .exercise-title {
-      font-size: 1.2em;
+      font-size: 1.35em;
       font-weight: 700;
       color: var(--accent-teal);
-      margin-bottom: 0.6em;
+      margin-bottom: 0.8em;
+      letter-spacing: 0.02em;
     }
 
     .exercise-section-title {
-      font-size: 1.05em;
+      font-size: 1.2em;
       font-weight: 700;
       color: var(--accent-gold);
-      margin-top: 1.8em;
-      margin-bottom: 0.6em;
+      margin-top: 1.6em;
+      margin-bottom: 0.8em;
+      letter-spacing: 0.01em;
     }
 
     .exercise-box ul {
@@ -326,8 +334,137 @@
       border-bottom: none;
     }
 
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-card);
+      border: 2px solid var(--accent-blue);
+      border-radius: var(--radius-lg);
+      padding: 2.2em;
+      max-width: 850px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 16px 64px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.6em;
+      border-bottom: 1px solid rgba(79, 142, 247, 0.2);
+      padding-bottom: 1.2em;
+    }
+
+    .modal-header h3 {
+      font-size: 1.6em;
+      color: var(--accent-blue);
+      margin: 0;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.8em;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: var(--accent-blue);
+    }
+
+    .modal-body {
+      font-size: 1.05em;
+      line-height: 1.8;
+      color: var(--text-primary);
+      text-align: left;
+    }
+
+    .modal-body pre {
+      background: rgba(79, 142, 247, 0.08);
+      border: 1px solid rgba(79, 142, 247, 0.2);
+      border-radius: var(--radius);
+      padding: 1.2em;
+      overflow-x: auto;
+      font-size: 0.95em;
+      margin: 1em 0;
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.8em;
+      right: 0.8em;
+      padding: 0.5em 0.9em;
+      background: rgba(79, 142, 247, 0.2);
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-blue);
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(79, 142, 247, 0.35);
+      border-color: var(--accent-teal);
+      transform: translateY(-1px);
+    }
+
+    .copy-btn.copied {
+      background: rgba(100, 255, 218, 0.2);
+      color: var(--accent-teal);
+      border-color: var(--accent-teal);
+    }
+
+    .prompt-btn {
+      position: absolute;
+      top: 1.2em;
+      right: 1.5em;
+      padding: 0.6em 1.2em;
+      background: rgba(79, 142, 247, 0.12);
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-blue);
+      border-radius: 6px;
+      font-size: 0.9em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .prompt-btn:hover {
+      background: rgba(79, 142, 247, 0.25);
+      border-color: var(--accent-blue);
+      transform: translateY(-1px);
+    }
+
     /* Closing slide */
-    .closing-slide { text-align: center; }
     .closing-slide h1 {
       font-size: 2.8em;
       font-weight: 800;
@@ -409,6 +546,16 @@
       .how-it-works { flex-direction: column; }
       .work-arrow { display: none; }
     }
+    /* Vibe font + gradient for all slide titles */
+    .reveal section h1,
+    .reveal section h2 {
+      font-family: 'Righteous', cursive;
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.03em;
+    }
   </style>
 </head>
 <body>
@@ -441,7 +588,7 @@
            SLIDE 2: AI CODING TOOLS LANDSCAPE
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>AI Coding Tools Ecosystem</h2>
+        <h1>AI Coding Tools Ecosystem</h2>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 1.2em;">
           <!-- Left Column: Tool Names Only -->
@@ -516,9 +663,9 @@
            SLIDE 3: GITHUB COPILOT
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>GitHub Copilot</h2>
+        <h1>GitHub Copilot</h2>
 
-        <div style="margin-top: 3em;">
+        <div class="fragment" style="margin-top: 3em;">
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2em;">
             <!-- Step 1 -->
             <div style="text-align: center;">
@@ -552,10 +699,14 @@
               </div>
             </div>
           </div>
+        </div>
 
-          <div style="text-align: center; margin-top: 2.5em; font-size: 1.3em; color: var(--accent-teal); font-weight: 700;">
-            Repeat until done
-          </div>
+        <div class="fragment" style="text-align: center; margin-top: 2.5em; font-size: 1.3em; color: var(--accent-teal); font-weight: 700;">
+          Repeat until done
+        </div>
+
+        <div class="fragment" style="text-align: center; margin-top: 2em; font-size: 1.2em; color: var(--text-primary);">
+          Let's open VS Code
         </div>
 
         <aside class="notes">
@@ -567,7 +718,7 @@
            SLIDE 4: VS CODE INTERFACE OVERVIEW (WITH IMAGE)
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>The AI Coding Environment</h2>
+        <h1>The AI Coding Environment</h2>
         <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">VS Code with Copilot Integration</p>
 
         <img src="./images/01. VSCode.png" alt="VS Code interface overview showing editor, Copilot sidebar, explorer, and terminal" class="slide-image" />
@@ -600,7 +751,7 @@
            SLIDE 5: COPILOT CHAT WINDOW (WITH IMAGE)
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>Copilot Chat: Your AI Teammate</h2>
+        <h1>Copilot Chat: Your AI Teammate</h2>
 
         <img src="./images/02. GitHub_Copilot.png" alt="Copilot Chat interface showing chat history, input box, and code actions" class="slide-image" />
 
@@ -627,7 +778,7 @@
            SLIDE 6: COPILOT MODES (WITH IMAGE)
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>Modes: Tailoring Copilot's Behavior</h2>
+        <h1>Modes: Tailoring Copilot's Behavior</h2>
         <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">Three modes for different workflows</p>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 1.2em; align-items: center;">
@@ -667,7 +818,7 @@
            SLIDE 7: AVAILABLE MODELS (WITH IMAGE)
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>Models: Choosing the Right "Brain"</h2>
+        <h1>Models: Choosing the Right "Brain"</h2>
         <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">Which model powers your request?</p>
 
         <img src="./images/05. Models.png" alt="Overview of models available in Copilot including GPT-4, GPT-3.5, Claude, and others" class="slide-image" />
@@ -681,7 +832,7 @@
            SLIDE 9: MODELS CAPABILITY COMPARISON (WITH IMAGE)
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>How Models Differ</h2>
+        <h1>How Models Differ</h2>
         <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">Detailed model comparison</p>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 1.2em; align-items: start;">
@@ -720,24 +871,70 @@
       </section>
 
       <!-- ══════════════════════════════════════════════
+           SLIDE: VIBE CODING TITLE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+          <h1 style="font-family: 'Righteous', cursive; font-size: 3.2em; font-weight: 700; background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue), var(--accent-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.03em; line-height: 1.2; text-align: center;">Let's start<br>Vibe Coding</h1>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE: FOLDER AND WORKSPACE SETUP TITLE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+          <h1 style="font-family: 'Righteous', cursive; font-size: 3.2em; font-weight: 700; background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue), var(--accent-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.03em; line-height: 1.2; text-align: center;">Folder and Workspace<br>Setup</h1>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
            SLIDE 10: EXERCISE 1 - DATA WRANGLING
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>Exercise 1: Standardizing &amp; Merging CSV Data</h2>
-        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">Hands-on with Copilot</p>
+        <h1>Exercise 1: Standardizing &amp; Merging CSV Data</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.2em 0 0.4em;">Hands-on with Copilot</p>
 
         <div class="exercise-box">
+          <button class="prompt-btn" onclick="openPromptModal1()">Prompt</button>
+
           <div class="exercise-title">Scenario</div>
-          <p style="font-size: 1.2em; line-height: 1.7;">You have <strong>40 CSV files</strong> in <code>data/messy_sales/</code> with <strong>inconsistent column names</strong>. Some have "Date", others "transaction_date". You need to read all files, standardize columns, and merge into one DataFrame.</p>
+          <p style="font-size: 1.1em; line-height: 1.8; color: var(--text-primary); margin: 0 0 0.6em 0;">You have 40 CSV files with sales information having inconsistent column names. Example: Some have "Date", others "transaction_date".</p>
 
           <div class="exercise-section-title">Task</div>
-          <p style="font-size: 0.95em; color: var(--text-primary);">Use Copilot to Clean and Merge the Data</p>
+          <p style="font-size: 1.05em; color: var(--text-primary); margin: 0 0 0.6em 0;">Use Copilot to Clean and Merge the Data</p>
 
           <div class="exercise-section-title">Expected Outcome</div>
-          <p style="font-size: 0.95em; color: var(--text-muted);">Single CSV file containing all data with standardized column naming.</p>
+          <p style="font-size: 1.05em; color: var(--text-primary); margin: 0 0 0.6em 0;">Single CSV file containing all data with standardized column naming.</p>
 
           <div class="exercise-section-title">Download Sample Data</div>
-          <p style="font-size: 0.95em;"><a href="./data/Exercise%201%20Sales_data.zip" style="color: var(--accent-blue); text-decoration: underline; font-weight: 600;">📥 Download Exercise 1 Sales_data.zip</a> — Contains 40 sample CSV files with inconsistent column names for this exercise.</p>
+          <p style="font-size: 1.05em; margin: 0;"><a href="./data/Exercise%201%20Sales_data.zip" style="color: var(--accent-blue); text-decoration: underline; font-weight: 600;">📥 Download Exercise 1 Sales_data.zip</a> — Contains 40 sample CSV files with inconsistent column names for this exercise.</p>
+        </div>
+
+        <!-- Modal for Exercise 1 Prompt -->
+        <div id="promptModal1" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Exercise 1: Suggested Prompt</h3>
+              <button class="modal-close" onclick="closePromptModal1()">✕</button>
+            </div>
+            <div class="modal-body">
+              <p style="margin-bottom: 1.2em;"><strong>Copy and paste this prompt into Copilot Chat:</strong></p>
+              <div style="position: relative; background: rgba(0,0,0,0.05); border-radius: 4px; padding: 1.2em;"><button class="copy-btn" onclick="copyPrompt1(this)" style="position: absolute; top: 0.8em; right: 0.8em;">📋 Copy</button>
+<pre id="promptText1" style="margin-top: 0; background: transparent; border: none; padding: 0;">I have 40 CSV files in a folder with sales data. The files have inconsistent column naming:
+- Some files have columns: "Date", "Product", "Region", "Sales", "Quantity"
+- Others have: "transaction_date", "product_name", "area", "amount", "qty"
+- Column names vary across files
+
+I need to:
+1. Read all 40 CSV files
+2. Standardize all column names to: date, product, region, amount, quantity
+3. Merge all data into a single DataFrame
+4. Export the merged data to a single CSV file
+
+Write Python code using pandas that handles this data cleaning and merging. Include error handling for missing files and inconsistent formats.</pre></div>
+            </div>
+          </div>
         </div>
 
         <aside class="notes">
@@ -746,38 +943,119 @@
       </section>
 
       <!-- ══════════════════════════════════════════════
-           SLIDE 11: EXERCISE 2 - WEB APP DEVELOPMENT
+           SLIDE 11: EXERCISE 2 - INTERACTIVE TAX CALCULATOR
       ══════════════════════════════════════════════ -->
       <section>
-        <h2>Exercise 2: Building a Reporting Website</h2>
-        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.4em 0 0.8em;">End-to-end feature development</p>
+        <h1>Exercise 2: Building Interactive Tool</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin: 0.2em 0 0.4em;">Interactive Income Tax Calculator</p>
 
-        <div class="exercise-box">
-          <div class="exercise-title">Scenario</div>
-          <p style="font-size: 0.95em;">Using the merged data from Exercise 1, build a <strong>web-based reporting dashboard</strong> showing: KPIs (total sales, order count), sales by region (table), and top products by revenue.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.8em; margin-top: 1.2em; align-items: stretch;">
+          <!-- Left: Objective Box -->
+          <div style="background: var(--bg-card); border: 2px solid var(--accent-blue); border-radius: var(--radius); padding: 2em 2.2em; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+            <div style="font-size: 1.35em; font-weight: 700; color: var(--accent-teal); margin-bottom: 1.2em; letter-spacing: 0.02em;">Objective</div>
+            <p style="font-size: 1.15em; line-height: 1.8; color: var(--text-primary); margin: 0;">Build an interactive tax calculator that computes income tax liabilities according to Indian Income Tax regulations.</p>
+          </div>
 
-          <div class="exercise-section-title">Your Task</div>
-          <ul>
-            <li>Create a new directory with <code>index.html</code> and <code>app.py</code></li>
-            <li>Ask Copilot for HTML template: <em>"Create responsive HTML for a sales dashboard with KPIs, region table, and top products table."</em></li>
-            <li>Ask Copilot for backend: <em>"Write Flask code to load the CSV data, calculate KPIs, and serve the dashboard."</em></li>
-            <li>Optional: Add filtering <em>"Add a dropdown to filter by region and update tables dynamically."</em></li>
-            <li>Run locally and validate in browser</li>
-          </ul>
+          <!-- Right: Expected Outcome Box -->
+          <div style="background: var(--bg-card); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 2em 2.2em; text-align: left; display: flex; flex-direction: column; justify-content: center; position: relative;">
+            <button class="prompt-btn" onclick="openPromptModal2()">Prompt</button>
+            <div style="font-size: 1.35em; font-weight: 700; color: var(--accent-gold); margin-bottom: 1.2em; letter-spacing: 0.02em;">Expected Outcome</div>
+            <p style="font-size: 1.15em; line-height: 1.8; color: var(--text-primary); margin: 0;">A fully functional web-based calculator where users input their annual income and other financial details, receiving tax liability calculations under both the old and new tax regimes for informed decision-making.</p>
+          </div>
+        </div>
 
-          <div class="exercise-section-title">Prompting Tips</div>
-          <ul style="font-size: 0.9em;">
-            <li><strong>Be specific about tech stack</strong> — mention Flask, React, vanilla HTML</li>
-            <li><strong>Ask for best practices</strong> — accessibility, responsive design, error handling</li>
-            <li><strong>Iterate visually</strong> — ask for styling suggestions, review in browser</li>
-          </ul>
+        <!-- Modal for Exercise 2 Prompt -->
+        <div id="promptModal2" class="modal">
+          <div class="modal-content" style="max-width: 750px;">
+            <div class="modal-header">
+              <h3 style="margin: 0; font-size: 1.3em;">Tax Calculator Prompt</h3>
+              <button class="modal-close" onclick="closePromptModal2()">✕</button>
+            </div>
+            <div class="modal-body">
+              <p style="margin-bottom: 1.2em;"><strong>Copy and paste this prompt into Copilot Chat:</strong></p>
+              <div style="position: relative; background: rgba(0,0,0,0.05); border-radius: 4px; padding: 1.2em;"><button class="copy-btn" onclick="copyPrompt2(this)" style="position: absolute; top: 0.8em; right: 0.8em;">📋 Copy</button>
+<pre id="promptText2" style="margin-top: 0; background: transparent; border: none; padding: 0; padding-top: 2.2em;">Build an interactive Indian Income Tax Calculator with real-time dual-regime comparison (Old vs New regime).
 
-          <div class="exercise-section-title">Time Allocation</div>
-          <p style="font-size: 0.95em; color: var(--text-muted);">~20 minutes (5 min setup + 10 min coding + 5 min testing)</p>
+REQUIREMENTS:
+
+1. INPUT FIELDS:
+   - Gross annual income (salary/business/other sources)
+   - Age (to determine applicable exemption limits)
+   - HRA (House Rent Allowance) - only for salaried
+   - Investment deductions (Section 80C: max ₹1,50,000) - ELSS, Life Insurance, Fixed Deposits, PPF, etc.
+   - Medical/Health Insurance premium (Section 80D):
+     * Self & Family: up to ₹25,000; Senior Citizens (60-80 yrs): up to ₹50,000; Super Senior (80+ yrs): up to ₹1,00,000
+   - Education Loan Interest (Section 80E): no limit
+   - Donations (Section 80G): approved charities and political parties
+   - Home Loan Interest (self-occupied property): up to ₹2,00,000
+   - Disability deductions (Section 80U): up to ₹1,25,000
+
+2. TAX SLABS (FY 2025-26):
+   OLD REGIME (standard individuals <60 years):
+   - Up to ₹2.5L: 0% | ₹2.5L-₹5L: 5% | ₹5L-₹10L: 20% | Above ₹10L: 30%
+   - Standard Deduction: ₹50,000 | Rebate (Sec 87A): ₹12,500 (tax-free up to ₹5L)
+   
+   NEW REGIME (default):
+   - Up to ₹4L: 0% | ₹4L-₹8L: 5% | ₹8L-₹12L: 10% | ₹12L-₹16L: 15% | ₹16L-₹20L: 20% | ₹20L-₹24L: 25% | Above ₹24L: 30%
+   - Standard Deduction: ₹75,000 | Rebate (Sec 87A): ₹60,000 (tax-free up to ₹12L)
+
+3. DEDUCTIONS ALLOWED:
+   OLD REGIME (all below available):
+   - Section 80C: Investments up to ₹1,50,000
+   - Section 80D: Medical insurance (caps by age)
+   - Section 80E: Education loan interest (no limit)
+   - Section 80G: Charitable donations (50% or 100% deduction per donation type)
+   - Section 80U: Disability deduction (up to ₹1,25,000)
+   - Home Loan Interest (self-occupied): up to ₹2,00,000; Let-out property: no limit
+   - HRA (House Rent Allowance): standard HRA calculation
+   
+   NEW REGIME (NO deductions except):
+   - Standard Deduction: ₹75,000 only
+   - NPS employer contribution Section 80CCD(2): up to 14% of basic pay
+   - Agniveer corpus fund Section 80CCH (allowed in both regimes)
+
+4. CALCULATIONS:
+   OLD REGIME FORMULA:
+   Taxable Income = Gross Income - Standard Deduction (₹50K) - All applicable deductions
+   Tax = Apply slab rates on Taxable Income
+   Tax after Rebate = Tax - Min(₹12,500, calculated tax)
+   Cess = 4% on tax amount if tax > ₹1,00,000
+   
+   NEW REGIME FORMULA:
+   Taxable Income = Gross Income - Standard Deduction (₹75K)
+   Tax = Apply slab rates on Taxable Income
+   Tax after Rebate = Tax - Min(₹60,000, calculated tax)
+   Cess = 4% on tax amount if tax > ₹1,00,000
+
+5. OUTPUT DISPLAY:
+   - Side-by-side comparison: Old Regime vs New Regime
+   - Show breakdown: Gross Income → Deductions → Taxable Income → Tax → After Rebate → With Cess
+   - Effective tax rate (%) for each regime
+   - Recommendation: Which regime saves more tax and by how much
+   - List deductions used in old regime and amounts claimed
+   - Display unused deduction capacity
+
+6. FEATURES:
+   - Real-time calculations as user inputs change
+   - Clean, professional two-column comparison layout
+   - Easy regime switching/toggling
+   - Mobile-responsive design
+   - Input validation (non-negative amounts, max limits)
+   - Age-based deduction limit auto-adjustment (60+, 80+ seniors)
+   - Tooltip/help text explaining each input field
+   - Save comparison results as PDF/JSON option
+   - Show "breakeven deduction" point (when old regime becomes better)
+
+REFERENCE INFO:
+- Tax-free income old regime: ₹5L | New regime: ₹12L
+- For ₹12L income: both regimes are comparable; above ₹12L new regime generally better unless significant deductions claimed
+- Switching between regimes: possible each financial year (except certain conditions)</pre></div>
+            </div>
+          </div>
         </div>
 
         <aside class="notes">
-          This exercise demonstrates end-to-end feature development with Copilot. Participants see how to rapidly prototype from concept to working product. Emphasize iterative refinement and that Copilot accelerates the scaffolding phase.
+          This exercise demonstrates building a practical, real-world tool with Copilot. Participants will see how to rapidly prototype a calculator with specific domain knowledge (Indian tax laws). This shows Copilot's ability to handle specialized requirements and iterate on complex logic.
         </aside>
       </section>
 
@@ -818,6 +1096,78 @@
   <script src="../assets/reveal/plugin/markdown/markdown.js"></script>
   <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
   <script>
+    // Modal functions for Exercise prompts
+    function openPromptModal1() {
+      document.getElementById('promptModal1').classList.add('show');
+    }
+
+    function closePromptModal1() {
+      document.getElementById('promptModal1').classList.remove('show');
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+      const modal1 = document.getElementById('promptModal1');
+      if (event.target === modal1) {
+        modal1.classList.remove('show');
+      }
+      const modal2 = document.getElementById('promptModal2');
+      if (event.target === modal2) {
+        modal2.classList.remove('show');
+      }
+    }
+
+    // Exercise 1: Copy prompt to clipboard
+    function copyPrompt1(button) {
+      const promptText = document.getElementById('promptText1').innerText;
+      navigator.clipboard.writeText(promptText).then(() => {
+        const originalText = button.textContent;
+        button.textContent = '✓ Copied!';
+        button.classList.add('copied');
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        button.textContent = '✗ Failed';
+        setTimeout(() => {
+          button.textContent = '📋 Copy';
+        }, 2000);
+      });
+    }
+
+    // Exercise 2: Open and close prompt modal
+    function openPromptModal2() {
+      document.getElementById('promptModal2').classList.add('show');
+    }
+
+    function closePromptModal2() {
+      document.getElementById('promptModal2').classList.remove('show');
+    }
+
+    // Exercise 2: Copy prompt to clipboard
+    function copyPrompt2(button) {
+      const promptText = document.getElementById('promptText2').innerText;
+      navigator.clipboard.writeText(promptText).then(() => {
+        const originalText = button.textContent;
+        button.textContent = '✓ Copied!';
+        button.classList.add('copied');
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        button.textContent = '✗ Failed';
+        setTimeout(() => {
+          button.textContent = '📋 Copy';
+        }, 2000);
+      });
+    }
+
     Reveal.initialize({
       hash: true,
       plugins: [RevealMarkdown, RevealHighlight, RevealNotes],

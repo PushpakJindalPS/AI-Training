@@ -1,0 +1,264 @@
+Employee ID,Employee Name,Designation Name,Department Name,Tenure,Reporting Manager Employe ID,Reporting Manager Designation Name
+PSA-008,Reena Goel,Director - Finance,Finance,5,,
+PSA-001,Pulkit Goel,Managing Director,Business Advisory,8,,
+PSA-002,Vineet Sharma,Associate Director,Business Advisory,8,PSA-001,Managing Director
+PSA-006,Aditya Agarwal,Principal Consultant,Business Advisory,6,PSA-002,Associate Director
+PSA-014,Syed Yusuf Suhail,Senior Consultant,Data Analytics,5,PSA-151,Principal Consultant
+PSA-031,Manish Yadav,Senior Consultant,Business Advisory,3,PSA-002,Associate Director
+PSA-026,Ekta Gupta,Head - Human Resources,Human Resources,4,PSA-044,Managing Director
+PSA-032,Archit Ganeriwal,Senior Consultant,Business Advisory,3,PSA-067,Principal Consultant
+PSA-029,Keshav Sharma,Consultant,Business Advisory,4,PSA-073,Senior Consultant
+PSA-045,Arpit Katyal,Senior Consultant,Business Advisory,3,PSA-006,Principal Consultant
+PSA-040,Chaman Thakur,Senior Consultant,Business Advisory,3,PSA-002,Associate Director
+PSA-043,Kishlay Kumar Singh,Senior Specialist - Information Technology,Information Technology,3,PSA-107,Manager - Information Technology
+PSA-044,Vibhor Anand,Managing Director,Business Advisory,3,,
+PSA-054,Aryan .,Consultant,Business Advisory,3,PSA-006,Principal Consultant
+PSA-056,Shubham Dhingra,Senior Consultant,Business Advisory,3,PSA-002,Associate Director
+PSA-058,Mohit Arora,Consultant,Business Advisory,3,PSA-120,Principal Consultant
+PSA-061,Pushaan Joshi,Consultant,Business Advisory,3,PSA-031,Senior Consultant
+PSA-063,Harsang Tarar,Senior Consultant,Business Advisory,3,PSA-006,Principal Consultant
+PSA-064,Anisha Jain,Consultant,Business Advisory,3,PSA-063,Senior Consultant
+PSA-067,Aditya Bhuttani ( AB ),Principal Consultant,Business Advisory,3,PSA-001,Managing Director
+PSA-069,Mayank Jain,Consultant,Business Advisory,3,PSA-176,Senior Consultant
+PSA-070,Avnika Goel,Consultant,Business Advisory,2,PSA-120,Principal Consultant
+PSA-072,Mansi Kukreja,Senior Consultant,Business Advisory,2,PSA-067,Principal Consultant
+PSA-073,Mohit Jain,Senior Consultant,Business Advisory,2,PSA-006,Principal Consultant
+PSA-075,Saitej A,Senior Consultant,Business Advisory,2,PSA-120,Principal Consultant
+PSA-076,Sayanka Mukherjee,Consultant,Business Advisory,2,PSA-045,Senior Consultant
+PSA-079,Shristy Katyayen,Consultant,Business Advisory,2,PSA-040,Senior Consultant
+PSA-080,Tilak Raj Mohanty,Assistant Manager - Human Resources,Human Resources,2,PSA-026,Head - Human Resources
+PSA-071,Jayesh Lalge,Consultant,Business Advisory,2,PSA-031,Senior Consultant
+PSA-082,Tanu Shree Tiwari,Assistant Manager - Finance,Finance,2,PSA-207,Senior Manager - Finance
+PSA-084,Meesum Zaidi,Senior Consultant,Business Advisory,2,PSA-067,Principal Consultant
+PSA-086,Tuneer Sarkar,Consultant,Data Analytics,2,PSA-358,Senior Consultant
+PSA-083,Himanshu Gopal Mahajan,Consultant,Business Advisory,2,PSA-031,Senior Consultant
+PSA-097,Mrudula Palur,Senior Consultant,Business Advisory,2,PSA-067,Principal Consultant
+PSA-099,Ritika Kapoor,Consultant,Business Advisory,2,PSA-063,Senior Consultant
+PSA-100,Samyak Jain,Consultant,Business Advisory,2,PSA-097,Senior Consultant
+PSA-102,Naman Jain,Consultant,Business Advisory,2,PSA-120,Principal Consultant
+PSA-104,Ashish Sharma,Consultant,Business Advisory,2,PSA-031,Senior Consultant
+PSA-105,Siddhant Gambhir,Consultant,Business Advisory,2,PSA-084,Senior Consultant
+PSA-106,Ujwal Chauhan,Consultant,Business Advisory,2,PSA-097,Senior Consultant
+PSA-151,Pushpak Jindal,Principal Consultant,Data Analytics,1,PSA-001,Managing Director
+PSA-107,Parveen Kumar,Manager - Information Technology,Information Technology,2,PSA-001,Managing Director
+PSA-111,Sonal Bhatia,Consultant,Business Advisory,2,PSA-032,Senior Consultant
+PSA-114,Pranjali Agarwal,Consultant,Business Advisory,2,PSA-073,Senior Consultant
+PSA-115,Anindita Aggarwal,Consultant,Business Advisory,2,PSA-254,Senior Consultant
+PSA-116,Kritika Agarwal,Senior Business Analyst,Business Advisory,2,PSA-176,Senior Consultant
+PSA-117,Lokesh Batra,Consultant,Business Advisory,2,PSA-120,Principal Consultant
+PSA-120,Sagar Suri,Principal Consultant,Business Advisory,2,PSA-001,Managing Director
+PSA-121,Akhil Bansal,Consultant,Business Advisory,2,PSA-063,Senior Consultant
+PSA-127,Arushi Agarwal,Senior Business Analyst,Business Advisory,2,PSA-031,Senior Consultant
+PSA-129,Shivam Pandey,Senior Data Analyst,Data Analytics,2,PSA-014,Senior Consultant
+PSA-130,Sujal Aggarwal,Senior Business Analyst,Business Advisory,2,PSA-084,Senior Consultant
+PSA-131,Md Zaki Ullah Usmani,Senior Data Analyst,Data Analytics,2,PSA-014,Senior Consultant
+PSA-134,Asmita Shaw,Assistant Manager - Business Development,Business Development,2,PSA-251,Senior Manager - Business Development
+PSA-135,Nikita Arora,Consultant,Business Advisory,2,PSA-072,Senior Consultant
+PSA-138,Samarth Madan,Consultant,Business Advisory,2,PSA-045,Senior Consultant
+PSA-139,Shruti Garg,Senior Business Analyst,Business Advisory,2,PSA-176,Senior Consultant
+PSA-181,Ayan Sengupta,Consultant,Business Advisory,1,PSA-006,Principal Consultant
+PSA-168,Shatrrundam Srivastav,Consultant,Business Advisory,1,PSA-063,Senior Consultant
+PSA-172,Tanmay Anand,Consultant,Business Advisory,1,PSA-032,Senior Consultant
+PSA-142,Akash Jain,Assistant Manager - Finance,Finance,2,PSA-207,Senior Manager - Finance
+PSA-144,Himanshu Maini,Consultant,Business Advisory,2,PSA-254,Senior Consultant
+PSA-145,Tanu Arora,Consultant,Business Advisory,2,PSA-154,Senior Consultant
+PSA-149,Sanskar Gupta,Consultant,Business Advisory,2,PSA-040,Senior Consultant
+PSA-152,Ayush Agarwal,Senior Business Analyst,Business Advisory,1,PSA-031,Senior Consultant
+PSA-153,Kabir Kaur,Consultant,Business Advisory,1,PSA-072,Senior Consultant
+PSA-154,Aashraye Mehra,Senior Consultant,Business Advisory,1,PSA-120,Principal Consultant
+PSA-161,Bhavya Kapur,Consultant,Business Advisory,1,PSA-045,Senior Consultant
+PSA-162,Debanshu Ray Chaudhuri,Consultant,Business Advisory,1,PSA-097,Senior Consultant
+PSA-175,Bhor Chowdhary,Consultant,Data Analytics,1,PSA-151,Principal Consultant
+PSA-173,Tushar Thakur,Senior Business Analyst,Business Advisory,1,PSA-063,Senior Consultant
+PSA-170,Shubham Srivastava,Consultant,Business Advisory,1,PSA-176,Senior Consultant
+PSA-167,Prateek Ramawat,Senior Business Analyst,Business Advisory,1,PSA-084,Senior Consultant
+PSA-165,Muskan Verma,Consultant,Business Advisory,1,PSA-120,Principal Consultant
+PSA-176,Ritesh Yadav,Senior Consultant,Business Advisory,1,PSA-002,Associate Director
+PSA-177,Aanchal Jain,Senior Business Analyst,Business Advisory,1,PSA-073,Senior Consultant
+PSA-180,Ashwini Modi,Senior Business Analyst,Business Advisory,1,PSA-097,Senior Consultant
+PSA-183,Chhavi Rustagi,Senior Business Analyst,Business Advisory,1,PSA-056,Senior Consultant
+PSA-185,Gargi .,Senior Business Analyst,Business Advisory,1,PSA-120,Principal Consultant
+PSA-188,Gurkirat Kaur,Senior Business Analyst,Business Advisory,1,PSA-045,Senior Consultant
+PSA-189,Karan Rana,Senior Business Analyst,Business Advisory,1,PSA-031,Senior Consultant
+PSA-193,Manav Bansal,Senior Business Analyst,Business Advisory,1,PSA-072,Senior Consultant
+PSA-198,Ria Pandit,Senior Business Analyst,Business Advisory,1,PSA-006,Principal Consultant
+PSA-205,Kajal Jain,Consultant,Business Advisory,1,PSA-006,Principal Consultant
+PSA-206,Pushkar Vashisth,Senior Consultant,Business Advisory,1,PSA-002,Associate Director
+PSA-207,Munavver Ali,Senior Manager - Finance,Finance,1,PSA-008,Director - Finance
+PSA-210,Manan Kapoor,Senior Data Analyst,Data Analytics,1,PSA-014,Senior Consultant
+PSA-208,Anuj Satish Pahuja,Senior Business Analyst,Business Advisory,1,PSA-045,Senior Consultant
+PSA-211,Tarun Bhardwaj,Data Engineer,Data Analytics,1,PSA-358,Senior Consultant
+PSA-212,Kanchan Mondal,Executive Assistant,MD Office,1,PSA-044,Managing Director
+PSA-213,Krishna Birla,Senior Business Analyst,Business Advisory,1,PSA-063,Senior Consultant
+PSA-214,Sayan Pramanik,Senior Business Analyst,Business Advisory,1,PSA-056,Senior Consultant
+PSA-215,Abhishek Jain,Consultant,Data Analytics,1,PSA-151,Principal Consultant
+PSA-218,Parth Verma,Senior Business Analyst,Business Advisory,1,PSA-031,Senior Consultant
+PSA-401,Chaitanya Modi,Senior Consultant,Business Advisory,0,PSA-002,Associate Director
+PSA-223,Amaan Alam,Senior Business Analyst,Business Advisory,1,PSA-176,Senior Consultant
+PSA-224,Aryan Sethi,Senior Business Analyst,Business Advisory,1,PSA-176,Senior Consultant
+PSA-225,Hemang Gupta,Senior Business Analyst,Business Advisory,1,PSA-097,Senior Consultant
+PSA-227,Aakash Deep,Senior Data Analyst,Data Analytics,1,PSA-151,Principal Consultant
+PSA-229,Kunal Maheshwari,Senior Business Analyst,Business Advisory,1,PSA-073,Senior Consultant
+PSA-230,Premswaroop Singh,Senior Business Analyst,Business Advisory,1,PSA-006,Principal Consultant
+PSA-231,Raghav Baveja,Senior Business Analyst,Business Advisory,1,PSA-072,Senior Consultant
+PSA-232,Tisha -,Data Analyst,Data Analytics,1,PSA-014,Senior Consultant
+PSA-233,Divyat Khandelwal,Senior Business Analyst,Business Advisory,1,PSA-120,Principal Consultant
+PSA-234,Ishita Kapoor,Senior Business Analyst,Business Advisory,1,PSA-120,Principal Consultant
+PSA-235,Neeraj Kumar Gupta,Senior Business Analyst,Business Advisory,1,PSA-075,Senior Consultant
+PSA-236,Shubham Rayal,Coordinator - Human Resources,Human Resources,1,PSA-026,Head - Human Resources
+PSA-238,Yatharth Grover,Senior Business Analyst,Business Advisory,1,PSA-075,Senior Consultant
+PSA-239,Aditi Pathak,Senior Business Analyst,Business Advisory,1,PSA-063,Senior Consultant
+PSA-242,Deepanshu Sharma,Consultant,Business Advisory,1,PSA-075,Senior Consultant
+PSA-245,Vanshika Jain,Senior Business Analyst,Business Advisory,1,PSA-006,Principal Consultant
+PSA-247,Aaryan Bagga,Business Analyst,Business Advisory,1,PSA-097,Senior Consultant
+PSA-249,Kotra Subhadra Rucha,Business Analyst,Business Advisory,1,PSA-206,Senior Consultant
+PSA-248,Aditya Sharan,Specialist - Information Technology,Information Technology,1,PSA-107,Manager - Information Technology
+PSA-285,Aarsh Chadha,Business Analyst,Business Advisory,0,PSA-176,Senior Consultant
+PSA-286,Aditi Gupta,Business Analyst,Business Advisory,0,PSA-040,Senior Consultant
+PSA-287,Aditya Jain,Business Analyst,Business Advisory,0,PSA-056,Senior Consultant
+PSA-258,Amish Arora,Senior Business Analyst,Business Advisory,0,PSA-073,Senior Consultant
+PSA-260,Ankush Garg,Consultant,Business Advisory,0,PSA-032,Senior Consultant
+PSA-288,Anmol Mishra,Business Analyst,Business Advisory,0,PSA-031,Senior Consultant
+PSA-289,Annant Rajawat,Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-291,Anshu Chaudhary,Business Analyst,Business Advisory,0,PSA-072,Senior Consultant
+PSA-261,Anushka Arora,Senior Business Analyst,Business Advisory,0,PSA-206,Senior Consultant
+PSA-293,Anushka Tyagi,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-262,Apoorva Asthana,Senior Business Analyst,Business Advisory,0,PSA-006,Principal Consultant
+PSA-295,Aryan Chawla,Business Analyst,Business Advisory,0,PSA-045,Senior Consultant
+PSA-296,Aryan Gupta,Business Analyst,Business Advisory,0,PSA-084,Senior Consultant
+PSA-298,Asif Munshi,Business Analyst,Business Advisory,0,PSA-056,Senior Consultant
+PSA-299,Ayush Kerketta,Business Analyst,Business Advisory,0,PSA-176,Senior Consultant
+PSA-301,Dev Mahajan,Business Analyst,Business Advisory,0,PSA-206,Senior Consultant
+PSA-264,Dharmik Bakhai,Senior Business Analyst,Business Advisory,0,PSA-097,Senior Consultant
+PSA-302,Disha Arora,Business Analyst,Business Advisory,0,PSA-072,Senior Consultant
+PSA-303,Dolly Jain,Business Analyst,Business Advisory,0,PSA-073,Senior Consultant
+PSA-265,Eashwar Santhanam,Senior Business Analyst,Business Advisory,0,PSA-097,Senior Consultant
+PSA-304,Garima Jain,Business Analyst,Business Advisory,0,PSA-056,Senior Consultant
+PSA-308,Harshita Agarwal,Business Analyst,Business Advisory,0,PSA-154,Senior Consultant
+PSA-309,Hashim Chirag,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-311,Hiya Pahuja,Business Analyst,Business Advisory,0,PSA-045,Senior Consultant
+PSA-266,Jevane Nikita,Senior Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-312,Japneet Kaur,Business Analyst,Business Advisory,0,PSA-040,Senior Consultant
+PSA-313,Jasmeet Singh Kalra,Business Analyst,Business Advisory,0,PSA-206,Senior Consultant
+PSA-314,Kalpak Rahul Tupe,Business Analyst,Business Advisory,0,PSA-075,Senior Consultant
+PSA-315,Kanan Kheria,Business Analyst,Business Advisory,0,PSA-006,Principal Consultant
+PSA-316,Karunesh Yadav,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-319,Kunj Goyal,Business Analyst,Business Advisory,0,PSA-006,Principal Consultant
+PSA-321,Lakshmi Krishna PK,Business Analyst,Business Advisory,0,PSA-073,Senior Consultant
+PSA-352,Lavanya Gupta,Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-268,Mayank Mishra,Consultant,Business Advisory,0,PSA-097,Senior Consultant
+PSA-322,Mohammad Hissam Ali,Business Analyst,Business Advisory,0,PSA-097,Senior Consultant
+PSA-324,Navedh Agarwal,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-325,Navya Ghosh,Business Analyst,Business Advisory,0,PSA-206,Senior Consultant
+PSA-326,Nidhi Khanduja,Business Analyst,Business Advisory,0,PSA-031,Senior Consultant
+PSA-269,Niharika Rattra,Senior Business Analyst,Business Advisory,0,PSA-031,Senior Consultant
+PSA-270,Pari Agarwal,Senior Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-329,Purnima Malhotra,Business Analyst,Business Advisory,0,PSA-206,Senior Consultant
+PSA-327,Pratham Narula,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-330,Racheet Lohani,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-272,Raghav Lohia,Consultant,Business Advisory,0,PSA-067,Principal Consultant
+PSA-273,Raghav Poply,Senior Business Analyst,Business Advisory,0,PSA-040,Senior Consultant
+PSA-274,Rishabh Kumar Singh,Consultant,Business Advisory,0,PSA-206,Senior Consultant
+PSA-275,Rishi Kant Mishrra,Senior Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-332,Rishit Katial,Business Analyst,Business Advisory,0,PSA-075,Senior Consultant
+PSA-276,Ritinkar Roy,Senior Business Analyst,Business Advisory,0,PSA-254,Senior Consultant
+PSA-334,Riya Garg,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-335,Riya Gupta,Business Analyst,Business Advisory,0,PSA-075,Senior Consultant
+PSA-277,Ruchee Goyal,Consultant,Business Advisory,0,PSA-206,Senior Consultant
+PSA-336,Saanvi Saraf,Business Analyst,Business Advisory,0,PSA-154,Senior Consultant
+PSA-278,Sahil Khandelwal,Consultant,Business Advisory,0,PSA-360,Senior Consultant
+PSA-337,Sanchita Kumari,Business Analyst,Business Advisory,0,PSA-084,Senior Consultant
+PSA-338,Sanya Bansal,Business Analyst,Business Advisory,0,PSA-045,Senior Consultant
+PSA-339,Shivam Arora,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-281,Soumyajit Mitra,Consultant,Business Advisory,0,PSA-176,Senior Consultant
+PSA-342,Sucheta Aggarwal,Business Analyst,Business Advisory,0,PSA-006,Principal Consultant
+PSA-343,Suhani Matalia,Business Analyst,Business Advisory,0,PSA-056,Senior Consultant
+PSA-344,Suhani Talwar,Business Analyst,Business Advisory,0,PSA-360,Senior Consultant
+PSA-345,Varun Kumar Jain,Business Analyst,Business Advisory,0,PSA-206,Senior Consultant
+PSA-282,Vidhisa Agarwala,Senior Business Analyst,Business Advisory,0,PSA-154,Senior Consultant
+PSA-283,Vijay S Reddy,Senior Business Analyst,Business Advisory,0,PSA-006,Principal Consultant
+PSA-348,Yash Aggarwal,Business Analyst,Business Advisory,0,PSA-154,Senior Consultant
+PSA-349,Yashesh Tambi,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-263,Boopalan .,Senior Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-310,Himansi .,Business Analyst,Business Advisory,0,PSA-031,Senior Consultant
+PSA-320,Lakshita Miglani,Business Analyst,Business Advisory,0,PSA-360,Senior Consultant
+PSA-328,Prishita Arora,Business Analyst,Business Advisory,0,PSA-072,Senior Consultant
+PSA-294,Aravind Jagadeesh Chandran,Business Analyst,Business Advisory,0,PSA-072,Senior Consultant
+PSA-292,Anusha Kuthiala,Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-318,Krish Singhal,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-251,Gopu Gopalakrishnan Nair,Senior Manager - Business Development,Business Development,0,PSA-044,Managing Director
+PSA-252,Kunal Kumar,Business Analyst,Business Advisory,0,PSA-056,Senior Consultant
+PSA-253,Purvi Dhupar,Business Analyst,Business Advisory,0,PSA-176,Senior Consultant
+PSA-254,Rushil Nagpal,Senior Consultant,Business Advisory,0,PSA-120,Principal Consultant
+PSA-255,Ujjwal Sarawagi,Senior Business Analyst,Business Advisory,0,PSA-040,Senior Consultant
+PSA-256,Shubh Goyal,Business Analyst,Business Advisory,0,PSA-075,Senior Consultant
+PSA-257,Aakash Gautam,Senior Software Engineer,Data Analytics,0,PSA-151,Principal Consultant
+PSA-279,Shivani Tiwari,Executive - Business Development,Business Development,0,PSA-251,Senior Manager - Business Development
+PSA-259,Anand Sharma,Coordinator - Finance,Finance,0,PSA-207,Senior Manager - Finance
+PSA-300,Bhavook Sethi,Data Analyst,Data Analytics,0,PSA-151,Principal Consultant
+PSA-347,Vignesh Nalliboyina,Data Analyst,Data Analytics,0,PSA-151,Principal Consultant
+PSA-350,Ishant Kumar,Data Analyst,Data Analytics,0,PSA-358,Senior Consultant
+PSA-351,Kavya S,Data Analyst,Data Analytics,0,PSA-151,Principal Consultant
+PSA-353,Nenavath Manisha,Data Analyst,Data Analytics,0,PSA-014,Senior Consultant
+PSA-355,Aastha Shukla,Data Analyst,Data Analytics,0,PSA-358,Senior Consultant
+PSA-357,Jiya Ahuja,Data Analyst,Data Analytics,0,PSA-151,Principal Consultant
+PSA-358,Mohit Khanduri,Senior Consultant,Data Analytics,0,PSA-151,Principal Consultant
+PSA-359,Preeti Gera,Executive Assistant,MD Office,0,PSA-001,Managing Director
+PSA-360,Ashima Gupta,Senior Consultant,Business Advisory,0,PSA-067,Principal Consultant
+PSA-361,Amritansh .,AI Engineer,Data Analytics,0,PSA-358,Senior Consultant
+PSA-367,Sarthak Mahajan,Business Analyst,Business Advisory,0,PSA-045,Senior Consultant
+PSA-366,Risabh Jadon,Business Analyst,Business Advisory,0,PSA-031,Senior Consultant
+PSA-365,Raghav Kakkar,Business Analyst,Business Advisory,0,PSA-254,Senior Consultant
+PSA-363,Arush Arora,Business Analyst,Business Advisory,0,PSA-056,Senior Consultant
+PSA-362,Agrima Barthwal,Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-364,Himanshu Jaiswal,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-369,Sarthi Saini,Business Analyst,Business Advisory,0,PSA-056,Senior Consultant
+PSA-371,Dhruv Nandal,AI Engineer,Data Analytics,0,PSA-151,Principal Consultant
+PSA-372,Mansi Dixit,Executive - Human Resources,Human Resources,0,PSA-026,Head - Human Resources
+Temp: 001,Pravin . ( Pravin ),Senior Software Engineer,Data Analytics,0,PSA-151,Principal Consultant
+Temp: 002,Fraaz . ( Fraaz ),Senior Software Engineer,Data Analytics,0,PSA-151,Principal Consultant
+PSA-373,Abhishek Kumar,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-374,Aryan Correia,Senior Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-375,Palak Kaushik,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-376,Vipul Sahu,Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-378,Devang Omar,Business Analyst,Business Advisory,0,PSA-002,Associate Director
+PSA-377,Anand Gupt,Senior Business Analyst,Business Advisory,0,PSA-360,Senior Consultant
+PSA-379,Harsh Aggarwal,Business Analyst,Business Advisory,0,PSA-075,Senior Consultant
+PSA-380,Mohit Bajaj,Business Analyst,Business Advisory,0,PSA-254,Senior Consultant
+PSA-381,Ashutosh Naudiyal,Business Analyst,Business Advisory,0,PSA-002,Associate Director
+PSA-382,Bhavya Duggal,Business Analyst,Business Advisory,0,PSA-006,Principal Consultant
+PSA-383,Himanshu Bhararia,Business Analyst,Business Advisory,0,PSA-002,Associate Director
+PSA-384,Ishita Gupta,Business Analyst,Business Advisory,0,PSA-072,Senior Consultant
+PSA-385,Shikha Soni,Business Analyst,Business Advisory,0,PSA-084,Senior Consultant
+PSA-386,Suyash Raj,Senior Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-387,Umang Garg,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-388,Nakul Raj,Business Analyst,Business Advisory,0,PSA-045,Senior Consultant
+PSA-389,Priyanshu Gupta,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-390,Pujan Patel,Business Analyst,Business Advisory,0,PSA-006,Principal Consultant
+PSA-391,Aditya .,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-392,Amitesh Nigam,Business Analyst,Business Advisory,0,PSA-002,Associate Director
+PSA-393,Ankit Kumar Dwivedi,Business Analyst,Business Advisory,0,PSA-075,Senior Consultant
+PSA-394,Devanjana M S,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-395,Madhav Bhalla,Business Analyst,Business Advisory,0,PSA-002,Associate Director
+PSA-396,Prateek Jain,Senior Business Analyst,Business Advisory,0,PSA-154,Senior Consultant
+PSA-397,Kavya Garg,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-398,Divyanshi Jain,Business Analyst,Business Advisory,0,PSA-002,Associate Director
+PSA-400,Shruti Agrahari,Business Analyst,Business Advisory,0,PSA-002,Associate Director
+PSA-399,Aman Kumar,Consultant,Business Advisory,0,PSA-002,Associate Director
+PSA-305,Geshu Anand,Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-306,Gundeep Singh Ahuja,Business Analyst,Business Advisory,0,PSA-072,Senior Consultant
+PSA-307,Harmeet Singh,Business Analyst,Business Advisory,0,PSA-067,Principal Consultant
+PSA-317,Khushi Nagpal,Business Analyst,Business Advisory,0,PSA-067,Principal Consultant
+PSA-323,Muskan Verma,Business Analyst,Business Advisory,0,PSA-045,Senior Consultant
+PSA-271,Prabin Kumar Mahapatra,Senior Business Analyst,Business Advisory,0,PSA-031,Senior Consultant
+PSA-331,Ramit Kejriwal,Business Analyst,Business Advisory,0,PSA-075,Senior Consultant
+PSA-333,Ritvik Gupta,Business Analyst,Business Advisory,0,PSA-063,Senior Consultant
+PSA-340,Smridhi Sharma,Business Analyst,Business Advisory,0,PSA-032,Senior Consultant
+PSA-280,Soumya Shah,Consultant,Business Advisory,0,PSA-075,Senior Consultant
+PSA-341,Sounak Ghosh,Business Analyst,Business Advisory,0,PSA-097,Senior Consultant
+PSA-346,Vatsal Garg,Business Analyst,Business Advisory,0,PSA-176,Senior Consultant
+PSA-284,Divjot Singh Puri,Business Analyst,Business Advisory,0,PSA-084,Senior Consultant
+PSA-354,Saksham Aggarwal,Business Analyst,Business Advisory,0,PSA-097,Senior Consultant
+PSA-356,Debjit Krishnan,Senior Consultant,Business Advisory,0,PSA-067,Principal Consultant
+PSA-368,Aviral Mittal,Business Analyst,Business Advisory,0,PSA-120,Principal Consultant
+PSA-370,Yatharth Chanana,Business Analyst,Business Advisory,0,PSA-006,Principal Consultant
