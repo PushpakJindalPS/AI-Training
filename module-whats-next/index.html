@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What's Next | AI Workshop</title>
+
+  <!-- Righteous font for slide headings -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet" />
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="../assets/reveal/dist/reset.css" />
+  <link rel="stylesheet" href="../assets/reveal/dist/reveal.css" />
+
+  <!-- Custom theme -->
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+
+  <style>
+    /* ── Module-specific styles (Session 5 style) ── */
+
+    /* Title slide */
+    .title-slide { text-align: center; }
+    .session-label {
+      font-size: 0.85em; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent-blue); margin-bottom: 1em;
+    }
+    .title-slide h1 {
+      font-size: 3em; font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; color: #fff; margin-bottom: 0.5em;
+    }
+    .subtitle { font-size: 1.1em; color: var(--text-muted); margin-bottom: 1.5em; }
+
+    /* Heading sizes */
+    h2 { font-size: 2.4em; font-weight: 800; color: var(--accent-blue); margin-bottom: 0.5em; }
+    h3 { font-size: 1.8em; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.4em; }
+    h4 { font-size: 1.45em; font-weight: 700; color: var(--accent-gold); margin-bottom: 0.3em; }
+
+    /* Body text */
+    p, li { font-size: 1.2em; color: var(--text-primary); line-height: 1.75; }
+    ul, ol { margin: 0.8em 0; }
+    ul li, ol li { margin-bottom: 0.5em; }
+
+    /* Module recap grid */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1em;
+      margin-top: 1em;
+    }
+    .module-card {
+      background: var(--bg-card);
+      border-left: 3px solid var(--accent-blue);
+      border-radius: var(--radius);
+      padding: 1em 1.2em;
+    }
+
+    /* Rollout plan flow */
+    .rollout-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2em;
+      margin: 1.5em 0;
+    }
+    .rollout-box {
+      background: rgba(79,142,247,0.1);
+      border: 1px solid rgba(79,142,247,0.3);
+      border-radius: var(--radius);
+      padding: 1em 2em;
+      text-align: center;
+      min-width: 160px;
+    }
+    .rollout-arrow { font-size: 2em; color: var(--accent-teal); opacity: 0.7; line-height: 1; }
+
+    /* Info box */
+    .info-box {
+      background: var(--bg-card);
+      border: 1px solid rgba(79,142,247,0.25);
+      border-radius: var(--radius);
+      padding: 1.2em 1.5em;
+    }
+
+    /* Two-column layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 1em; }
+
+    /* Trainer groups grid */
+    .groups-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.2em;
+      margin-top: 1em;
+    }
+    .group-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 1.5em;
+    }
+    .group-card.blue  { border-top: 3px solid var(--accent-blue); }
+    .group-card.teal  { border-top: 3px solid var(--accent-teal); }
+    .group-card.gold  { border-top: 3px solid var(--accent-gold); }
+
+    /* Assignment steps */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1em;
+      margin-top: 1.2em;
+    }
+    .step-box {
+      border-radius: var(--radius);
+      padding: 1.2em;
+      text-align: center;
+    }
+
+    /* Closing slide */
+    .closing-slide h1 {
+      font-size: 2.8em; font-weight: 800; color: #fff;
+      letter-spacing: -0.03em; margin-bottom: 0.4em;
+    }
+    .closing-points {
+      display: flex; flex-direction: column; gap: 0.7em;
+      margin-top: 1em; text-align: left;
+      max-width: 920px; margin-left: auto; margin-right: auto;
+    }
+    .closing-point {
+      background: rgba(79,142,247,0.08);
+      border-left: 3px solid var(--accent-teal);
+      border-radius: var(--radius);
+      padding: 0.75em 1.1em;
+      font-size: 1em; color: var(--text-primary); line-height: 1.5;
+    }
+    .closing-point strong { color: var(--accent-gold); }
+
+    /* Fixed UI elements */
+    .home-link {
+      position: fixed; top: 16px; left: 20px;
+      font-size: 0.9em; color: var(--text-dim);
+      text-decoration: none; display: flex; align-items: center; gap: 5px;
+      z-index: 100; transition: color 0.2s;
+    }
+    .home-link:hover { color: var(--accent-blue); }
+    .notes-hint {
+      position: fixed; top: 16px; right: 100px;
+      font-size: 0.85em; color: var(--text-dim); z-index: 100;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      h2 { font-size: 2em; }
+      h3 { font-size: 1.4em; }
+      h4 { font-size: 1.1em; }
+      p, li { font-size: 0.95em; }
+      .modules-grid { grid-template-columns: 1fr 1fr; }
+      .groups-grid  { grid-template-columns: 1fr; }
+      .steps-grid   { grid-template-columns: 1fr; }
+      .two-col      { grid-template-columns: 1fr; }
+      .rollout-flow { flex-direction: column; }
+      .rollout-arrow { transform: rotate(90deg); }
+    }
+
+    /* Righteous gradient for all h1/h2 in slides */
+    .reveal section h1,
+    .reveal section h2 {
+      font-family: 'Righteous', cursive;
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="../assets/images/02.%20PS%20Logo_Vertical.png" alt="Preferred Square"
+       style="position:fixed; top:12px; right:16px; height:40px; z-index:100; opacity:0.85;" />
+  <a href="../index.html" class="home-link" target="_blank">← All Sessions</a>
+  <div class="notes-hint">Press S for speaker notes</div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 1: TITLE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="title-slide">
+          <div class="session-label">AI Workshop</div>
+          <h1>What's Next</h1>
+          <p class="subtitle">Trainer Rollout Briefing · ~45 minutes</p>
+        </div>
+        <aside class="notes">
+          Welcome everyone. This is our final internal session before the floor-wide rollout begins. In the next 45 minutes we'll recap the 6 modules we've covered, brief you on the trainer rollout plan, assign each group their floor session, and set you up with a personal assignment to build something with GitHub Copilot before our next hands-on session on 24th April.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 2: RECAP — 3 SESSIONS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>What We've Covered So Far</h2>
+        <p style="font-size: 1em; color: var(--text-muted); margin-bottom: 1.2em;">3 workshop sessions · completed</p>
+
+        <!-- Top row: Session 1 & Session 2 side by side -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.3em; margin-bottom: 1.3em;">
+
+          <div style="background: var(--bg-card); border-top: 3px solid var(--accent-blue); border-radius: var(--radius); padding: 1.6em 1.8em;">
+            <div style="font-size: 0.75em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-blue); margin-bottom: 0.5em;">Session 1 · Module 01 &amp; 02</div>
+            <div style="font-size: 1.25em; font-weight: 700; color: #fff; margin-bottom: 1em;">AI &amp; GenAI Fundamentals</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">What is AI &amp; GenAI</li>
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">How LLMs work</li>
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Prompt engineering</li>
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Hallucinations &amp; reliability</li>
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0;">Advanced prompting &amp; grounding</li>
+            </ul>
+          </div>
+
+          <div style="background: var(--bg-card); border-top: 3px solid var(--accent-teal); border-radius: var(--radius); padding: 1.6em 1.8em;">
+            <div style="font-size: 0.75em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-teal); margin-bottom: 0.5em;">Session 2 · Module 03 &amp; 04</div>
+            <div style="font-size: 1.25em; font-weight: 700; color: #fff; margin-bottom: 1em;">AI Agents &amp; Workflows</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">What are AI agents</li>
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Agent design &amp; configuration</li>
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Workflow automation with n8n</li>
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Building AI workflows</li>
+              <li style="font-size: 0.95em; color: var(--text-muted); padding: 0.3em 0;">Tools, memory &amp; agent loops</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Session 3 full width -->
+        <div style="background: var(--bg-card); border-top: 3px solid var(--accent-gold); border-radius: var(--radius); padding: 1.4em 1.8em; display: grid; grid-template-columns: auto 1fr; gap: 2em; align-items: center;">
+          <div>
+            <div style="font-size: 0.75em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 0.4em;">Session 3 · Module 05</div>
+            <div style="font-size: 1.25em; font-weight: 700; color: #fff;">Coding with Copilot</div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.6em; align-items: center;">
+            <span style="background: rgba(255,209,102,0.1); border: 1px solid rgba(255,209,102,0.3); color: var(--accent-gold); font-size: 0.9em; padding: 0.4em 0.9em; border-radius: 999px;">AI coding tools ecosystem</span>
+            <span style="background: rgba(255,209,102,0.1); border: 1px solid rgba(255,209,102,0.3); color: var(--accent-gold); font-size: 0.9em; padding: 0.4em 0.9em; border-radius: 999px;">GitHub Copilot deep-dive</span>
+            <span style="background: rgba(255,209,102,0.1); border: 1px solid rgba(255,209,102,0.3); color: var(--accent-gold); font-size: 0.9em; padding: 0.4em 0.9em; border-radius: 999px;">Vibe coding</span>
+            <span style="background: rgba(255,209,102,0.1); border: 1px solid rgba(255,209,102,0.3); color: var(--accent-gold); font-size: 0.9em; padding: 0.4em 0.9em; border-radius: 999px;">Modes &amp; models</span>
+            <span style="background: rgba(255,209,102,0.1); border: 1px solid rgba(255,209,102,0.3); color: var(--accent-gold); font-size: 0.9em; padding: 0.4em 0.9em; border-radius: 999px;">Hands-on exercises</span>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Quick recap of the 3 sessions conducted. Session 1 covered the fundamentals of AI and GenAI (Modules 1 & 2). Session 2 moved into agents and automation with n8n (Modules 3 & 4). Session 3 was all about coding with GitHub Copilot (Module 5). This is the knowledge base the floor teams will be trained on.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 3: THE ROLLOUT PLAN
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>The Rollout Plan</h2>
+
+        <!-- Stat row -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1em; margin: 0.8em 0 1.2em;">
+          <div style="background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.3); border-radius: var(--radius); padding: 1em; text-align: center;">
+            <div style="font-size: 2.8em; font-weight: 800; color: var(--accent-blue); line-height: 1;">8</div>
+            <div style="font-size: 0.88em; color: var(--text-muted); margin-top: 0.4em;">Batches</div>
+          </div>
+          <div style="background: rgba(100,255,218,0.08); border: 1px solid rgba(100,255,218,0.3); border-radius: var(--radius); padding: 1em; text-align: center;">
+            <div style="font-size: 2.8em; font-weight: 800; color: var(--accent-teal); line-height: 1;">3</div>
+            <div style="font-size: 0.88em; color: var(--text-muted); margin-top: 0.4em;">Sessions per Batch</div>
+          </div>
+          <div style="background: rgba(255,209,102,0.08); border: 1px solid rgba(255,209,102,0.3); border-radius: var(--radius); padding: 1em; text-align: center;">
+            <div style="font-size: 2.8em; font-weight: 800; color: var(--accent-gold); line-height: 1;">24</div>
+            <div style="font-size: 0.88em; color: var(--text-muted); margin-top: 0.4em;">Training Sessions Total</div>
+          </div>
+          <div style="background: rgba(192,132,252,0.08); border: 1px solid rgba(192,132,252,0.3); border-radius: var(--radius); padding: 1em; text-align: center;">
+            <div style="font-size: 2.8em; font-weight: 800; color: #c084fc; line-height: 1;">1</div>
+            <div style="font-size: 0.88em; color: var(--text-muted); margin-top: 0.4em;">Month Timeframe</div>
+          </div>
+        </div>
+
+        <!-- Trainers highlight -->
+        <div style="text-align: center; margin-bottom: 1.2em;">
+          <span style="display: inline-block; background: rgba(79,142,247,0.12); border: 1px solid rgba(79,142,247,0.35); border-radius: 999px; padding: 0.5em 1.5em; font-size: 1.1em; font-weight: 700; color: var(--accent-blue);">10 – 12 Trainers</span>
+        </div>
+
+        <!-- How it works -->
+        <div style="background: var(--bg-card); border: 1px solid rgba(79,142,247,0.2); border-radius: var(--radius); padding: 1.3em 1.6em;">
+          <div style="font-size: 0.88em; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.9em;">How it works</div>
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            <li style="font-size: 0.98em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Total <strong style="color: var(--accent-blue);">3 trainer groups</strong> — each group owns the responsibility to develop content for <strong style="color: var(--accent-blue);">one session</strong></li>
+            <li style="font-size: 0.98em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Curriculum outline will be <strong style="color: var(--accent-teal);">provided</strong> — you build on top of it</li>
+            <li style="font-size: 0.98em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Each group to define <strong style="color: var(--accent-gold);">2 demos / projects</strong> for their session</li>
+            <li style="font-size: 0.98em; color: var(--text-primary); padding: 0.4em 0;">Every trainer must be well versed with the <em>overall</em> training curriculum — close collaboration is <strong style="color: var(--accent-gold);">expected</strong> and <strong style="color: var(--accent-gold);">required</strong></li>
+          </ul>
+        </div>
+
+        <aside class="notes">
+          8 batches, 3 sessions each, totalling 24 training sessions in one month. 10 to 12 trainers covering this. Three groups, each owning one session. The curriculum outline is already structured — what each group needs to add is 2 practical demos or projects that make the content tangible. And everyone needs to know all sessions — this isn't siloed work.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 5: GROUP ASSIGNMENTS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Trainer Group Assignments</h2>
+        <p style="font-size: 1em; color: var(--text-muted); margin-bottom: 1.2em;">Each group owns one floor session — full topic outlines provided</p>
+
+        <div class="groups-grid">
+
+          <!-- Group A -->
+          <div class="group-card blue">
+            <div style="font-size: 0.78em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-blue); margin-bottom: 0.5em;">Group A</div>
+            <div style="font-size: 1.2em; font-weight: 700; color: #fff; margin-bottom: 0.3em;">Floor Session 1</div>
+            <div style="font-size: 1em; font-weight: 600; color: var(--accent-blue); margin-bottom: 0.9em;">GenAI Fundamentals</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">What is GenAI</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">How LLMs work</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">AI vs traditional automation</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">Prompt engineering</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">Responsible AI use</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0;">Hands-on practice</li>
+            </ul>
+          </div>
+
+          <!-- Group B -->
+          <div class="group-card teal">
+            <div style="font-size: 0.78em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-teal); margin-bottom: 0.5em;">Group B</div>
+            <div style="font-size: 1.2em; font-weight: 700; color: #fff; margin-bottom: 0.3em;">Floor Session 2</div>
+            <div style="font-size: 1em; font-weight: 600; color: var(--accent-teal); margin-bottom: 0.9em;">AI Agents &amp; Workflows</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">What is an AI agent</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">Agent risks</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">Deterministic vs non-deterministic workflows</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">Agent capabilities</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">No-code tools (Copilot Studio, n8n)</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0;">Capstone project</li>
+            </ul>
+          </div>
+
+          <!-- Group C -->
+          <div class="group-card gold">
+            <div style="font-size: 0.78em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 0.5em;">Group C</div>
+            <div style="font-size: 1.2em; font-weight: 700; color: #fff; margin-bottom: 0.3em;">Floor Session 3</div>
+            <div style="font-size: 1em; font-weight: 600; color: var(--accent-gold); margin-bottom: 0.9em;">Building Apps with AI</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">App anatomy</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">AI-powered app types</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">RAG and memory</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">Vibe coding</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0; border-bottom: 1px solid rgba(255,255,255,0.04);">Design patterns</li>
+              <li style="font-size: 0.9em; color: var(--text-muted); padding: 0.28em 0;">Deployment</li>
+            </ul>
+          </div>
+
+        </div>
+        <aside class="notes">
+          Announce the groups here. Placeholder names: Group A, Group B, Group C — update before the session. The topic lists come directly from the floor-wide curriculum cards. More detailed SVG versions of these outlines are available in the curriculum folder.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 6: CURRICULUM PROVIDED vs OWNED
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Curriculum — What's Provided vs What's Yours</h2>
+
+        <div class="two-col" style="margin-top: 1.3em;">
+
+          <div class="info-box" style="border-color: rgba(100,255,218,0.25);">
+            <div style="font-size: 1em; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.9em; text-transform: uppercase; letter-spacing: 0.08em;">✓ Provided for you</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 1em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Full topic outline per session</li>
+              <li style="font-size: 1em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Key concepts and sub-topics to cover</li>
+              <li style="font-size: 1em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Suggested flow and timing</li>
+              <li style="font-size: 1em; color: var(--text-primary); padding: 0.4em 0;">Format and audience guidance</li>
+            </ul>
+          </div>
+
+          <div class="info-box" style="border-color: rgba(255,209,102,0.25);">
+            <div style="font-size: 1em; font-weight: 700; color: var(--accent-gold); margin-bottom: 0.9em; text-transform: uppercase; letter-spacing: 0.08em;">⚡ Your group designs</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 1em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">The capstone hands-on project</li>
+              <li style="font-size: 1em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">All demo content and examples</li>
+              <li style="font-size: 1em; color: var(--text-primary); padding: 0.4em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Your facilitator slide deck</li>
+              <li style="font-size: 1em; color: var(--text-primary); padding: 0.4em 0;">Q&amp;A preparation</li>
+            </ul>
+          </div>
+
+        </div>
+
+
+        <aside class="notes">
+          The curriculum is a structured outline, not a script. It's a starting point. Your group needs to figure out how to make those topics land for your specific audience — choose or build concrete demos, design a capstone exercise people can actually do, and make it relevant to your floor's day-to-day work.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 7: TRAINER STANDARD
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Your Responsibility as a Trainer</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); margin-bottom: 1.4em;">Owning one session doesn't mean only knowing one session</p>
+
+        <div style="display: flex; flex-direction: column; gap: 1em; max-width: 900px; margin: 0 auto;">
+
+          <div style="background: var(--bg-card); border-left: 3px solid var(--accent-blue); border-radius: var(--radius); padding: 1.4em 1.8em;">
+            <div style="font-size: 1.35em; font-weight: 700; color: var(--accent-blue);">Know all three sessions</div>
+          </div>
+
+          <div style="background: var(--bg-card); border-left: 3px solid var(--accent-teal); border-radius: var(--radius); padding: 1.4em 1.8em;">
+            <div style="font-size: 1.35em; font-weight: 700; color: var(--accent-teal);">Build something real</div>
+          </div>
+
+          <div style="background: var(--bg-card); border-left: 3px solid var(--accent-gold); border-radius: var(--radius); padding: 1.4em 1.8em;">
+            <div style="font-size: 1.35em; font-weight: 700; color: var(--accent-gold);">Stay current</div>
+          </div>
+
+        </div>
+        <aside class="notes">
+          This is a high bar, but it's the right bar. The most effective trainers are the ones who've genuinely built things with the tools they're teaching. Don't just learn the slides — use the tools, hit the walls, figure it out.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 8: PERSONAL ASSIGNMENT
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Your Personal Assignment</h2>
+
+        <div style="background: var(--bg-card); border: 2px solid var(--accent-teal); border-radius: var(--radius); padding: 1.8em 2em; margin-top: 1em;">
+          <div style="font-size: 1.2em; font-weight: 700; color: var(--accent-teal); margin-bottom: 1.2em; letter-spacing: 0.02em;">Build something with GitHub Copilot — from scratch</div>
+
+          <div class="steps-grid">
+            <div class="step-box" style="background: rgba(79,142,247,0.08); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.8em 1em;">
+              <div style="font-size: 1.8em; font-weight: 800; color: var(--accent-blue); opacity: 0.45; line-height: 1; margin-bottom: 0.5em;">1</div>
+              <div style="font-size: 1.3em; font-weight: 700; color: var(--accent-blue);">Define</div>
+            </div>
+            <div class="step-box" style="background: rgba(100,255,218,0.08); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.8em 1em;">
+              <div style="font-size: 1.8em; font-weight: 800; color: var(--accent-teal); opacity: 0.45; line-height: 1; margin-bottom: 0.5em;">2</div>
+              <div style="font-size: 1.3em; font-weight: 700; color: var(--accent-teal);">Build</div>
+            </div>
+            <div class="step-box" style="background: rgba(255,209,102,0.08); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.8em 1em;">
+              <div style="font-size: 1.8em; font-weight: 800; color: var(--accent-gold); opacity: 0.45; line-height: 1; margin-bottom: 0.5em;">3</div>
+              <div style="font-size: 1.3em; font-weight: 700; color: var(--accent-gold);">Show</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.3em; padding: 0.85em 1.2em; background: rgba(255,209,102,0.08); border: 1px solid rgba(255,209,102,0.25); border-radius: 8px; text-align: center;">
+            <span style="font-size: 1.05em; color: var(--accent-gold); font-weight: 600;">⏱ Window: 3 weeks : Friday 24th April</span>
+          </div>
+        </div>
+        <aside class="notes">
+          It doesn't have to be polished. It has to be real. A script that helps you analyse data, a simple chatbot, a reporting tool, a form that generates outputs — anything that uses Copilot as the primary coding tool counts. The goal is experience, not a perfect product.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 9: GITHUB COPILOT PRO LICENSES
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>GitHub Copilot Pro</h2>
+
+        <div style="max-width: 700px; margin: 0 auto;">
+          <div style="background: var(--bg-card); border-top: 3px solid var(--accent-blue); border-radius: var(--radius); padding: 1.8em 2em;">
+            <div style="font-size: 1.05em; font-weight: 700; color: var(--accent-blue); margin-bottom: 1em;">What you get</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 0.95em; color: var(--text-primary); padding: 0.35em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">GitHub Copilot Pro — full access</li>
+              <li style="font-size: 0.95em; color: var(--text-primary); padding: 0.35em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">All models: GPT-4o, Claude, Gemini</li>
+              <li style="font-size: 0.95em; color: var(--text-primary); padding: 0.35em 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Chat, Edits, and Agent mode</li>
+              <li style="font-size: 0.95em; color: var(--text-primary); padding: 0.35em 0;">Works in VS Code and the browser</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="background: rgba(100,255,218,0.08); border: 1px solid rgba(100,255,218,0.2); border-radius: var(--radius); padding: 1em 1.5em; margin-top: 1.2em; text-align: center;">
+          <p style="font-size: 1.05em; color: var(--accent-teal); margin: 0; font-weight: 600;">Github Copilot Pro licenses are already being assigned and should be done by EOD tomorrow.</p>
+        </div>
+        <aside class="notes">
+          Everyone in this room is getting a Copilot Pro license. That means access to the full model suite — GPT-4o, Claude Sonnet, Gemini — all in VS Code. If you haven't set up VS Code yet, there's a Setup Guide on the main workshop page. It takes about 10 minutes.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 10: NEXT SESSION — 24th APRIL
+      ══════════════════════════════════════════════ -->
+      <section>
+        <h2>Next Session — 24th April</h2>
+
+        <div style="text-align: center; margin: 1.2em 0;">
+          <div style="font-size: 5em; font-weight: 800; color: var(--accent-gold); font-family: 'Righteous', cursive; line-height: 1; -webkit-text-fill-color: var(--accent-gold); background: none;">24</div>
+          <div style="font-size: 1.7em; font-weight: 700; color: #fff; margin-top: 0.2em;">Friday, April 2026</div>
+          <div style="font-size: 1.05em; color: var(--text-muted); margin-top: 0.5em;">Hands-on coding session · GitHub Copilot live</div>
+        </div>
+
+        <div class="two-col" style="max-width: 860px; margin: 1.2em auto 0;">
+
+          <div style="background: var(--bg-card); border-left: 3px solid var(--accent-blue); border-radius: var(--radius); padding: 1.1em 1.4em;">
+            <div style="font-size: 1em; font-weight: 700; color: var(--accent-blue); margin-bottom: 0.5em;">What to bring</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 0.92em; color: var(--text-muted); padding: 0.25em 0;">GitHub Copilot access activated</li>
+              <li style="font-size: 0.92em; color: var(--text-muted); padding: 0.25em 0;">VS Code installed and ready</li>
+              <li style="font-size: 0.92em; color: var(--text-muted); padding: 0.25em 0;">Q&amp;A from your personal project</li>
+            </ul>
+          </div>
+
+          <div style="background: var(--bg-card); border-left: 3px solid var(--accent-teal); border-radius: var(--radius); padding: 1.1em 1.4em;">
+            <div style="font-size: 1em; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.5em;">Session format</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="font-size: 0.92em; color: var(--text-muted); padding: 0.25em 0;">Short demos and live building</li>
+              <li style="font-size: 0.92em; color: var(--text-muted); padding: 0.25em 0;">Group share — what did you build?</li>
+              <li style="font-size: 0.92em; color: var(--text-muted); padding: 0.25em 0;">Feedback, iteration, and next steps</li>
+            </ul>
+          </div>
+
+        </div>
+        <aside class="notes">
+          The next session is in 3 weeks. By then, expect everyone to have their Copilot license, VS Code set up, and something they've actually built — even if it's rough. That's the point: bring real experience, not just the theory. We'll share and learn from what worked and what didn't.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 11: CLOSING — ACTION ITEMS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="closing-slide" style="text-align: center;">
+          <h1>Your Action Items</h1>
+          <p class="subtitle" style="font-size: 1em; margin-bottom: 0.8em;">Before Friday 24th April — make these happen</p>
+
+          <div class="closing-points">
+            <div class="closing-point"><strong>1 · Get your Copilot License activated</strong></div>
+            <div class="closing-point"><strong>2 · Set up VS Code + GitHub Copilot extension</strong> — if not done already</div>
+            <div class="closing-point"><strong>3 · Define your problem statement</strong></div>
+            <div class="closing-point"><strong>4 · Build something with Copilot</strong></div>
+          </div>
+
+        </div>
+        <aside class="notes">
+          Four clear action items. Get the license, set up VS Code, define the problem, and start building.
+        </aside>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 10: SEE YOU FRIDAY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="title-slide">
+          <h1>See you Friday 24th April</h1>
+          <p class="subtitle">Questions? Reach out before then</p>
+        </div>
+        <aside class="notes">
+          See you on the 24th. Any questions in the meantime, reach out.
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="../assets/reveal/dist/reveal.js"></script>
+  <script src="../assets/reveal/plugin/notes/notes.js"></script>
+  <script src="../assets/reveal/plugin/markdown/markdown.js"></script>
+  <script src="../assets/reveal/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      width: 1400,
+      height: 900,
+      margin: 0.1,
+      minScale: 0.2,
+      maxScale: 2.0,
+      transition: 'slide',
+      transitionSpeed: 'default',
+    });
+  </script>
+</body>
+</html>
